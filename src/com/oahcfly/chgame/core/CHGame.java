@@ -63,7 +63,10 @@ public abstract class CHGame extends Game {
     @Override
     public void create() {
         Gdx.app.log("chgame", "version : " + Version.VERSION);
-
+        
+        Gdx.input.setCatchBackKey(true);
+        Gdx.input.setCatchMenuKey(true);
+        
         instance = this;
 
         setPreferences(Gdx.app.getPreferences("chdata"));
