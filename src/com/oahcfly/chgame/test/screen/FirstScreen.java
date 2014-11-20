@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.oahcfly.chgame.core.CHGame;
 import com.oahcfly.chgame.core.CHScreen;
 import com.oahcfly.chgame.plist.CHPListCenter;
+import com.oahcfly.chgame.test.ui.TestUI;
 import com.oahcfly.chgame.util.astar.CHAStar;
 
 public class FirstScreen extends CHScreen {
@@ -75,6 +76,7 @@ public class FirstScreen extends CHScreen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 achieveImage.setScale(0.8f);
+                new TestUI(getStage()).show();
                 return true;
             }
 

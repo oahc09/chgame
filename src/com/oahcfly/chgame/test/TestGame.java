@@ -14,6 +14,8 @@ public class TestGame extends CHGame {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
         setScreen(new FirstScreen());
+        
+
     }
 
 }

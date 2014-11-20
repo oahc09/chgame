@@ -11,7 +11,12 @@ import com.oahcfly.chgame.core.CHUI;
 public class MainUI extends CHUI {
 
     public MainUI(Stage stage) {
-        super(stage, null, "screen/MainScreen_1.json");
+        super(stage, null, "screen/MainScreen_1.json");  
+        initUI();
+    }
+
+     
+    public void initUI() {
         getEditor().findActor("img_rush_bg").addListener(new InputListener() {
 
             @Override
