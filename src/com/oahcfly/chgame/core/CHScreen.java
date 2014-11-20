@@ -51,6 +51,8 @@ public abstract class CHScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setCatchBackKey(true);
+        Gdx.input.setCatchMenuKey(true);
         StretchViewport viewport = new StretchViewport(stageW, stageH);
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
