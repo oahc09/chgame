@@ -25,27 +25,32 @@ public abstract class CHUI {
     private Group group;
 
     private Stage stage;
-    public CHUI(Stage stage,Map<String, FileHandle> ttfs, String jsonPath) {
-        this.stage=stage;
+
+    public CHUI(Stage stage, Map<String, FileHandle> ttfs, String jsonPath) {
+        this.stage = stage;
         editor = new CocoStudioUIEditor(Gdx.files.internal(jsonPath), ttfs, null, null, null);
         group = editor.createGroup();
     }
 
-    public void show(){
+    public void show() {
         stage.addActor(group);
     }
-    
-    public void dismiss(){
+
+    public void dismiss() {
         group.remove();
         editor.clear();
     }
-    
+
     public CocoStudioUIEditor getEditor() {
         return editor;
     }
 
     public Group getGroup() {
         return group;
+    }
+
+    public Stage getParentStage() {
+        return stage;
     }
 
 }

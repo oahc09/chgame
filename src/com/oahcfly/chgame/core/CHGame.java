@@ -34,7 +34,7 @@ public abstract class CHGame extends Game {
     }
 
     private boolean debug;
-    
+
     /**资源加载管理器*/
     private AssetManager assetManager = new AssetManager();
 
@@ -83,7 +83,7 @@ public abstract class CHGame extends Game {
 
         fpsLabel = new Label("FPS", style);
         fpsLabel.setY(20);
-        fpsLabel.setX(20);
+        fpsLabel.setX(10);
 
         init();
     }
@@ -123,7 +123,7 @@ public abstract class CHGame extends Game {
             spriteBatch.begin();
             // 显示文字到屏幕指定位置
             fpsLabel.setText("FPS :" + Gdx.graphics.getFramesPerSecond() + ",M:"
-                    + (Gdx.app.getJavaHeap() / (1024 * 1024)));
+                    + (Gdx.app.getJavaHeap() / (1024 * 1024)) + ",TS:" + Texture.getNumManagedTextures());
             fpsLabel.draw(spriteBatch, 1);
 
             // 结束要有end结尾
@@ -206,14 +206,12 @@ public abstract class CHGame extends Game {
 
     public Texture getTexture(String fileName) {
         Texture texture = null;
-        //Gdx.app.debug("Game", "getTexture:" + fileName);
+
         if (!assetManager.isLoaded(fileName)) {
             assetManager.load(fileName, Texture.class);
             assetManager.finishLoading();
-            fileName = fileName.replaceAll("\\\\", "/");
             texture = assetManager.get(fileName, Texture.class);
         } else {
-            fileName = fileName.replaceAll("\\\\", "/");
             texture = assetManager.get(fileName, Texture.class);
         }
         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
