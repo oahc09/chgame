@@ -51,6 +51,7 @@ public abstract class CHScreen implements Screen {
 
     @Override
     public void show() {
+        setBackKeyPressed(false);
         StretchViewport viewport = new StretchViewport(stageW, stageH);
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
@@ -117,6 +118,10 @@ public abstract class CHScreen implements Screen {
 
     public String getTAG() {
         return TAG;
+    }
+
+    public void setBackKeyPressed(boolean backKey) {
+        this.backKey = backKey;
     }
 
 }

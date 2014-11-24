@@ -102,9 +102,9 @@ public abstract class CHGame extends Game {
     }
 
     @Override
-    public Screen getScreen() {
+    public CHScreen getScreen() {
         // TODO Auto-generated method stub
-        return super.getScreen();
+        return (CHScreen)super.getScreen();
     }
 
     @Override
