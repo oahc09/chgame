@@ -36,4 +36,15 @@ public interface CHADListener {
      * @return
      */
     public boolean isOpenAD();
+
+    /**
+     * 
+     * <pre>
+     * 关闭广告条
+     * 
+     * date: 2014-11-24
+     * </pre>
+     * @author caohao
+     */
+    public void closeBannerAds();
 }

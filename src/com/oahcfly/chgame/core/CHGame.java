@@ -272,9 +272,21 @@ public abstract class CHGame extends Game {
         this.debug = debug;
     }
 
-    public void showSpotAD() {
+    public void showSpotADs() {
         if (this.chadListener != null) {
             this.chadListener.showSpotAds();
+        }
+    }
+
+    public void showBannerADs() {
+        if (this.chadListener != null) {
+            this.chadListener.showBannerAds();
+        }
+    }
+
+    public void closeBannerADs() {
+        if (this.chadListener != null) {
+            this.chadListener.closeBannerAds();
         }
     }
 }
