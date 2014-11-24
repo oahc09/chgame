@@ -1,9 +1,9 @@
 
 package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -110,6 +110,7 @@ public class CocoStudioUIEditor {
     }
 
     long starttime = System.currentTimeMillis();
+
     /**
      * 
      * @param jsonFile
@@ -143,7 +144,7 @@ public class CocoStudioUIEditor {
         addParser(new CCLoadingBar());
         addParser(new CCLabelAtlas());
         addParser(new CCSlider());
-        
+
         actors = new HashMap<String, Array<Actor>>();
         actionActors = new HashMap<Integer, Actor>();
 
@@ -152,7 +153,7 @@ public class CocoStudioUIEditor {
         dirName = jsonFile.parent().toString();
 
         if (!dirName.equals("")) {
-            dirName += File.separator;
+            dirName += "/";
         }
         String json = jsonFile.readString("utf-8");
         Json jj = new Json();
@@ -201,8 +202,8 @@ public class CocoStudioUIEditor {
                 return true;
             }
         });
-        
-        Gdx.app.debug(tag, " ui loadtime :"+(System.currentTimeMillis()-starttime));
+
+        Gdx.app.debug(tag, " ui loadtime :" + (System.currentTimeMillis() - starttime));
         return group;
     }
 
@@ -462,7 +463,7 @@ public class CocoStudioUIEditor {
             debug(option, "not support Widget:" + className);
             return null;
         }
-        
+
         Actor actor = parser.parse(this, widget, option);
 
         actor = parser.commonParse(this, widget, option, parent, actor);
@@ -567,7 +568,11 @@ public class CocoStudioUIEditor {
         this.actionActors = actionActors;
     }
 
+    private HashSet<String> textureUsedArray = new HashSet<String>();
+
     public Texture getTexture(String path) {
+        textureUsedArray.add(path);
+        Gdx.app.debug("Game", "getTexture:" + path);
         return CHGame.getInstance().getTexture(path);
     }
 
@@ -579,6 +584,9 @@ public class CocoStudioUIEditor {
     }
 
     public void clear() {
+        //        for (String pathString : textureUsedArray) {
+        //            CHGame.getInstance().getAssetManager().unload(pathString);
+        //        }
         this.actionActors = null;
         this.actors = null;
         this.animations = null;
