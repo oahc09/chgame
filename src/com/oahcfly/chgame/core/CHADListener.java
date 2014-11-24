@@ -1,3 +1,4 @@
+
 package com.oahcfly.chgame.core;
 
 public interface CHADListener {
@@ -12,7 +13,18 @@ public interface CHADListener {
      * @author caohao
      */
     public void showSpotAds();
- 
+
+    /**
+     * 
+     * <pre>
+     * 显示广告条
+     * 
+     * date: 2014-11-24
+     * </pre>
+     * @author caohao
+     */
+    public void showBannerAds();
+
     /**
      * 
      * <pre>

@@ -33,6 +33,19 @@ public abstract class CHGame extends Game {
         return instance;
     }
 
+    private CHADListener chadListener;
+
+    public CHGame() {
+    }
+
+    public CHGame(CHADListener adListener) {
+        this.chadListener = adListener;
+    }
+
+    public CHADListener getADListener() {
+        return this.chadListener;
+    }
+
     private boolean debug;
 
     /**资源加载管理器*/
@@ -63,10 +76,10 @@ public abstract class CHGame extends Game {
     @Override
     public void create() {
         Gdx.app.log("chgame", "version : " + Version.VERSION);
-        
+
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setCatchMenuKey(true);
-        
+
         instance = this;
 
         setPreferences(Gdx.app.getPreferences("chdata"));
@@ -259,4 +272,9 @@ public abstract class CHGame extends Game {
         this.debug = debug;
     }
 
+    public void showSpotAD() {
+        if (this.chadListener != null) {
+            this.chadListener.showSpotAds();
+        }
+    }
 }
