@@ -24,7 +24,7 @@ public interface CHADListener {
      * @author caohao
      */
     public void showBannerAds();
-
+    
     /**
      * 
      * <pre>

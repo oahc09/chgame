@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.Array;
  * </pre>
  * @author caohao
  */
-public class CHParticle {
+public abstract class CHParticle {
 
     //当前粒子列表
     private Array<PooledEffect> _effects;

@@ -18,11 +18,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * @author caohao
  */
 public abstract class CHScreen implements Screen {
-    private String TAG = getClass().getSimpleName();
-
-    private CHGame game = CHGame.getInstance();
-
-    private int stageW = 0, stageH = 0;
 
     /** 初始化场景信息*/
     public abstract void initScreen();
@@ -32,6 +27,12 @@ public abstract class CHScreen implements Screen {
 
     /**点击back键了*/
     public abstract void clickBackKey();
+
+    private String TAG = getClass().getSimpleName();
+
+    private CHGame game = CHGame.getInstance();
+
+    private int stageW = 0, stageH = 0;
 
     public CHScreen() {
         this.stageW = game.getGameWidth();
