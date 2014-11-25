@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.oahcfly.chgame.core.CHGame;
 import com.oahcfly.chgame.core.CHScreen;
 import com.oahcfly.chgame.plist.CHPListCenter;
+import com.oahcfly.chgame.test.ui.MainUI;
 import com.oahcfly.chgame.test.ui.TestUI;
 import com.oahcfly.chgame.util.astar.CHAStar;
 
@@ -31,13 +32,15 @@ public class FirstScreen extends CHScreen {
         //        testAstar();
         plistTest();
 
-        TextureAtlas     textureAtlas = new TextureAtlas(Gdx.files.internal("testAtlas.txt"));
+        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("testAtlas.txt"));
         Image autumnImage = new Image(textureAtlas.findRegion("title_summer"));
         addActor(autumnImage);
-        
-        sprite=textureAtlas.createSprite("title_autumn");
+
+        sprite = textureAtlas.createSprite("title_autumn");
         sprite.setX(57);
-      
+
+        new MainUI(getStage()).show();
+
     }
 
     Sprite sprite;
@@ -161,7 +164,7 @@ public class FirstScreen extends CHScreen {
     public void draw() {
         // TODO Auto-generated method stub
         super.draw();
-        
+
         getStage().getBatch().begin();
         sprite.draw(getStage().getBatch());
         getStage().getBatch().end();

@@ -6,27 +6,60 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.oahcfly.chgame.core.CHUI;
+import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.LabelAtlas;
 
 public class MainUI extends CHUI {
 
     public MainUI(Stage stage) {
-        super(stage, null, "screen/MainScreen_1.json");  
+        super(stage, null, "screen/MainScreen_1.json");
         initUI();
     }
 
-     
     public void initUI() {
-        getEditor().findActor("img_rush_bg").addListener(new InputListener() {
+        getEditor().findActor("img_rush_bg").addListener(new DragListener() {
 
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
-                Gdx.app.log("ccc", "player jump touch down");
-                return super.touchDown(event, x, y, pointer, button);
+            public void dragStart(InputEvent event, float x, float y, int pointer) {
+                Gdx.app.log("ccc", "dragStart");
+                super.dragStart(event, x, y, pointer);
             }
+
+            @Override
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                Gdx.app.log("ccc", "drag+"+super.isDragging()+","+super.getStageTouchDownX()+","+super.getStageTouchDownY());
+                super.drag(event, x, y, pointer);
+            }
+
+            @Override
+            public void dragStop(InputEvent event, float x, float y, int pointer) {
+                Gdx.app.log("ccc", "dragStop");
+                super.dragStop(event, x, y, pointer);
+            }
+
+    
+
         });
 
+        //        new InputListener() {
+        //
+        //            @Override
+        //            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        //
+        //                Gdx.app.log("ccc", "player jump touch down");
+        //                return super.touchDown(event, x, y, pointer, button);
+        //            }
+        //
+        //            @Override
+        //            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+        //                Gdx.app.log("ccc", "player touchDragged");
+        //                super.touchDragged(event, x, y, pointer);
+        //            }
+        //            
+        //            
+        //        }
+        //        
         Image imgPause = (Image)getEditor().findActor("img_pause");
         imgPause.addListener(new InputListener() {
 
@@ -43,6 +76,12 @@ public class MainUI extends CHUI {
                 super.touchUp(event, x, y, pointer, button);
             }
         });
+
+        LabelAtlas labelAtlas = getGroup().findActor("LabelAtlas_coin");
+
+        labelAtlas.setText("110");
+        labelAtlas.setX(0);
+        labelAtlas.setY(10);
     }
 
 }

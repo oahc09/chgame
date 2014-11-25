@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
@@ -51,6 +52,10 @@ public abstract class CHUI {
 
     public Stage getParentStage() {
         return stage;
+    }
+
+    public <T extends Actor> T findActor(String name) {
+        return getGroup().findActor(name);
     }
 
 }
