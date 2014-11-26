@@ -12,7 +12,18 @@ import com.badlogic.gdx.math.Vector2;
  * 
  * <pre>
  * A星寻路算法
- * 
+ * 算法步骤：
+ * 1.起点先添加到开启列表中
+ *2.开启列表中有节点的话，取出第一个节点，即最小F值的节点
+ * 判断此节点是否是目标点，是则找到了，跳出
+ *  根据此节点取得八个方向的节点，求出G，H，F值
+ * 判断每个节点在地图中是否能通过，不能通过则加入关闭列表中，跳出
+ *  判断每个节点是否在关闭列表中，在则跳出
+ * 判断每个节点是否在开启列表中，在则更新G值，F值，还更新其父节点；不在则将其添加到开启列表中，计算G值，H值，F值，添加其节点
+ *3.把此节点从开启列表中删除，再添加到关闭列表中
+ *4.把开启列表中按照F值最小的节点进行排序，最小的F值在第一个
+ *5.重复2，3，4步骤
+ *  直到目标点在开启列表中，即找到了；目标点不在开启列表中，开启列表为空，即没找到
  * date: 2014-11-13
  * </pre>
  * @author caohao
@@ -95,7 +106,7 @@ public class CHAStar {
         for (SearchNode node : resultList) {
             System.out.println("point:" + node.pointVector2.x + "," + node.pointVector2.y);
         }
-        
+
         return resultList;
     }
 
@@ -162,7 +173,7 @@ public class CHAStar {
         if (cY - 1 >= 0) {
             SearchNode searchNode = new SearchNode(new Vector2(cX, cY - 1));
             searchNode.setParentNode(minFNode);
-            searchNode.setGValue(COST_STRAIGHT+minFNode.getGValue());
+            searchNode.setGValue(COST_STRAIGHT + minFNode.getGValue());
             searchNode.setHValue(getDistance(cX, cY - 1, endX, endY));
             nodeList.add(searchNode);
         }
@@ -170,7 +181,7 @@ public class CHAStar {
         if (cY + 1 <= endY) {
             SearchNode searchNode = new SearchNode(new Vector2(cX, cY + 1));
             searchNode.setParentNode(minFNode);
-            searchNode.setGValue(COST_STRAIGHT+minFNode.getGValue());
+            searchNode.setGValue(COST_STRAIGHT + minFNode.getGValue());
             searchNode.setHValue(getDistance(cX, cY + 1, endX, endY));
             nodeList.add(searchNode);
         }
@@ -178,7 +189,7 @@ public class CHAStar {
         if (cX - 1 >= 0) {
             SearchNode searchNode = new SearchNode(new Vector2(cX - 1, cY));
             searchNode.setParentNode(minFNode);
-            searchNode.setGValue(COST_STRAIGHT+minFNode.getGValue());
+            searchNode.setGValue(COST_STRAIGHT + minFNode.getGValue());
             searchNode.setHValue(getDistance(cX - 1, cY, endX, endY));
             nodeList.add(searchNode);
         }
@@ -186,7 +197,7 @@ public class CHAStar {
         if (cX + 1 <= endX) {
             SearchNode searchNode = new SearchNode(new Vector2(cX + 1, cY));
             searchNode.setParentNode(minFNode);
-            searchNode.setGValue(COST_STRAIGHT+minFNode.getGValue());
+            searchNode.setGValue(COST_STRAIGHT + minFNode.getGValue());
             searchNode.setHValue(getDistance(cX + 1, cY, endX, endY));
             nodeList.add(searchNode);
         }
