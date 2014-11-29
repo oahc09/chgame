@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
@@ -45,6 +46,7 @@ public class FontHelper {
         parameter.size = size;
         parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + chineseExtraStr;
         BitmapFont font = generator.generateFont(parameter);
+        font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
         generator.dispose();
         return font;
     }
@@ -56,6 +58,8 @@ public class FontHelper {
         }
         assetManager.load(fntFilePath, BitmapFont.class);
         assetManager.finishLoading();
-        return assetManager.get(fntFilePath);
+        BitmapFont bitmapFont =assetManager.get(fntFilePath);
+        bitmapFont.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        return bitmapFont;
     }
 }
