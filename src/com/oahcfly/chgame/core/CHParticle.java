@@ -29,8 +29,8 @@ public abstract class CHParticle {
     public CHParticle() {
         // Particle effects
         ParticleEffect _effect = new ParticleEffect();
-        _effect.load(Gdx.files.internal("com/oahcfly/chgame/particle/particleStars"),
-                Gdx.files.internal("com/oahcfly/chgame/particle"));
+        _effect.load(Gdx.files.classpath("com/oahcfly/chgame/particle/particleStars"),
+                Gdx.files.classpath("com/oahcfly/chgame/particle"));
         _effectPool = new ParticleEffectPool(_effect, 20, 100);
         _effects = new Array<PooledEffect>();
     }
