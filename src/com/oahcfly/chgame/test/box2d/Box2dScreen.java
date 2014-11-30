@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.oahcfly.chgame.core.CHGame;
 import com.oahcfly.chgame.core.CHScreen;
 
@@ -36,7 +37,7 @@ public class Box2dScreen extends CHScreen {
         addActor(lineImage);
 
         // create the world
-        world = new World(new Vector2(0, -30), true);
+        world = new World(new Vector2(0, -9.8f), true);
 
         // we also need an invisible zero size ground body
         // to which we can connect the mouse joint
@@ -71,20 +72,22 @@ public class Box2dScreen extends CHScreen {
         // Create ball body and shape
         BodyDef ballBodyDef = new BodyDef();
         ballBodyDef.type = BodyType.DynamicBody;
-        ballBodyDef.position.set(240f, 260f);
+        ballBodyDef.position.set(50f, 200f);
+        
         body = world.createBody(ballBodyDef);
         body.setUserData("ball");
+
         CircleShape circle = new CircleShape();
-        circle.setRadius(50f);
+        circle.setRadius(5f);
         FixtureDef ballShapeDef = new FixtureDef();
         ballShapeDef.shape = circle;
-        ballShapeDef.density = 1.0f;
+        // 密度
+        ballShapeDef.density = 0f;
         ballShapeDef.friction = 0f;
         ballShapeDef.restitution = 1.0f;
         body.createFixture(ballShapeDef);
-        
-        Vector2 force = new Vector2(40f, -40f);
-        body.setLinearVelocity(400, 400);
+ 
+        body.setLinearVelocity(0, 0);
         //        调整球的摩擦力和恢复力。
         //
         //        把回复力restitution设置为1，这意味着，我们的球在碰撞的时候，将会是完全弹性碰撞。
@@ -114,6 +117,9 @@ public class Box2dScreen extends CHScreen {
         super.render(delta);
         //6和2分别为速度、位置模拟的迭代计数
         world.step(Gdx.app.getGraphics().getDeltaTime(), 6, 2);
+
+        starImage.setPosition(body.getPosition().x, body.getPosition().y,Align.center);
+ 
         renderer.render(world, getStage().getCamera().combined);
     }
 

@@ -4,7 +4,7 @@ package com.oahcfly.chgame.test;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.oahcfly.chgame.core.CHGame;
-import com.oahcfly.chgame.test.screen.FirstScreen;
+import com.oahcfly.chgame.test.box2d.Box2dScreen;
 
 public class TestGame extends CHGame {
 
@@ -13,7 +13,7 @@ public class TestGame extends CHGame {
         // TODO Auto-generated method stub
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
-        setScreen(new FirstScreen());
+        setScreen(new Box2dScreen());
         
 
     }

@@ -16,6 +16,7 @@ public class GdxCHGame extends ApplicationAdapter {
 	    Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+		
 	}
 
 	@Override

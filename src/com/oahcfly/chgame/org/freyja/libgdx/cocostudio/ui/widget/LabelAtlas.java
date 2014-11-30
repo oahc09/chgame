@@ -55,6 +55,10 @@ public class LabelAtlas extends Table {
 
     String text;
 
+    public String getText() {
+        return text;
+    }
+
     /**
      * 设置显示文本
      * 
@@ -87,7 +91,7 @@ public class LabelAtlas extends Table {
         }
 
         setSize(tileWidth * arr.length, tileHeight);
- 
+
     }
 
     int index(char c, char[] chars) {
