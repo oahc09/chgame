@@ -12,11 +12,6 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  * 彩色Label
- * 
- * @author Var3D手机娱乐工作室
- * 
- */
-/**
  * 文本例子 String text="#422005Complete goals in\n#FFFFFF100 #422005moves"
  * ColorLabel label=new ColorLabel(text,new LabelStyle());
  * 
