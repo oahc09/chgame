@@ -45,7 +45,7 @@ public class CCOption {
 	float y;
 	int bgColorB;
 	int bgColorG;
-	int bgColorOpacity;
+	float bgColorOpacity;
 	int bgColorR;
 	int bgEndColorB;
 	int bgEndColorG;
@@ -455,11 +455,11 @@ public class CCOption {
 		this.bgColorG = bgColorG;
 	}
 
-	public int getBgColorOpacity() {
+	public float getBgColorOpacity() {
 		return bgColorOpacity;
 	}
 
-	public void setBgColorOpacity(int bgColorOpacity) {
+	public void setBgColorOpacity(float bgColorOpacity) {
 		this.bgColorOpacity = bgColorOpacity;
 	}
 
