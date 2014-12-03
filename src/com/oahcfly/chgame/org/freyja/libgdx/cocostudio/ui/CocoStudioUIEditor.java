@@ -31,7 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import com.oahcfly.chgame.core.CHGame;
+import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCExport;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCOption;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCWidget;

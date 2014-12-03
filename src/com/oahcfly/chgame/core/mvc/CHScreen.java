@@ -1,5 +1,5 @@
 
-package com.oahcfly.chgame.core;
+package com.oahcfly.chgame.core.mvc;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

@@ -13,8 +13,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.oahcfly.chgame.core.CHGame;
-import com.oahcfly.chgame.core.CHScreen;
+import com.oahcfly.chgame.core.mvc.CHGame;
+import com.oahcfly.chgame.core.mvc.CHScreen;
 
 public class Box2dScreen extends CHScreen {
 

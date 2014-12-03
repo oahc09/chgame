@@ -1,5 +1,5 @@
 
-package com.oahcfly.chgame.core;
+package com.oahcfly.chgame.core.mvc;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.oahcfly.chgame.core.CHADListener;
+import com.oahcfly.chgame.core.Version;
 import com.oahcfly.chgame.core.assetmanager.CHAssets;
 import com.oahcfly.chgame.core.transition.ScreenTransition;
 

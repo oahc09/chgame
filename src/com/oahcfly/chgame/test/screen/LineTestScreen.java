@@ -2,7 +2,7 @@
 package com.oahcfly.chgame.test.screen;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.oahcfly.chgame.core.CHScreen;
+import com.oahcfly.chgame.core.mvc.CHScreen;
 
 public class LineTestScreen extends CHScreen {
 

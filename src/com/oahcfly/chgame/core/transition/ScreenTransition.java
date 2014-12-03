@@ -2,8 +2,8 @@
 package com.oahcfly.chgame.core.transition;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.oahcfly.chgame.core.CHGame;
-import com.oahcfly.chgame.core.CHScreen;
+import com.oahcfly.chgame.core.mvc.CHGame;
+import com.oahcfly.chgame.core.mvc.CHScreen;
 
 /**
  * 

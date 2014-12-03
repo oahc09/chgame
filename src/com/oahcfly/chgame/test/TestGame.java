@@ -3,8 +3,8 @@ package com.oahcfly.chgame.test;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.oahcfly.chgame.core.CHGame;
 import com.oahcfly.chgame.core.android.AndroidAdChannel;
+import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.test.screen.FirstScreen;
 
 public class TestGame extends CHGame {

@@ -1,8 +1,8 @@
 
 package com.oahcfly.chgame.test.mvc;
 
-import com.oahcfly.chgame.core.CHModel;
-import com.oahcfly.chgame.core.CHScreen;
+import com.oahcfly.chgame.core.mvc.CHModel;
+import com.oahcfly.chgame.core.mvc.CHScreen;
 
 public class AScreen extends CHScreen {
 
