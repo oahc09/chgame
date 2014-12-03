@@ -34,6 +34,19 @@ public class FontHelper {
 
     private HashMap<String, FreeTypeFontGenerator> generatorMap = new HashMap<String, FreeTypeFontGenerator>();
 
+    /**
+     * 
+     * <pre>
+     * 加载TTF字体
+     * 
+     * date: 2014-12-3
+     * </pre>
+     * @author caohao
+     * @param ttfFilePath
+     * @param size
+     * @param chineseExtraStr
+     * @return
+     */
     public BitmapFont loadTtfFont(String ttfFilePath, int size, String chineseExtraStr) {
         FreeTypeFontGenerator generator = null;
         if (generatorMap.containsKey(ttfFilePath)) {
@@ -41,16 +54,35 @@ public class FontHelper {
         } else {
             generator = new FreeTypeFontGenerator(Gdx.files.internal(ttfFilePath));
         }
+        // 字符去重
+        char[] array = chineseExtraStr.toCharArray();
+        StringBuffer stringBuffer = new StringBuffer();
+        for (char c : array) {
+            if (-1 == stringBuffer.indexOf(String.valueOf(c))) {
+                stringBuffer.append(c);
+            }
+        }
         
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = size;
-        parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + chineseExtraStr;
+        parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + stringBuffer.toString();
         BitmapFont font = generator.generateFont(parameter);
         font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
         generator.dispose();
         return font;
     }
 
+    /**
+     * 
+     * <pre>
+     * 加载FNT字体
+     * 
+     * date: 2014-12-3
+     * </pre>
+     * @author caohao
+     * @param fntFilePath
+     * @return
+     */
     public BitmapFont loadFntFont(String fntFilePath) {
         AssetManager assetManager = CHGame.getInstance().getAssetManager();
         if (assetManager.isLoaded(fntFilePath)) {

@@ -27,10 +27,11 @@ import com.oahcfly.chgame.core.transition.ScreenTransition;
  */
 public abstract class CHGame extends Game {
 
-    private static CHGame instance;
+    private static CHGame instance = null;
 
-    public static CHGame getInstance() {
-        return instance;
+    @SuppressWarnings("unchecked")
+    public static <T extends CHGame> T getInstance() {
+        return (T)instance;
     }
 
     private CHADListener chadListener;
