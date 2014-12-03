@@ -7,6 +7,15 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonValue.JsonIterator;
 
+/**
+ * 
+ * <pre>
+ * 广告根据渠道配置读取开关
+ * 
+ * date: 2014-12-3
+ * </pre>
+ * @author caohao
+ */
 public class CHADChannel {
     public static final String CHANNEL_GP = "googleplay";
 
@@ -43,6 +52,17 @@ public class CHADChannel {
         channelMap.put(channelName, open);
     }
 
+    /**
+     * 
+     * <pre>
+     * 是否开启广告
+     * 
+     * date: 2014-12-3
+     * </pre>
+     * @author caohao
+     * @param channelName
+     * @return true开启 false关闭
+     */
     public boolean openAD(String channelName) {
         return channelMap.containsKey(channelName) ? channelMap.get(channelName) : false;
     }

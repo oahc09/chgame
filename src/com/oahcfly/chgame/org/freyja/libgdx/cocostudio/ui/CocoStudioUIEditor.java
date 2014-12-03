@@ -159,7 +159,6 @@ public class CocoStudioUIEditor {
         Json jj = new Json();
         jj.setIgnoreUnknownFields(true);
         export = jj.fromJson(CCExport.class, json);
-
     }
 
     /**

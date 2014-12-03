@@ -1,6 +1,15 @@
 
 package com.oahcfly.chgame.core.ad;
 
+/**
+ * 
+ * <pre>
+ * 广告接口
+ * 
+ * date: 2014-12-3
+ * </pre>
+ * @author caohao
+ */
 public interface CHADListener {
 
     /**

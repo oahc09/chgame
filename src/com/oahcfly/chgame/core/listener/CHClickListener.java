@@ -1,10 +1,19 @@
 
-package com.oahcfly.chgame.core;
+package com.oahcfly.chgame.core.listener;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
+/**
+ * 
+ * <pre>
+ * 输入事件二次封装的接口，支持缩放和淡入淡出等效果
+ * 
+ * date: 2014-12-3
+ * </pre>
+ * @author caohao
+ */
 public class CHClickListener extends InputListener {
 
     public enum CLICKTYPE {

@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.oahcfly.chgame.core.CHClickListener;
-import com.oahcfly.chgame.core.CHClickListener.CLICKTYPE;
+import com.oahcfly.chgame.core.listener.CHClickListener;
+import com.oahcfly.chgame.core.listener.CHClickListener.CLICKTYPE;
 import com.oahcfly.chgame.core.ui.CHUI;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.LabelAtlas;
 
