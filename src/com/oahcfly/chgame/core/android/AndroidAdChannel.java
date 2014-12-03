@@ -1,5 +1,5 @@
 
-package com.oahcfly.chgame.core;
+package com.oahcfly.chgame.core.android;
 
 import java.util.HashMap;
 
@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonValue.JsonIterator;
 
 public class AndroidAdChannel {
-    public static final String CHANNEL_360 = "360";
+    public static final String CHANNEL_360 = "qh360";
 
     public static final String CHANNEL_BAIDU = "baidu";
 
