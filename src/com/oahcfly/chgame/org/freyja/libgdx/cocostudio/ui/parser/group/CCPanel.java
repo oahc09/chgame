@@ -37,7 +37,7 @@ public class CCPanel extends GroupParser {
 
             Pixmap pixmap = new Pixmap((int)option.getWidth(), (int)option.getHeight(), Format.RGBA8888);
             pixmap.setColor(option.getBgColorR() / 255f, option.getBgColorG() / 255f, option.getBgColorB() / 255f,
-                    option.getBgColorOpacity());
+                    option.getBgColorOpacity() / 255f);
             pixmap.fill();
 
             table.setBackground(new TextureRegionDrawable(new TextureRegion(editor.getTexture(pixmap))));
