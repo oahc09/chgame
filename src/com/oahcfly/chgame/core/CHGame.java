@@ -9,16 +9,18 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.oahcfly.chgame.core.assetmanager.CHAssets;
 import com.oahcfly.chgame.core.transition.ScreenTransition;
 
 /**
  * 
  * <pre>
+ * 【Control层】
  * 游戏核心控制类
  * 
  * date: 2014-10-24
@@ -36,26 +38,32 @@ public abstract class CHGame extends Game {
 
     private CHADListener chadListener;
 
-    public CHGame() {
-    }
-
-    public CHGame(CHADListener adListener) {
-        this.chadListener = adListener;
-    }
-
-    public CHADListener getADListener() {
-        return this.chadListener;
-    }
-
     private boolean debug;
 
     /**资源加载管理器*/
-    private AssetManager assetManager = new AssetManager();
+    private AssetManager assetManager;
+
+    public int gameWidth = 800;
+
+    public int gameHeight = 480;
 
     /** 初始化 */
     public abstract void init();
 
     private boolean openFPS = false;
+
+    //private SpriteBatch spriteBatch;
+
+    private Label fpsLabel;
+
+    private BitmapFont fontNumber, fontMenu;
+
+    private Preferences preferences;
+
+    private CHAssets chAssets;
+
+    public CHGame() {
+    }
 
     /**
      * 是否绘制FPS
@@ -66,17 +74,12 @@ public abstract class CHGame extends Game {
         openFPS = showFPS;
     }
 
-    private SpriteBatch spriteBatch;
-
-    private Label fpsLabel;
-
-    private BitmapFont fontNumber, fontMenu;
-
-    private Preferences preferences;
-
     @Override
     public void create() {
         Gdx.app.log("chgame", "version : " + Version.VERSION);
+
+        chAssets = new CHAssets();
+        assetManager = chAssets.getAssetManager();
 
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setCatchMenuKey(true);
@@ -85,7 +88,7 @@ public abstract class CHGame extends Game {
 
         setPreferences(Gdx.app.getPreferences("chdata"));
 
-        spriteBatch = new SpriteBatch();
+        //spriteBatch = new SpriteBatch();
 
         fontNumber = new BitmapFont(Gdx.files.classpath("com/oahcfly/chgame/font/number.fnt"),
                 Gdx.files.classpath("com/oahcfly/chgame/font/number.png"), false, true);
@@ -109,7 +112,7 @@ public abstract class CHGame extends Game {
     public void dispose() {
         // TODO Auto-generated method stub
         super.dispose();
-        spriteBatch.dispose();
+        //spriteBatch.dispose();
         fontMenu.dispose();
         fontNumber.dispose();
         assetManager.dispose();
@@ -136,6 +139,7 @@ public abstract class CHGame extends Game {
         super.render();
 
         if (openFPS) {
+            Batch spriteBatch = getScreen().getStage().getBatch();
             // 初始要有begin起始
             spriteBatch.begin();
             // 显示文字到屏幕指定位置
@@ -221,6 +225,14 @@ public abstract class CHGame extends Game {
         this.preferences = preferences;
     }
 
+    public CHGame(CHADListener adListener) {
+        this.chadListener = adListener;
+    }
+
+    public CHADListener getADListener() {
+        return this.chadListener;
+    }
+
     public Texture getTexture(String fileName) {
         Texture texture = null;
 
@@ -240,10 +252,6 @@ public abstract class CHGame extends Game {
         return new Image(getTexture(path));
     }
 
-    public int gameWidth = 800;
-
-    public int gameHeight = 480;
-
     public void setGameWidthAndHeight(int width, int height) {
         gameWidth = width;
         gameHeight = height;
@@ -255,10 +263,6 @@ public abstract class CHGame extends Game {
 
     public int getGameHeight() {
         return gameHeight;
-    }
-
-    public SpriteBatch getSpriteBatch() {
-        return spriteBatch;
     }
 
     public <T> void loadAsset(String fileName, Class<T> type) {
@@ -290,4 +294,13 @@ public abstract class CHGame extends Game {
             this.chadListener.closeBannerAds();
         }
     }
+
+    public CHAssets getCHAssets() {
+        return chAssets;
+    }
+
+    public <T extends CHModel> T getModel() {
+        return getScreen().getModel();
+    }
+
 }

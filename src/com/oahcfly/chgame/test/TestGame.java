@@ -4,7 +4,8 @@ package com.oahcfly.chgame.test;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.oahcfly.chgame.core.CHGame;
-import com.oahcfly.chgame.test.box2d.Box2dScreen;
+import com.oahcfly.chgame.core.android.AndroidAdChannel;
+import com.oahcfly.chgame.test.screen.FirstScreen;
 
 public class TestGame extends CHGame {
 
@@ -13,9 +14,20 @@ public class TestGame extends CHGame {
         // TODO Auto-generated method stub
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
-        setScreen(new Box2dScreen());
         
-
+        AndroidAdChannel androidAdChannel= new AndroidAdChannel("{\"360\":false,\"baidu\":true,\"tengxu\":false,\"meizu\":false,\"anzhi\":false}");
+        
+        setScreen(new FirstScreen());
+        
+        String chineseExtraStr="nihao你好哈哈哈你是煞笔";
+        char[] array = chineseExtraStr.toCharArray();
+        StringBuffer stringBuffer = new StringBuffer();
+        for (char c : array) {
+            if (-1 == stringBuffer.indexOf(String.valueOf(c))) {
+                stringBuffer.append(c);
+            }
+        }
+        System.out.println(""+stringBuffer.toString());
     }
 
 }

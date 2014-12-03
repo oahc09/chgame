@@ -6,7 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.oahcfly.chgame.core.CHClickListener;
+import com.oahcfly.chgame.core.CHClickListener.CLICKTYPE;
 import com.oahcfly.chgame.core.CHUI;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.LabelAtlas;
 
@@ -18,29 +19,30 @@ public class MainUI extends CHUI {
     }
 
     public void initUI() {
-        getEditor().findActor("img_rush_bg").addListener(new DragListener() {
-
-            @Override
-            public void dragStart(InputEvent event, float x, float y, int pointer) {
-                Gdx.app.log("ccc", "dragStart");
-                super.dragStart(event, x, y, pointer);
-            }
-
-            @Override
-            public void drag(InputEvent event, float x, float y, int pointer) {
-                Gdx.app.log("ccc", "drag+"+super.isDragging()+","+super.getStageTouchDownX()+","+super.getStageTouchDownY());
-                super.drag(event, x, y, pointer);
-            }
-
-            @Override
-            public void dragStop(InputEvent event, float x, float y, int pointer) {
-                Gdx.app.log("ccc", "dragStop");
-                super.dragStop(event, x, y, pointer);
-            }
-
-    
-
-        });
+        getEditor().findActor("img_rush_bg").addListener(new CHClickListener(CLICKTYPE.FADE));
+//        getEditor().findActor("img_rush_bg").addListener(new DragListener() {
+//
+//            @Override
+//            public void dragStart(InputEvent event, float x, float y, int pointer) {
+//                Gdx.app.log("ccc", "dragStart");
+//                super.dragStart(event, x, y, pointer);
+//            }
+//
+//            @Override
+//            public void drag(InputEvent event, float x, float y, int pointer) {
+//                Gdx.app.log("ccc", "drag+"+super.isDragging()+","+super.getStageTouchDownX()+","+super.getStageTouchDownY());
+//                super.drag(event, x, y, pointer);
+//            }
+//
+//            @Override
+//            public void dragStop(InputEvent event, float x, float y, int pointer) {
+//                Gdx.app.log("ccc", "dragStop");
+//                super.dragStop(event, x, y, pointer);
+//            }
+//
+//    
+//
+//        });
 
         //        new InputListener() {
         //

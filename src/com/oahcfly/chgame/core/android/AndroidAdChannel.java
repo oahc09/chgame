@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonValue.JsonIterator;
 
 public class AndroidAdChannel {
+    public static final String CHANNEL_GP = "googleplay";
+
     public static final String CHANNEL_360 = "qh360";
 
     public static final String CHANNEL_BAIDU = "baidu";
@@ -20,22 +22,23 @@ public class AndroidAdChannel {
 
     private HashMap<String, Boolean> channelMap = new HashMap<String, Boolean>();
 
-    
     /**
-     *  {"360":false,"baidu":true,"tengxu":false,"meizu":false,"anzhi":false}
+     *  {"360":false,"baidu":true,"tengxu":false,"meizu":false,"anzhi":false,"googleplay":true}
      * @param json
      */
-    public AndroidAdChannel(String json){
-        JsonReader jsonReader = new JsonReader();
-        JsonValue jsonValue = jsonReader.parse(json); 
-        JsonIterator jsonIterator= jsonValue.iterator();
-        while (jsonIterator.hasNext()) {
-            JsonValue jv = jsonIterator.next();
-            //System.out.println("-"+jv.name+"-"+jv.asBoolean());
-            setChannelAD(jv.name, jv.asBoolean());
+    public AndroidAdChannel(String json) {
+        if (json != null) {
+            JsonReader jsonReader = new JsonReader();
+            JsonValue jsonValue = jsonReader.parse(json);
+            JsonIterator jsonIterator = jsonValue.iterator();
+            while (jsonIterator.hasNext()) {
+                JsonValue jv = jsonIterator.next();
+                //System.out.println("-"+jv.name+"-"+jv.asBoolean());
+                setChannelAD(jv.name, jv.asBoolean());
+            }
         }
     }
-    
+
     private void setChannelAD(String channelName, boolean open) {
         channelMap.put(channelName, open);
     }

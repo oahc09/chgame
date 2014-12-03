@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.oahcfly.chgame.core.CHGame;
 import com.oahcfly.chgame.core.CHScreen;
+import com.oahcfly.chgame.core.assetmanager.CHAssets;
 import com.oahcfly.chgame.plist.CHPListCenter;
 import com.oahcfly.chgame.test.ui.MainUI;
 import com.oahcfly.chgame.test.ui.TestUI;
@@ -41,6 +42,13 @@ public class FirstScreen extends CHScreen {
 
         new MainUI(getStage()).show();
 
+        CHAssets chAssets = new CHAssets();
+        chAssets.loadAssetFile("asset.ch");
+        chAssets.loadGroup("bigstar");
+        chAssets.finishLoading();
+        System.out.println("p"+chAssets.getProgress());
+        Image image = new Image(chAssets.get("screen/big_star.png", Texture.class));
+        addActor(image);
     }
 
     Sprite sprite;

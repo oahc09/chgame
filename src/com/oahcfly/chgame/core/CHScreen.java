@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 /**
  * 
  * <pre>
+ * 【View层】
  * 场景抽像类
  * 
  * date: 2014-5-11
@@ -49,6 +50,8 @@ public abstract class CHScreen implements Screen {
     }
 
     private Stage stage;
+
+    private CHModel chModel;
 
     @Override
     public void show() {
@@ -123,6 +126,15 @@ public abstract class CHScreen implements Screen {
 
     public void setBackKeyPressed(boolean backKey) {
         this.backKey = backKey;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends CHModel> T getModel() {
+        return (T)chModel;
+    }
+
+    public void setModel(CHModel chModel) {
+        this.chModel = chModel;
     }
 
 }
