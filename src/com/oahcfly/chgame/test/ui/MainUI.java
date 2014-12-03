@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.oahcfly.chgame.core.CHClickListener;
 import com.oahcfly.chgame.core.CHClickListener.CLICKTYPE;
-import com.oahcfly.chgame.core.CHUI;
+import com.oahcfly.chgame.core.ui.CHUI;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.LabelAtlas;
 
 public class MainUI extends CHUI {

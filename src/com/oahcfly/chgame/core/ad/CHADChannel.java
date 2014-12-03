@@ -1,5 +1,5 @@
 
-package com.oahcfly.chgame.core.android;
+package com.oahcfly.chgame.core.ad;
 
 import java.util.HashMap;
 
@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonValue.JsonIterator;
 
-public class AndroidAdChannel {
+public class CHADChannel {
     public static final String CHANNEL_GP = "googleplay";
 
     public static final String CHANNEL_360 = "qh360";
@@ -26,7 +26,7 @@ public class AndroidAdChannel {
      *  {"360":false,"baidu":true,"tengxu":false,"meizu":false,"anzhi":false,"googleplay":true}
      * @param json
      */
-    public AndroidAdChannel(String json) {
+    public CHADChannel(String json) {
         if (json != null) {
             JsonReader jsonReader = new JsonReader();
             JsonValue jsonValue = jsonReader.parse(json);

@@ -1,5 +1,5 @@
 
-package com.oahcfly.chgame.core;
+package com.oahcfly.chgame.core.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;

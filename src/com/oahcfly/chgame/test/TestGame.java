@@ -3,7 +3,7 @@ package com.oahcfly.chgame.test;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.oahcfly.chgame.core.android.AndroidAdChannel;
+import com.oahcfly.chgame.core.ad.CHADChannel;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.test.screen.FirstScreen;
 
@@ -15,7 +15,7 @@ public class TestGame extends CHGame {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
         
-        AndroidAdChannel androidAdChannel= new AndroidAdChannel("{\"360\":false,\"baidu\":true,\"tengxu\":false,\"meizu\":false,\"anzhi\":false}");
+        CHADChannel androidAdChannel= new CHADChannel("{\"360\":false,\"baidu\":true,\"tengxu\":false,\"meizu\":false,\"anzhi\":false}");
         
         setScreen(new FirstScreen());
         

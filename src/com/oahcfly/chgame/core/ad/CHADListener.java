@@ -1,5 +1,5 @@
 
-package com.oahcfly.chgame.core;
+package com.oahcfly.chgame.core.ad;
 
 public interface CHADListener {
 
