@@ -37,14 +37,20 @@ public class CHADChannel {
      */
     public CHADChannel(String json) {
         if (json != null) {
-            JsonReader jsonReader = new JsonReader();
-            JsonValue jsonValue = jsonReader.parse(json);
-            JsonIterator jsonIterator = jsonValue.iterator();
-            while (jsonIterator.hasNext()) {
-                JsonValue jv = jsonIterator.next();
-                //System.out.println("-"+jv.name+"-"+jv.asBoolean());
-                setChannelAD(jv.name, jv.asBoolean());
+            try {
+                JsonReader jsonReader = new JsonReader();
+                JsonValue jsonValue = jsonReader.parse(json);
+                JsonIterator jsonIterator = jsonValue.iterator();
+                while (jsonIterator.hasNext()) {
+                    JsonValue jv = jsonIterator.next();
+                    //System.out.println("-"+jv.name+"-"+jv.asBoolean());
+                    setChannelAD(jv.name, jv.asBoolean());
+                }
+            } catch (Exception e) {
+                // do nothing
+                System.out.println(getClass().getSimpleName()+":parse ad json error!!!!"+e.getMessage());
             }
+            
         }
     }
 
