@@ -1,7 +1,13 @@
 
 package com.oahcfly.chgame.test.screen;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net.HttpMethods;
+import com.badlogic.gdx.Net.HttpRequest;
+import com.badlogic.gdx.Net.HttpResponse;
+import com.badlogic.gdx.Net.HttpResponseListener;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -14,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.oahcfly.chgame.core.assetmanager.CHAssets;
+import com.oahcfly.chgame.core.event.CHEvent;
+import com.oahcfly.chgame.core.event.CHEventListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.plist.CHPListCenter;
@@ -46,9 +54,48 @@ public class FirstScreen extends CHScreen {
         chAssets.loadAssetFile("asset.ch");
         chAssets.loadGroup("bigstar");
         chAssets.finishLoading();
-        System.out.println("p"+chAssets.getProgress());
+        System.out.println("p" + chAssets.getProgress());
         Image image = new Image(chAssets.get("screen/big_star.png", Texture.class));
         addActor(image);
+
+     
+        image.addListener(new CHEventListener() {
+
+            @Override
+            public void handleEvent(CHEvent chEvent) {
+                System.out.println("refreshUI:" + chEvent.toString());
+                chEvent.getListenerActor().moveBy(100, 100);
+               
+            }
+        });
+        httpTest(image);
+
+    }
+
+    private void httpTest(final Image image) {
+        HttpRequest request = new HttpRequest(HttpMethods.GET);
+        request.setUrl("http://baidu.com");
+        Gdx.net.sendHttpRequest(request, new HttpResponseListener() {
+            @Override
+            public void handleHttpResponse(HttpResponse httpResponse) {
+                Gdx.app.log("HttpRequestExample", "response: " + httpResponse.getResultAsString());
+                // 事件处理
+                HashMap<String, String> dataHashMap = new HashMap<String, String>();
+                dataHashMap.put("cesg", "hahah");
+                CHEvent chEvent = new CHEvent("sss", dataHashMap);
+                image.fire(chEvent);
+            }
+
+            @Override
+            public void failed(Throwable t) {
+                Gdx.app.error("HttpRequestExample", "something went wrong", t);
+            }
+
+            @Override
+            public void cancelled() {
+                Gdx.app.log("HttpRequestExample", "cancelled");
+            }
+        });
     }
 
     Sprite sprite;

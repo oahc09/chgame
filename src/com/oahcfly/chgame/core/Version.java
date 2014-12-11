@@ -14,6 +14,7 @@ public class Version {
      * 0.0.8 封装广告渠道 & mvc框架 & 资源加载封装
      * 0.0.9 调用android相关UI组件接口
      * 0.1.0 常用工具类整合
+     * 0.1.1 封装UI更新事件相关类，用于网络异步请求的UI处理.
      *  */
-    public static final String VERSION = "0.0.9";
+    public static final String VERSION = "0.1.0";
 }
