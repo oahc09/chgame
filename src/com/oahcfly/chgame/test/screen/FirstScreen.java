@@ -70,6 +70,8 @@ public class FirstScreen extends CHScreen {
         });
         httpTest(image);
 
+        
+   
     }
 
     private void httpTest(final Image image) {

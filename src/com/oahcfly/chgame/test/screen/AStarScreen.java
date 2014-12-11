@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.ColorLabel;
 import com.oahcfly.chgame.plist.CHPListCenter;
-import com.oahcfly.chgame.util.aes.AESEncryptor;
+import com.oahcfly.chgame.util.aes.CHAESEncryptor;
 import com.oahcfly.chgame.util.astar.CHAStar;
 import com.oahcfly.chgame.util.astar.SearchNode;
 
@@ -74,9 +74,9 @@ public class AStarScreen extends CHScreen {
         addActor(label);
 
         try {
-            String enString = AESEncryptor.encrypt(AESEncryptor.MAK, "abc");
+            String enString = CHAESEncryptor.encrypt(CHAESEncryptor.MAK, "abc");
             System.out.println("加密后：" + enString);
-            System.out.println("解密后：" + AESEncryptor.decrypt(AESEncryptor.MAK, enString));
+            System.out.println("解密后：" + CHAESEncryptor.decrypt(CHAESEncryptor.MAK, enString));
         } catch (Exception e) {
             System.out.println("" + e.getMessage());
         }

@@ -17,7 +17,7 @@ import com.badlogic.gdx.Gdx;
  * @author Eric_Ni
  * 
  */
-public class AESEncryptor {
+public class CHAESEncryptor {
     public static final String MAK = "RBCXF-CVBGR-382MK-DFHJ4-C69G8"; //AES加密的密钥
 
     /**

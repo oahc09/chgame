@@ -10,7 +10,7 @@ import java.util.Random;
  * @Description 概率助手 ：对均匀概率分布做简单的封装处理，修改为支持概率的非均匀分布 </br> {支持一次性随机出多个结果集}
  * @date 2012-11-30 下午6:45:14
  */
-public class RandomHelper {
+public class CHRandomHelper {
     // 概率的分界点数组
     private int[] probData;
 
@@ -24,7 +24,7 @@ public class RandomHelper {
      * 
      * @param probdata
      */
-    public RandomHelper(String probdata) {
+    public CHRandomHelper(String probdata) {
         String[] probDataStr = probdata.split(":");
         int[] tempArray = new int[probDataStr.length];
         for (int i = 0; i < tempArray.length; i++) {
@@ -38,11 +38,11 @@ public class RandomHelper {
      * 
      * @param probdata
      */
-    public RandomHelper(int[] probdata) {
+    public CHRandomHelper(int[] probdata) {
         getRandomPoints(probdata);
     }
 
-    public RandomHelper(ArrayList<Integer> probList) {
+    public CHRandomHelper(ArrayList<Integer> probList) {
         int size = probList.size();
         int[] probdata = new int[size];
         for (int i = 0; i < size; i++) {
@@ -175,7 +175,7 @@ public class RandomHelper {
         // RandomHelper rh = new RandomHelper(new int[] {
         // 2, 2, 5, 3, 2, 2, 2, 2
         // });
-        RandomHelper rh2 = new RandomHelper("1:1:1:1:1:1:1:1:1:1:10000:17990:18000:18000:18000:18000");
+        CHRandomHelper rh2 = new CHRandomHelper("1:1:1:1:1:1:1:1:1:1:10000:17990:18000:18000:18000:18000");
 
         for (int i = 0; i < 100000; i++) {
             //System.out.println("-" + rh2.getMultiResultIndexList(1).toString());
@@ -190,7 +190,7 @@ public class RandomHelper {
         list.add(13);
         list.add(72);
 
-        RandomHelper thHelper = new RandomHelper(list);
+        CHRandomHelper thHelper = new CHRandomHelper(list);
         for (int i = 0; i < 10; i++) {
             System.out.println("list:" + thHelper.getSingleResultIndex());
         }

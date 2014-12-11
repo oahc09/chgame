@@ -20,8 +20,9 @@ public abstract class CHEventListener implements EventListener {
     public boolean handle(Event event) {
         if (event instanceof CHEvent) {
             handleEvent((CHEvent)event);
+            return true;
         } else {
-            Gdx.app.error("CHEventListener", "event error~~");
+            Gdx.app.error("CHEventListener", "event error~~"+event.getClass().getName());
         }
         return false;
     }

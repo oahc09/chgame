@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUtil {
+public class CHDateUtil {
 
     /** 格式化字符串格式 */
     public static final String DATEFORMATSHORT = "yyyy-MM-dd";

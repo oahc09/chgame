@@ -1,6 +1,6 @@
 package com.oahcfly.chgame.util.aes;
 
-public class EncryptUtil {
+public class CHEncryptUtil {
 	static private final int ENC_KEY = 0xf9b37d;
 	private static int s_pkgKey = ENC_KEY, r_pkgKey = ENC_KEY;
 
