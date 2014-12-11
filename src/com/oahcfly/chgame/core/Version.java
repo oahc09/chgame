@@ -13,6 +13,7 @@ public class Version {
      * 0.0.7 字体加上抗锯齿&封装动画播放器CHAniamtionPlayer & 带缩放的监听器
      * 0.0.8 封装广告渠道 & mvc框架 & 资源加载封装
      * 0.0.9 调用android相关UI组件接口
+     * 0.1.0 常用工具类整合
      *  */
     public static final String VERSION = "0.0.9";
 }
