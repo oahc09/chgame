@@ -54,7 +54,7 @@ public class CHAssets implements Disposable, AssetErrorListener {
 
         if (assets != null) {
             for (Asset asset : assets) {
-                Gdx.app.log(TAG, "loading..." + asset.path);
+                //Gdx.app.log(TAG, "loading..." + asset.path);
                 manager.load(asset.path, asset.type, asset.parameters);
             }
         } else {
