@@ -5,11 +5,14 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.oahcfly.chgame.core.mvc.CHGame;
+import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.FontUtil;
+import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.StringUtil;
 
 /**
  * 
@@ -34,6 +37,10 @@ public class FontHelper {
     }
 
     private HashMap<String, FreeTypeFontGenerator> generatorMap = new HashMap<String, FreeTypeFontGenerator>();
+
+    public BitmapFont loadTtfFont(FileHandle fontHandle, int fontSize, String text) {
+        return FontUtil.createFont(fontHandle, text, fontSize);
+    }
 
     /**
      * 
@@ -63,10 +70,12 @@ public class FontHelper {
                 stringBuffer.append(c);
             }
         }
-        
+
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = size;
-        parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + stringBuffer.toString();
+
+        String newText = StringUtil.removeRepeatedChar(FreeTypeFontGenerator.DEFAULT_CHARS + stringBuffer.toString());
+        parameter.characters = newText;
         BitmapFont font = generator.generateFont(parameter);
         font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
         generator.dispose();
@@ -91,7 +100,7 @@ public class FontHelper {
         }
         assetManager.load(fntFilePath, BitmapFont.class);
         assetManager.finishLoading();
-        BitmapFont bitmapFont =assetManager.get(fntFilePath);
+        BitmapFont bitmapFont = assetManager.get(fntFilePath);
         bitmapFont.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
         return bitmapFont;
     }

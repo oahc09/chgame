@@ -48,7 +48,7 @@ public class CHADChannel {
                 }
             } catch (Exception e) {
                 // do nothing
-                System.out.println(getClass().getSimpleName()+":parse ad json error!!!!"+e.getMessage());
+                System.err.println(getClass().getSimpleName()+":parse ad json error!!!!"+e.getMessage());
             }
             
         }

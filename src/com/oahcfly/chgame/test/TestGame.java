@@ -15,6 +15,7 @@ public class TestGame extends CHGame {
 
         //CHADChannel androidAdChannel= new CHADChannel("{\"360\":false,\"baidu\":true,\"tengxu\":false,\"meizu\":false,\"anzhi\":false}");
 
+        
         setScreen(new FirstScreen());
 
         //        String chineseExtraStr="nihao你好哈哈哈你是煞笔";

@@ -1,7 +1,6 @@
 
 package com.oahcfly.chgame.core.mvc;
 
-
 /**
  * 
  * <pre>
@@ -20,6 +19,10 @@ public abstract class CHModel {
 
     public CHModel(CHScreen chScreen) {
         screen = chScreen;
+    }
+
+    public <T extends CHScreen> T getScreen() {
+        return (T)screen;
     }
 
 }

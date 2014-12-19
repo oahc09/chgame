@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
@@ -38,7 +39,8 @@ public class FontUtil {
                 generators.put(fontHandle, generator);
             }
 
-            String newText = StringUtil.removeRepeatedChar(text);
+
+            String newText = StringUtil.removeRepeatedChar(FreeTypeFontGenerator.DEFAULT_CHARS + text);
             FreeTypeFontParameter parameter = new FreeTypeFontParameter();
             parameter.size = fontSize;
             parameter.characters = newText;
@@ -53,6 +55,7 @@ public class FontUtil {
         if (font == null) {
             return new BitmapFont();
         }
+        font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
         return font;
 
     }

@@ -1,7 +1,6 @@
 
 package com.oahcfly.chgame.core.event;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 
@@ -22,7 +21,7 @@ public abstract class CHEventListener implements EventListener {
             handleEvent((CHEvent)event);
             return true;
         } else {
-            Gdx.app.error("CHEventListener", "event error~~"+event.getClass().getName());
+            //Gdx.app.error("CHEventListener", "event error~~"+event.getClass().getName());
         }
         return false;
     }

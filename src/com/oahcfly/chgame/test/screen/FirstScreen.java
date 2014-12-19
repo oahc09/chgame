@@ -8,7 +8,9 @@ import com.badlogic.gdx.Net.HttpMethods;
 import com.badlogic.gdx.Net.HttpRequest;
 import com.badlogic.gdx.Net.HttpResponse;
 import com.badlogic.gdx.Net.HttpResponseListener;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -16,9 +18,12 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.oahcfly.chgame.core.FontHelper;
 import com.oahcfly.chgame.core.assetmanager.CHAssets;
 import com.oahcfly.chgame.core.event.CHEvent;
 import com.oahcfly.chgame.core.event.CHEventListener;
@@ -70,8 +75,12 @@ public class FirstScreen extends CHScreen {
         });
         httpTest(image);
 
-        
    
+        BitmapFont font = FontHelper.getInstance().loadTtfFont("x.ttf", 25, "测试文本显示abcdef");
+        LabelStyle labelStyle =new LabelStyle(font, Color.WHITE);
+        Label label =new Label("abcdxyz测试用例", labelStyle);
+        label.setPosition(200, 200);
+        addActor(label);
     }
 
     private void httpTest(final Image image) {
