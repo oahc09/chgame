@@ -21,7 +21,7 @@ public class TTFLabel extends Label {
     public void setText(CharSequence newText) {
         LabelStyle style = getStyle();
         style.font = createFont((TTFLabelStyle)style, "" + newText);
- 
+
         super.setStyle(style);
         super.setText(newText);
     }
@@ -37,12 +37,12 @@ public class TTFLabel extends Label {
         super.setAlignment(labelAlign, lineAlign);
     }
 
-    @Override
-    public void setStyle(LabelStyle style) {
-        style.font = createFont((TTFLabelStyle)style, "" + getText());
-
-        super.setStyle(style);
-    }
+    //    @Override
+    //    public void setStyle(LabelStyle style) {
+    //        style.font = createFont((TTFLabelStyle)style, "" + getText());
+    //
+    //        super.setStyle(style);
+    //    }
 
     BitmapFont createFont(TTFLabelStyle ttfStyle, String text) {
         return FontUtil.createFont(ttfStyle.getFontFileHandle(), text, ttfStyle.getFontSize());

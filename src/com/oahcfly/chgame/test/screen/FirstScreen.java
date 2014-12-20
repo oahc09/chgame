@@ -8,7 +8,7 @@ import com.badlogic.gdx.Net.HttpMethods;
 import com.badlogic.gdx.Net.HttpRequest;
 import com.badlogic.gdx.Net.HttpResponse;
 import com.badlogic.gdx.Net.HttpResponseListener;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -23,11 +23,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.oahcfly.chgame.core.assetmanager.CHAssets;
 import com.oahcfly.chgame.core.event.CHEvent;
-import com.oahcfly.chgame.core.event.CHEventListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
+import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.FontUtil;
 import com.oahcfly.chgame.plist.CHPListCenter;
 import com.oahcfly.chgame.test.ui.MainUI;
 import com.oahcfly.chgame.test.ui.TestUI;
@@ -53,32 +52,48 @@ public class FirstScreen extends CHScreen {
         sprite.setX(57);
 
         new MainUI(getStage()).show();
+        //
+        //        CHAssets chAssets = new CHAssets();
+        //        chAssets.loadAssetFile("asset.ch");
+        //        chAssets.loadGroup("bigstar");
+        //        chAssets.finishLoading();
+        //        System.out.println("p" + chAssets.getProgress());
+        //        Image image = new Image(chAssets.get("screen/big_star.png", Texture.class));
+        //        addActor(image);
+        //
+        //        image.addListener(new CHEventListener() {
+        //
+        //            @Override
+        //            public void handleEvent(CHEvent chEvent) {
+        //                System.out.println("refreshUI:" + chEvent.toString());
+        //                chEvent.getListenerActor().moveBy(100, 100);
+        //
+        //            }
+        //        });
+        //        httpTest(image);
 
-        CHAssets chAssets = new CHAssets();
-        chAssets.loadAssetFile("asset.ch");
-        chAssets.loadGroup("bigstar");
-        chAssets.finishLoading();
-        System.out.println("p" + chAssets.getProgress());
-        Image image = new Image(chAssets.get("screen/big_star.png", Texture.class));
-        addActor(image);
+        //        BitmapFont font = FontHelper.getInstance().loadTtfFont("x.ttf", 25, "测试文本显示abcdef");
+        //        LabelStyle labelStyle =new LabelStyle(font, Color.WHITE);
+        //        Label label =new Label("abcdxyz123s撒啊啊啊啊啊啊啊啊测试", labelStyle);
+        //        label.setPosition(200, 200);
+        //        addActor(label);
 
-     
-        image.addListener(new CHEventListener() {
+        FileHandle fileHandle = Gdx.files.internal("x.ttf");
+        FontUtil.createFont(fileHandle, "11", 20);
+        long starttime = System.currentTimeMillis();
+        createLabel(FontUtil.createFont(fileHandle, "道具", 20),"道具",80);
+        createLabel(FontUtil.createFont(fileHandle, "撒旦", 20),"撒旦",100);
+        createLabel(FontUtil.createFont(fileHandle, "测试", 20),"测试",120);
+        createLabel(FontUtil.createFont(fileHandle, "啊aaa", 20),"啊a",140);
+        createLabel(FontUtil.createFont(fileHandle, "时空", 20),"时空",160);
 
-            @Override
-            public void handleEvent(CHEvent chEvent) {
-                System.out.println("refreshUI:" + chEvent.toString());
-                chEvent.getListenerActor().moveBy(100, 100);
-               
-            }
-        });
-        httpTest(image);
+        System.out.println("字体耗时：" + (System.currentTimeMillis() - starttime));
+    }
 
-   
-        BitmapFont font =new BitmapFont();// FontHelper.getInstance().loadTtfFont("x.ttf", 25, "测试文本显示abcdef");
-        LabelStyle labelStyle =new LabelStyle(font, Color.WHITE);
-        Label label =new Label("abcdxyz测试用例123", labelStyle);
-        label.setPosition(200, 200);
+    private void createLabel(BitmapFont font, String string, int h) {
+        LabelStyle labelStyle = new LabelStyle(font, null);
+        Label label = new Label(string, labelStyle);
+        label.setPosition(100, h);
         addActor(label);
     }
 

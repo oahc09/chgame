@@ -16,6 +16,7 @@ public class Version {
      * 0.1.0 常用工具类整合
      * 0.1.1  封装UI更新事件相关类，用于网络异步请求的UI处理. 新增manager. 编辑器字体抗锯齿效果。
      * 0.1.2 存储新增加密属性,manager优化
+     * 0.1.3 label性能优化
      *  */
-    public static final String VERSION = "0.1.2";
+    public static final String VERSION = "0.1.3";
 }
