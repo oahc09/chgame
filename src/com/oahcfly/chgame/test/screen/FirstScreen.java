@@ -23,7 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.oahcfly.chgame.core.FontHelper;
 import com.oahcfly.chgame.core.assetmanager.CHAssets;
 import com.oahcfly.chgame.core.event.CHEvent;
 import com.oahcfly.chgame.core.event.CHEventListener;
@@ -76,9 +75,9 @@ public class FirstScreen extends CHScreen {
         httpTest(image);
 
    
-        BitmapFont font = FontHelper.getInstance().loadTtfFont("x.ttf", 25, "测试文本显示abcdef");
+        BitmapFont font =new BitmapFont();// FontHelper.getInstance().loadTtfFont("x.ttf", 25, "测试文本显示abcdef");
         LabelStyle labelStyle =new LabelStyle(font, Color.WHITE);
-        Label label =new Label("abcdxyz测试用例", labelStyle);
+        Label label =new Label("abcdxyz测试用例123", labelStyle);
         label.setPosition(200, 200);
         addActor(label);
     }

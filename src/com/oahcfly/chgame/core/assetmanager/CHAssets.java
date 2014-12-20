@@ -16,6 +16,34 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonValue.JsonIterator;
 import com.badlogic.gdx.utils.ObjectMap;
 
+/**
+ * 
+ * <pre>
+ * 
+ * 格式：
+ * bigstar代表group
+ * {
+ * "bigstar" : [
+ *    {   
+ *        "type" : "com.badlogic.gdx.graphics.Texture",
+ *         "path" : "screen/big_star.png"
+ *     }
+ * ] 
+ *  
+ * }
+ * 
+ * 代码范例：
+ *        CHAssets chAssets = new CHAssets();
+ *        chAssets.loadAssetFile("asset.ch");
+ *        chAssets.loadGroup("bigstar");
+ *        chAssets.finishLoading();
+ *        System.out.println("p" + chAssets.getProgress());
+ *        Image image = new Image(chAssets.get("screen/big_star.png", Texture.class));
+ *        addActor(image);
+ * date: 2014-12-20
+ * </pre>
+ * @author caohao
+ */
 public class CHAssets implements Disposable, AssetErrorListener {
 
     private static final String TAG = "Assets";
@@ -28,9 +56,9 @@ public class CHAssets implements Disposable, AssetErrorListener {
         manager = new AssetManager();
         manager.setErrorListener(this);
         //loadToGroups(assetFile);
-    }    
-    
-    public AssetManager getAssetManager(){
+    }
+
+    public AssetManager getAssetManager() {
         return manager;
     }
 
@@ -38,6 +66,15 @@ public class CHAssets implements Disposable, AssetErrorListener {
         return manager.getLoader(type);
     }
 
+    /**
+     * 
+     * <pre>
+     * 加载所有资源
+     * 
+     * date: 2014-12-20
+     * </pre>
+     * @author caohao
+     */
     public void loadAllGroup() {
         Iterator<String> iterator = groups.keys().iterator();
         while (iterator.hasNext()) {
@@ -46,6 +83,16 @@ public class CHAssets implements Disposable, AssetErrorListener {
         }
     }
 
+    /**
+     * 
+     * <pre>
+     * 加载group组内的资源
+     * 
+     * date: 2014-12-20
+     * </pre>
+     * @author caohao
+     * @param groupName
+     */
     @SuppressWarnings("unchecked")
     public void loadGroup(String groupName) {
         Gdx.app.log(TAG, "loading group " + groupName);
@@ -62,6 +109,16 @@ public class CHAssets implements Disposable, AssetErrorListener {
         }
     }
 
+    /**
+     * 
+     * <pre>
+     * 释放资源
+     * 
+     * date: 2014-12-20
+     * </pre>
+     * @author caohao
+     * @param groupName
+     */
     public void unloadGroup(String groupName) {
         Gdx.app.log(TAG, "unloading group " + groupName);
 
@@ -114,6 +171,16 @@ public class CHAssets implements Disposable, AssetErrorListener {
         Gdx.app.log(TAG, "error loading " + asset.fileName + " message: " + throwable.getMessage());
     }
 
+    /**
+     * 
+     * <pre>
+     * assetFile 资源文件路径asset.ch
+     * 
+     * date: 2014-12-20
+     * </pre>
+     * @author caohao
+     * @param assetFile
+     */
     public void loadAssetFile(String assetFile) {
         groups = new ObjectMap<String, Array<Asset>>();
 

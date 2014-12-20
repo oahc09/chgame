@@ -21,6 +21,50 @@ public class CHAESEncryptor {
     public static final String MAK = "RBCXF-CVBGR-382MK-DFHJ4-C69G8"; //AES加密的密钥
 
     /**
+     * 
+     * <pre>
+     * 数据加密
+     * 
+     * date: 2014-12-20
+     * </pre>
+     * @author caohao
+     * @param cleartext
+     * @return
+     */
+    public static String encodeData(String cleartext) {
+        String dataString;
+        try {
+            dataString = encrypt(MAK, cleartext);
+        } catch (Exception e) {
+            Gdx.app.error("AES", e.getMessage());
+            dataString = cleartext;
+        }
+        return dataString;
+    }
+
+    /**
+     * 
+     * <pre>
+     * 解密数据
+     * 
+     * date: 2014-12-20
+     * </pre>
+     * @author caohao
+     * @param encrypted
+     * @return
+     */
+    public static String decodeData(String encrypted) {
+        String dataString;
+        try {
+            dataString = decrypt(MAK, encrypted);
+        } catch (Exception e) {
+            Gdx.app.error("AES", e.getMessage());
+            dataString = encrypted;
+        }
+        return dataString;
+    }
+
+    /**
      * AES加密
      */
     public static String encrypt(String seed, String cleartext) throws Exception {
@@ -120,5 +164,12 @@ public class CHAESEncryptor {
 
     private static void appendHex(StringBuffer sb, byte b) {
         sb.append(HEX.charAt((b >> 4) & 0x0f)).append(HEX.charAt(b & 0x0f));
+    }
+
+    public static void main(String[] args) throws Exception {
+        String dataString = "1234ddfd";
+        System.out.println("加密前：" + dataString);
+        System.out.println("加密后：" + encrypt(MAK, dataString));
+        System.out.println("解密后：" + decrypt(MAK, (encrypt(MAK, dataString))));
     }
 }

@@ -1,11 +1,14 @@
 
 package com.oahcfly.chgame.core.mvc;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -17,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.oahcfly.chgame.core.Version;
 import com.oahcfly.chgame.core.ad.CHADListener;
 import com.oahcfly.chgame.core.assetmanager.CHAssets;
+import com.oahcfly.chgame.core.manager.MusicManager;
+import com.oahcfly.chgame.core.manager.SoundManager;
 import com.oahcfly.chgame.core.transition.ScreenTransition;
 
 /**
@@ -30,6 +35,7 @@ import com.oahcfly.chgame.core.transition.ScreenTransition;
  * @author caohao
  */
 public abstract class CHGame extends Game {
+    private HashMap<String, FileHandle> ttfMap = new HashMap<String, FileHandle>();
 
     private static CHGame instance = null;
 
@@ -76,9 +82,16 @@ public abstract class CHGame extends Game {
         openFPS = showFPS;
     }
 
+    private MusicManager musicManager;
+
+    private SoundManager soundManager;
+
     @Override
     public void create() {
         Gdx.app.log("chgame", "version : " + Version.VERSION);
+
+        musicManager = new MusicManager();
+        soundManager = new SoundManager();
 
         chAssets = new CHAssets();
         assetManager = chAssets.getAssetManager();
@@ -117,7 +130,9 @@ public abstract class CHGame extends Game {
         //spriteBatch.dispose();
         fontMenu.dispose();
         fontNumber.dispose();
-        assetManager.dispose();
+        musicManager.dispose();
+        soundManager.dispose();
+        chAssets.dispose();
     }
 
     @Override
@@ -303,6 +318,34 @@ public abstract class CHGame extends Game {
 
     public <T extends CHModel> T getModel() {
         return getScreen().getModel();
+    }
+
+    /**
+     * 
+     * <pre>
+     * key = x.ttf
+     * value=filehandler
+     * date: 2014-12-20
+     * </pre>
+     * @author caohao
+     * @return
+     */
+    public HashMap<String, FileHandle> getTTFMap() {
+        return ttfMap;
+    }
+
+    public void addTTF(String filePath) {
+        int begin = filePath.lastIndexOf("/");
+        ttfMap.put(filePath.substring(begin), Gdx.files.internal(filePath));
+        System.out.println("ttf:" + ttfMap.toString());
+    }
+
+    public MusicManager getMusicManager() {
+        return musicManager;
+    }
+
+    public SoundManager getSoundManager() {
+        return soundManager;
     }
 
 }
