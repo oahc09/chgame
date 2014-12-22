@@ -25,6 +25,7 @@ import com.oahcfly.chgame.core.assetmanager.CHAssets;
 import com.oahcfly.chgame.core.manager.MusicManager;
 import com.oahcfly.chgame.core.manager.SoundManager;
 import com.oahcfly.chgame.core.transition.ScreenTransition;
+import com.oahcfly.chgame.core.ui.CHLoading;
 
 /**
  * 
@@ -129,8 +130,11 @@ public abstract class CHGame extends Game {
             Texture texture = new Texture(fileHandle);
             loadingKeyFrames.add(new TextureRegion(texture));
         }
+        chLoading=new CHLoading();
         init();
     }
+    
+    private CHLoading chLoading;
 
     @Override
     public void dispose() {
@@ -365,6 +369,32 @@ public abstract class CHGame extends Game {
 
     public Array<TextureRegion> getLoadingKeyFrames() {
         return loadingKeyFrames;
+    }
+    
+    /**
+     * 
+     * <pre>
+     * 显示等待界面
+     * 
+     * date: 2014-12-22
+     * </pre>
+     * @author caohao
+     */
+    public void showLoadingUI(){
+        chLoading.show();
+    }
+    
+    /**
+     * 
+     * <pre>
+     * 关闭等待界面
+     * 
+     * date: 2014-12-22
+     * </pre>
+     * @author caohao
+     */
+    public void closeLoadingUI(){
+        chLoading.dismiss();
     }
 
 }

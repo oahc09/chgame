@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -37,15 +38,23 @@ public class CHLoading {
         chAniamtionPlayer.setName("actor_loading");
 
         // 添加loading组件
-       // Image starImage = CHGame.getInstance().getImage("screen/big_star.png");
-     
+
         parentTable.add(chAniamtionPlayer);
         chAniamtionPlayer.play();
     }
 
     public void show() {
+        parentTable.setVisible(true);
+        parentTable.setTouchable(Touchable.enabled);
+
         CHGame.getInstance().getScreen().addActor(parentTable);
         parentTable.setZIndex(Integer.MAX_VALUE);
+    }
+
+    public void dismiss() {
+        chAniamtionPlayer.stop();
+        parentTable.setVisible(false);
+        parentTable.setTouchable(Touchable.disabled);
     }
 
     private Texture getTexture(Pixmap pixmap) {
