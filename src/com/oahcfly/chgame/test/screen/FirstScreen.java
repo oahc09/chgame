@@ -12,7 +12,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -43,14 +42,14 @@ public class FirstScreen extends CHScreen {
         //        tableTest();
 
         //        testAstar();
-        plistTest();
-
-        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("testAtlas.txt"));
-        Image autumnImage = new Image(textureAtlas.findRegion("title_summer"));
-        addActor(autumnImage);
-
-        sprite = textureAtlas.createSprite("title_autumn");
-        sprite.setX(57);
+        //        plistTest();
+        //
+        //        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("testAtlas.txt"));
+        //        Image autumnImage = new Image(textureAtlas.findRegion("title_summer"));
+        //        addActor(autumnImage);
+        //
+        //        sprite = textureAtlas.createSprite("title_autumn");
+        //        sprite.setX(57);
 
         new MainUI(getStage()).show();
         //
@@ -248,8 +247,8 @@ public class FirstScreen extends CHScreen {
         // TODO Auto-generated method stub
         super.draw();
 
-        getStage().getBatch().begin();
-        sprite.draw(getStage().getBatch());
-        getStage().getBatch().end();
+        //        getStage().getBatch().begin();
+        //        sprite.draw(getStage().getBatch());
+        //        getStage().getBatch().end();
     }
 }

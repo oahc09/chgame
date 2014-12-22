@@ -2,6 +2,7 @@
 package com.oahcfly.chgame.core.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -83,6 +84,9 @@ public class CHAniamtionPlayer extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        Color color = getColor();
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+         
         if (isPlaying) {
             stateTime += Gdx.graphics.getDeltaTime();
         }
@@ -104,7 +108,8 @@ public class CHAniamtionPlayer extends Actor {
             float centerX = getX() + (selfW - regionW) / 2;
             float centerY = getY() + (selfH - regionH) / 2;
             batch.draw(region, centerX, centerY, regionW, regionH);
-            if (animation.isAnimationFinished(stateTime)) {
+            if (animation.getPlayMode() == PlayMode.NORMAL && animation.isAnimationFinished(stateTime)) {
+                // 动画结束执行
                 stop();
                 if (endRunnable != null) {
                     endRunnable.run();

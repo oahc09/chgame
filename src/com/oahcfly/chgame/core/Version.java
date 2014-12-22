@@ -17,7 +17,7 @@ public class Version {
      * 0.1.1  封装UI更新事件相关类，用于网络异步请求的UI处理. 新增manager. 编辑器字体抗锯齿效果。
      * 0.1.2 存储新增加密属性,manager优化
      * 0.1.3 label性能优化【注意：label最好不要使用太多】首次创建TTFLabelStyle不去创建字体减少耗时。只有settext时才重新创建。
-     * 0.1.4
+     * 0.1.4 新增toast和loading相关UI
      *  */
     public static final String VERSION = "0.1.3";
 }

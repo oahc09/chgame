@@ -4,6 +4,7 @@ package com.oahcfly.chgame.test;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.oahcfly.chgame.core.mvc.CHGame;
+import com.oahcfly.chgame.core.ui.CHLoading;
 import com.oahcfly.chgame.test.screen.FirstScreen;
 
 public class TestGame extends CHGame {
@@ -19,6 +20,7 @@ public class TestGame extends CHGame {
         
         setScreen(new FirstScreen());
 
+        new CHLoading().show();
         //        String chineseExtraStr="nihao你好哈哈哈你是煞笔";
         //        char[] array = chineseExtraStr.toCharArray();
         //        StringBuffer stringBuffer = new StringBuffer();

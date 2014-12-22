@@ -14,9 +14,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.utils.Array;
 import com.oahcfly.chgame.core.Version;
 import com.oahcfly.chgame.core.ad.CHADListener;
 import com.oahcfly.chgame.core.assetmanager.CHAssets;
@@ -86,6 +88,8 @@ public abstract class CHGame extends Game {
 
     private SoundManager soundManager;
 
+    private Array<TextureRegion> loadingKeyFrames = new Array<TextureRegion>();
+
     @Override
     public void create() {
         Gdx.app.log("chgame", "version : " + Version.VERSION);
@@ -120,6 +124,11 @@ public abstract class CHGame extends Game {
         fpsLabel.setY(20);
         fpsLabel.setX(10);
 
+        for (int i = 0; i < 6; i++) {
+            FileHandle fileHandle = Gdx.files.classpath(String.format("com/oahcfly/chgame/res/l_%d.png", i));
+            Texture texture = new Texture(fileHandle);
+            loadingKeyFrames.add(new TextureRegion(texture));
+        }
         init();
     }
 
@@ -312,6 +321,12 @@ public abstract class CHGame extends Game {
         }
     }
 
+    public void closeShopADs() {
+        if (this.chadListener != null) {
+            this.chadListener.closeSpotAds();
+        }
+    }
+
     public CHAssets getCHAssets() {
         return chAssets;
     }
@@ -346,6 +361,10 @@ public abstract class CHGame extends Game {
 
     public SoundManager getSoundManager() {
         return soundManager;
+    }
+
+    public Array<TextureRegion> getLoadingKeyFrames() {
+        return loadingKeyFrames;
     }
 
 }

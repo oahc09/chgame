@@ -26,6 +26,18 @@ public interface CHADListener {
     /**
      * 
      * <pre>
+     * 关闭插屏广告
+     * 
+     * date: 2014-12-22
+     * </pre>
+     * @author caohao
+     */
+    public void closeSpotAds();
+    
+    
+    /**
+     * 
+     * <pre>
      * 显示广告条
      * 
      * date: 2014-11-24
