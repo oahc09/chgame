@@ -19,8 +19,18 @@ public class TTFLabel extends Label {
 
     @Override
     public void setText(CharSequence newText) {
+        if (textEquals(newText)) return;
+        
         LabelStyle style = getStyle();
         style.font = createFont((TTFLabelStyle)style, "" + newText);
+
+        super.setStyle(style);
+        super.setText(newText);
+    }
+
+    public void setText(CharSequence newText, BitmapFont font) {
+        LabelStyle style = getStyle();
+        style.font = font;
 
         super.setStyle(style);
         super.setText(newText);

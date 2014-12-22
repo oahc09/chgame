@@ -1,3 +1,4 @@
+
 package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.parser.widget;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -11,48 +12,48 @@ import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.TTFLabelStyle;
 
 public class CCLabel extends WidgetParser {
 
-	@Override
-	public String getClassName() {
-		return "Label";
-	}
+    @Override
+    public String getClassName() {
+        return "Label";
+    }
 
-	@Override
-	public Actor parse(CocoStudioUIEditor editor, CCWidget widget,
-			CCOption option) {
+    @Override
+    public Actor parse(CocoStudioUIEditor editor, CCWidget widget, CCOption option) {
 
-		final TTFLabelStyle labelStyle = editor.createLabelStyle(option);
+        final TTFLabelStyle labelStyle = editor.createLabelStyle(option);
 
-		TTFLabel label = new TTFLabel(option.getText(), labelStyle);
+        //option.getText()
+        TTFLabel label = new TTFLabel("TTFLabel", labelStyle);
 
-		// 水平
-		int h = 0;
-		switch (option.gethAlignment()) {
-		case 0:
-			h = Align.left;
-			break;
-		case 1:
-			h = Align.center;
-			break;
-		default:
-			h = Align.right;
-			break;
-		}
+        // 水平
+        int h = 0;
+        switch (option.gethAlignment()) {
+            case 0:
+                h = Align.left;
+                break;
+            case 1:
+                h = Align.center;
+                break;
+            default:
+                h = Align.right;
+                break;
+        }
 
-		// 垂直
-		int v = 0;
-		switch (option.getvAlignment()) {
-		case 0:
-			v = Align.top;
-			break;
-		case 1:
-			v = Align.center;
-			break;
-		default:
-			v = Align.bottom;
-			break;
-		}
-		label.setAlignment(h, v);
+        // 垂直
+        int v = 0;
+        switch (option.getvAlignment()) {
+            case 0:
+                v = Align.top;
+                break;
+            case 1:
+                v = Align.center;
+                break;
+            default:
+                v = Align.bottom;
+                break;
+        }
+        label.setAlignment(h, v);
 
-		return label;
-	}
+        return label;
+    }
 }

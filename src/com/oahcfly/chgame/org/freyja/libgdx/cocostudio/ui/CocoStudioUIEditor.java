@@ -50,7 +50,6 @@ import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.parser.widget.CCLabelB
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.parser.widget.CCLoadingBar;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.parser.widget.CCSlider;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.parser.widget.CCTextField;
-import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.FontUtil;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.TTFLabelStyle;
 
 /**
@@ -63,8 +62,6 @@ import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.TTFLabelStyle;
  * @tip https://github.com/121077313/cocostudio-ui-libgdx/wiki/疑难解答
  */
 public class CocoStudioUIEditor {
-
-    final String tag = CocoStudioUIEditor.class.getName();
 
     /** json文件所在目录 */
     protected String dirName;
@@ -90,6 +87,8 @@ public class CocoStudioUIEditor {
 
     protected Map<String, BaseWidgetParser> parsers;
 
+    String tag = CocoStudioUIEditor.class.getSimpleName();
+
     /** 添加转换器 */
     public void addParser(BaseWidgetParser parser) {
         parsers.put(parser.getClassName(), parser);
@@ -97,6 +96,8 @@ public class CocoStudioUIEditor {
 
     /** 默认ttf字体文件 */
     protected FileHandle defaultFont;
+
+    private BitmapFont defaultBitmapFont;
 
     /**
      * 不需要显示文字
@@ -152,6 +153,8 @@ public class CocoStudioUIEditor {
 
         dirName = jsonFile.parent().toString();
 
+        tag += "-" + jsonFile.name();
+
         if (!dirName.equals("")) {
             dirName += "/";
         }
@@ -159,6 +162,8 @@ public class CocoStudioUIEditor {
         Json jj = new Json();
         jj.setIgnoreUnknownFields(true);
         export = jj.fromJson(CCExport.class, json);
+
+        defaultBitmapFont = CHGame.getInstance().getMenuFont();
     }
 
     /**
@@ -454,6 +459,8 @@ public class CocoStudioUIEditor {
      */
     public Actor parseWidget(Group parent, CCWidget widget) {
 
+        long starttime = System.currentTimeMillis();
+
         CCOption option = widget.getOptions();
         String className = option.getClassname();
         BaseWidgetParser parser = parsers.get(className);
@@ -465,27 +472,32 @@ public class CocoStudioUIEditor {
 
         Actor actor = parser.parse(this, widget, option);
 
+        Gdx.app.debug(tag, " parse widget step_1 " + parser.getClassName() + ":"
+                + (System.currentTimeMillis() - starttime));
+        starttime = System.currentTimeMillis();
+
         actor = parser.commonParse(this, widget, option, parent, actor);
 
+        Gdx.app.debug(tag, " parse widget step_2 " + actor.getName() + ":" + (System.currentTimeMillis() - starttime));
+
         return actor;
-
     }
 
-    /** 获取BitmapFont */
-    public BitmapFont getBitmapFont(CCOption option) {
-        BitmapFont font = null;
-        if (bitmapFonts != null) {
-            font = bitmapFonts.get(option.getFileNameData().getPath());
-        } else {
-            font = new BitmapFont(Gdx.files.internal(dirName + option.getFileNameData().getPath()));
-        }
-
-        if (font == null) {
-            debug(option, "BitmapFont字体:" + option.getFileNameData().getPath() + " 不存在");
-            font = new BitmapFont();
-        }
-        return font;
-    }
+    //    /** 获取BitmapFont */
+    //    public BitmapFont getBitmapFont(CCOption option) {
+    //        BitmapFont font = null;
+    //        if (bitmapFonts != null) {
+    //            font = bitmapFonts.get(option.getFileNameData().getPath());
+    //        } else {
+    //            font = new BitmapFont(Gdx.files.internal(dirName + option.getFileNameData().getPath()));
+    //        }
+    //
+    //        if (font == null) {
+    //            debug(option, "BitmapFont字体:" + option.getFileNameData().getPath() + " 不存在");
+    //            font = new BitmapFont();
+    //        }
+    //        return font;
+    //    }
 
     /**
      * 创建LabelStyle
@@ -522,7 +534,7 @@ public class CocoStudioUIEditor {
             debug(option, "ttf字体:" + option.getFontName() + " 不存在,使用默认字体");
         }
 
-        BitmapFont font = FontUtil.createFont(fontFile, option.getText(), option.getFontSize());
+        BitmapFont font = defaultBitmapFont;//FontUtil.createFont(fontFile, option.getText(), option.getFontSize());
 
         return new TTFLabelStyle(new LabelStyle(font, textColor), fontFile, option.getFontSize());
     }

@@ -38,7 +38,8 @@ public class CCTextField extends WidgetParser {
 		// labelStyle.getFontFileHandle(), "0123456789",
 		// labelStyle.getFontSize());
 
-		TextField textField = new TextField(option.getText(), style) {
+		//option.getText()
+		TextField textField = new TextField("TextField", style) {
 
 			@Override
 			public void setText(String text) {

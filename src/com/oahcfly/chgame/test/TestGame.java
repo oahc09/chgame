@@ -5,7 +5,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.test.screen.FirstScreen;
-import com.oahcfly.chgame.util.SharePreferenceUtil;
 
 public class TestGame extends CHGame {
 
@@ -30,16 +29,16 @@ public class TestGame extends CHGame {
         //        }
         //        System.out.println(""+stringBuffer.toString());
         
-        SharePreferenceUtil sharePreferenceUtil= new SharePreferenceUtil("测试", true);
-        sharePreferenceUtil.saveSharedPreferences("ab1", false);
-        sharePreferenceUtil.saveSharedPreferences("ab2", 2f);
-        sharePreferenceUtil.saveSharedPreferences("ab3", 2);
-        sharePreferenceUtil.saveSharedPreferences("ab4", 1l);
-        sharePreferenceUtil.saveSharedPreferences("ab5", "cesfs的是多少");
-        
-        System.out.println(""+sharePreferenceUtil.loadStringSharedPreference("ab5", "null"));
-        System.out.println(""+sharePreferenceUtil.loadIntSharedPreference("ab3", -1));
-        
+//        SharePreferenceUtil sharePreferenceUtil= new SharePreferenceUtil("测试", true);
+//        sharePreferenceUtil.saveSharedPreferences("ab1", false);
+//        sharePreferenceUtil.saveSharedPreferences("ab2", 2f);
+//        sharePreferenceUtil.saveSharedPreferences("ab3", 2);
+//        sharePreferenceUtil.saveSharedPreferences("ab4", 1l);
+//        sharePreferenceUtil.saveSharedPreferences("ab5", "cesfs的是多少");
+//        
+//        System.out.println(""+sharePreferenceUtil.loadStringSharedPreference("ab5", "null"));
+//        System.out.println(""+sharePreferenceUtil.loadIntSharedPreference("ab3", -1));
+//        
         
     }
 

@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -27,6 +26,8 @@ import com.oahcfly.chgame.core.event.CHEvent;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.FontUtil;
+import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.TTFLabel;
+import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.TTFLabelStyle;
 import com.oahcfly.chgame.plist.CHPListCenter;
 import com.oahcfly.chgame.test.ui.MainUI;
 import com.oahcfly.chgame.test.ui.TestUI;
@@ -79,20 +80,22 @@ public class FirstScreen extends CHScreen {
         //        addActor(label);
 
         FileHandle fileHandle = Gdx.files.internal("x.ttf");
-        FontUtil.createFont(fileHandle, "11", 20);
+
         long starttime = System.currentTimeMillis();
-        createLabel(FontUtil.createFont(fileHandle, "道具", 20),"道具",80);
-        createLabel(FontUtil.createFont(fileHandle, "撒旦", 20),"撒旦",100);
-        createLabel(FontUtil.createFont(fileHandle, "测试", 20),"测试",120);
-        createLabel(FontUtil.createFont(fileHandle, "啊aaa", 20),"啊a",140);
-        createLabel(FontUtil.createFont(fileHandle, "时空", 20),"时空",160);
+        BitmapFont bitmapFont = FontUtil.createFont(fileHandle, "道具撒旦测试啊a时空", 20);
+        createLabel(FontUtil.createFont(fileHandle, "道", 20), "道具", fileHandle, 80, bitmapFont);
+        createLabel(FontUtil.createFont(fileHandle, "撒旦", 20), "撒旦", fileHandle, 100, bitmapFont);
+        createLabel(FontUtil.createFont(fileHandle, "测试", 20), "测试", fileHandle, 120, bitmapFont);
+        createLabel(FontUtil.createFont(fileHandle, "啊aaa", 20), "啊a", fileHandle, 140, bitmapFont);
+        createLabel(FontUtil.createFont(fileHandle, "时空", 20), "时空", fileHandle, 160, bitmapFont);
 
         System.out.println("字体耗时：" + (System.currentTimeMillis() - starttime));
     }
 
-    private void createLabel(BitmapFont font, String string, int h) {
-        LabelStyle labelStyle = new LabelStyle(font, null);
-        Label label = new Label(string, labelStyle);
+    private void createLabel(BitmapFont font, String string, FileHandle fontFileHandle, int h, BitmapFont allBitmapFont) {
+        TTFLabelStyle labelStyle = new TTFLabelStyle(new LabelStyle(font, null), fontFileHandle, 20);
+        TTFLabel label = new TTFLabel(string, labelStyle);
+        label.setText(string);
         label.setPosition(100, h);
         addActor(label);
     }
