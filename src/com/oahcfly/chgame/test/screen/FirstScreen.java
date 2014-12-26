@@ -12,6 +12,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,8 +23,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.oahcfly.chgame.core.event.CHEvent;
+import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
+import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.LabelAtlas;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.TTFLabel;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.TTFLabelStyle;
 import com.oahcfly.chgame.plist.CHPListCenter;
@@ -71,12 +74,36 @@ public class FirstScreen extends CHScreen {
         //        });
         //        httpTest(image);
 
-        //        BitmapFont font = FontHelper.getInstance().loadTtfFont("x.ttf", 25, "测试文本显示abcdef");
-        //        LabelStyle labelStyle =new LabelStyle(font, Color.WHITE);
-        //        Label label =new Label("abcdxyz123s撒啊啊啊啊啊啊啊啊测试", labelStyle);
-        //        label.setPosition(200, 200);
-        //        addActor(label);
- 
+        TTFLabelStyle labelStyle = new TTFLabelStyle(new LabelStyle(CHGame.getInstance().getInternationalGenerator()
+                .getBitmapFont(), null), null, 30);
+        TTFLabel label = new TTFLabel("abcdxyz123s撒啊啊啊啊啊啊啊啊测试", labelStyle);
+        label.setText("测试文本系统显示啊好大的加拉开始");
+        label.setPosition(200, 200);
+        addActor(label);
+
+        addLabelAtlas(10, 20, 100);
+        addLabelAtlas(100, 30, 127);
+    }
+
+    private LabelAtlas addLabelAtlas(int num, int x, int y) {
+        final LabelAtlas labelAtlas = new LabelAtlas(new TextureRegion(CHGame.getInstance().getTexture(
+                "screen/score_numlist.png")), 23, 27, "0123456789");
+        labelAtlas.setText("" + num);
+        labelAtlas.setX(x);
+        labelAtlas.setY(y);
+        labelAtlas.setOrigin(Align.center);
+        labelAtlas.addListener(new CHClickListener() {
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                // TODO Auto-generated method stub
+                super.touchUp(event, x, y, pointer, button);
+                labelAtlas.setText("1000");
+            }
+
+        });
+        addActor(labelAtlas);
+        return labelAtlas;
     }
 
     private void createLabel(BitmapFont font, String string, FileHandle fontFileHandle, int h, BitmapFont allBitmapFont) {

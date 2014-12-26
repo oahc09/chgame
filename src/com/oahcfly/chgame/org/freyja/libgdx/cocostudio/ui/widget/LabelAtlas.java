@@ -4,6 +4,7 @@ package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 /**
  * 数字标签控件,暂时不支持.首字符设置.也就是说数字图片必须是0-9
@@ -47,6 +48,7 @@ public class LabelAtlas extends Table {
 
         // 设置为true，缩放才生效
         setTransform(true);
+
     }
 
     public LabelAtlas(TextureRegion tr, int tileWidth, int tileHeight, String startCharMap) {
@@ -90,8 +92,12 @@ public class LabelAtlas extends Table {
             add(img);
         }
 
+        float oldX = getX(Align.center);
+        
         setSize(tileWidth * arr.length, tileHeight);
 
+        // 修改坐标
+        setX(oldX - getWidth() / 2);
     }
 
     int index(char c, char[] chars) {

@@ -19,6 +19,7 @@ public class Version {
      * 0.1.3 label性能优化【注意：label最好不要使用太多】首次创建TTFLabelStyle不去创建字体减少耗时。只有settext时才重新创建。
      * 0.1.4 新增toast和loading相关UI
      * 0.1.5 集成SmartFont，对中文支持不是很好。labelaltes 居中问题。
+     * 0.1.6 TTFLabel优化，未设置TTF路径，则使用系统自带字体。
      *  */
-    public static final String VERSION = "0.1.4";
+    public static final String VERSION = "0.1.6";
 }

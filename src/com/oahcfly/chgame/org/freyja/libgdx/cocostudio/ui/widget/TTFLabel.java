@@ -3,11 +3,12 @@ package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.FontUtil;
 
 /**
  * 让Label支持TTF,使用ttf后Label的font不会发生变化,每次修改Text的时候重新创建font
- * 
+ * [如何没有设置ttf，就使用系统默认字体]
  * @author i see
  * 
  */
@@ -19,11 +20,16 @@ public class TTFLabel extends Label {
 
     @Override
     public void setText(CharSequence newText) {
-        if (textEquals(newText)) return;
-        
-        LabelStyle style = getStyle();
-        style.font = createFont((TTFLabelStyle)style, "" + newText);
+        if (textEquals(newText))
+            return;
 
+        TTFLabelStyle style = (TTFLabelStyle)getStyle();
+        if (style.getFontFileHandle() != null) {
+            style.font = createFont(style, "" + newText);
+        } else {
+            // 使用系统自带字体
+            style.font = CHGame.getInstance().getInternationalGenerator().appendToFont(newText.toString());
+        }
         super.setStyle(style);
         super.setText(newText);
     }
