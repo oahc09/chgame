@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.JsonValue;
 /**
  * 
  * <pre>
- * 资源加载
+ * 资源加载属性
  * 
  * date: 2014-12-3
  * </pre>

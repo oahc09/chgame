@@ -6,6 +6,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,8 +15,19 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.StringUtil;
 import com.oahcfly.chgame.smartfont.writer.BitmapFontWriter;
 
+/**
+ * 
+ * <pre>
+ * 智能fnt字体生成器
+ * 
+ * PS：涉及中文需要预先将所有需要使用的文字加载处理。
+ * date: 2014-12-23
+ * </pre>
+ * @author caohao
+ */
 public class SmartFontGenerator {
     private static final String TAG = "SmartFontGenerator";
 
@@ -33,6 +45,108 @@ public class SmartFontGenerator {
         generatedFontDir = "generated-fonts/";
         referenceScreenWidth = 1280;
         pageSize = 512; // size of atlas pages for font pngs
+    }
+
+    /**
+     * 
+     * <pre>
+     * TODO
+     * 
+     * date: 2014-12-23
+     * </pre>
+     * @author caohao
+     * @param fontFile
+     * @param text
+     * @param fontName
+     * @param fontSize
+     * @return
+     */
+    public BitmapFont createFont(FileHandle fontFile, String text, String fontName, int fontSize) {
+        BitmapFont font = null;
+        // if fonts are already generated, just load from file
+        Preferences fontPrefs = Gdx.app.getPreferences("org.jrenner.smartfont");
+        int displayWidth = fontPrefs.getInteger("display-width", 0);
+        int displayHeight = fontPrefs.getInteger("display-height", 0);
+        boolean loaded = false;
+        if (displayWidth != Gdx.graphics.getWidth() || displayHeight != Gdx.graphics.getHeight()) {
+            Gdx.app.debug(TAG, "Screen size change detected, regenerating fonts");
+        } else {
+            try {
+                // try to load from file
+                Gdx.app.debug(TAG, "Loading generated font from file cache");
+                font = new BitmapFont(getFontFile(fontName + ".fnt"));
+                loaded = true;
+            } catch (GdxRuntimeException e) {
+                Gdx.app.error(TAG, e.getMessage());
+                Gdx.app.debug(TAG, "Couldn't load pre-generated fonts. Will generate fonts.");
+            }
+        }
+        if (!loaded || forceGeneration) {
+            forceGeneration = false;
+            // float width = Gdx.graphics.getWidth();
+            //float ratio = width / referenceScreenWidth; // use 1920x1280 as baseline, arbitrary
+            //float baseSize = 28f; // for 28 sized fonts at baseline width above
+
+            // store screen width for detecting screen size change
+            // on later startups, which will require font regeneration
+            fontPrefs.putInteger("display-width", Gdx.graphics.getWidth());
+            fontPrefs.putInteger("display-height", Gdx.graphics.getHeight());
+            fontPrefs.flush();
+
+            font = generateFontWriteFiles(text, fontName, fontFile, fontSize, pageSize, pageSize);
+        }
+        font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        return font;
+    }
+
+    /**
+     * 
+     * <pre>
+     * TODO
+     * 
+     * date: 2014-12-23
+     * </pre>
+     * @author caohao
+     * @param text
+     * @param fontName
+     * @param fontFile
+     * @param fontSize
+     * @param pageWidth
+     * @param pageHeight
+     * @return
+     */
+    private BitmapFont generateFontWriteFiles(String text, String fontName, FileHandle fontFile, int fontSize,
+            int pageWidth, int pageHeight) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+
+        PixmapPacker packer = new PixmapPacker(pageWidth, pageHeight, Pixmap.Format.RGBA8888, 2, false);
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = fontSize;
+        parameter.characters = StringUtil.removeRepeatedChar(FreeTypeFontGenerator.DEFAULT_CHARS + text);
+        parameter.flip = false;
+        parameter.packer = packer;
+        FreeTypeFontGenerator.FreeTypeBitmapFontData fontData = generator.generateData(parameter);
+
+        Array<PixmapPacker.Page> pages = packer.getPages();
+        TextureRegion[] texRegions = new TextureRegion[pages.size];
+        for (int i = 0; i < pages.size; i++) {
+            PixmapPacker.Page p = pages.get(i);
+            Texture tex = new Texture(new PixmapTextureData(p.getPixmap(), p.getPixmap().getFormat(), false, false,
+                    true)) {
+                @Override
+                public void dispose() {
+                    super.dispose();
+                    getTextureData().consumePixmap().dispose();
+                }
+            };
+            tex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+            texRegions[i] = new TextureRegion(tex);
+        }
+        BitmapFont font = new BitmapFont(fontData, texRegions, false);
+        saveFontToFile(font, fontSize, fontName, packer);
+        generator.dispose();
+        packer.dispose();
+        return font;
     }
 
     /** Will load font from file. If that fails, font will be generated and saved to file.

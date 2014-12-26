@@ -24,7 +24,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.oahcfly.chgame.core.event.CHEvent;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
-import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.FontUtil;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.TTFLabel;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.TTFLabelStyle;
 import com.oahcfly.chgame.plist.CHPListCenter;
@@ -77,18 +76,7 @@ public class FirstScreen extends CHScreen {
         //        Label label =new Label("abcdxyz123s撒啊啊啊啊啊啊啊啊测试", labelStyle);
         //        label.setPosition(200, 200);
         //        addActor(label);
-
-        FileHandle fileHandle = Gdx.files.internal("x.ttf");
-
-        long starttime = System.currentTimeMillis();
-        BitmapFont bitmapFont = FontUtil.createFont(fileHandle, "道具撒旦测试啊a时空", 20);
-        createLabel(FontUtil.createFont(fileHandle, "道", 20), "道具", fileHandle, 80, bitmapFont);
-        createLabel(FontUtil.createFont(fileHandle, "撒旦", 20), "撒旦", fileHandle, 100, bitmapFont);
-        createLabel(FontUtil.createFont(fileHandle, "测试", 20), "测试", fileHandle, 120, bitmapFont);
-        createLabel(FontUtil.createFont(fileHandle, "啊aaa", 20), "啊a", fileHandle, 140, bitmapFont);
-        createLabel(FontUtil.createFont(fileHandle, "时空", 20), "时空", fileHandle, 160, bitmapFont);
-
-        System.out.println("字体耗时：" + (System.currentTimeMillis() - starttime));
+ 
     }
 
     private void createLabel(BitmapFont font, String string, FileHandle fontFileHandle, int h, BitmapFont allBitmapFont) {

@@ -1,0 +1,1 @@
+package com.oahcfly.chgame.core.listener;import java.util.Locale;/** *  * <pre> * 返回Locale的接口 *  * date: 2014-12-26 * </pre> * @author caohao */public interface LocaleListener {	public Locale getLocale();}

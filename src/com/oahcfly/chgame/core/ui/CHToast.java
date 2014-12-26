@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.FontUtil;
@@ -40,7 +41,10 @@ public class CHToast {
         style.background = new TextureRegionDrawable(
                 new TextureRegion(CHGame.getInstance().getTexture("ui/tip_bg.png")));
         label = new Label(" " + text + " ", style);
-        label.setHeight(style.background.getMinHeight());
+        label.setHeight(style.background.getMinHeight()+label.getTextBounds().height);
+        label.setWidth(400);
+        label.setAlignment(Align.center);
+        label.setWrap(true);
         textWidth = bitmapFont.getBounds(text).width;
         textHeight = bitmapFont.getBounds(text).height;
         label.setPosition(CHGame.getInstance().gameWidth / 2 - textWidth / 2, CHGame.getInstance().gameHeight / 4

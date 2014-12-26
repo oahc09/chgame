@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.listener.CHClickListener.CLICKTYPE;
+import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.ui.CHUI;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.LabelAtlas;
 
@@ -69,12 +70,14 @@ public class MainUI extends CHUI {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
                 Gdx.app.log("ccc", "pause touch down");
+                CHGame.getInstance().showLoadingUI();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("ccc", "pause touch up");
+                //CHGame.getInstance().closeLoadingUI();
                 super.touchUp(event, x, y, pointer, button);
             }
         });

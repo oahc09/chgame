@@ -18,9 +18,9 @@ public class SmartFontExample  extends ApplicationAdapter {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         SmartFontGenerator fontGen = new SmartFontGenerator();
         FileHandle exoFile = Gdx.files.local("x.ttf");
-        BitmapFont fontSmall = fontGen.createFont(exoFile, "exo-small", 24);
-        BitmapFont fontMedium = fontGen.createFont(exoFile, "exo-medium", 48);
-        BitmapFont fontLarge = fontGen.createFont(exoFile, "exo-large", 64);
+        BitmapFont fontSmall = fontGen.createFont(exoFile,"小字体是多少是多少奥特曼", "exo-small", 24);
+        BitmapFont fontMedium = fontGen.createFont(exoFile,"中字体的是多少",  "exo-medium", 48);
+        BitmapFont fontLarge = fontGen.createFont(exoFile, "大字体大师大师", "exo-large", 64);
 
         stage = new Stage();
 
@@ -31,9 +31,9 @@ public class SmartFontExample  extends ApplicationAdapter {
         Label.LabelStyle largeStyle = new Label.LabelStyle();
         largeStyle.font = fontLarge;
 
-        Label small = new Label("Small Font 小字体", smallStyle);
-        Label medium = new Label("Medium Font 中字体", mediumStyle);
-        Label large = new Label("Large Font 大字体", largeStyle);
+        Label small = new Label("Small Font 小字体多少奥特曼", smallStyle);
+        Label medium = new Label("Medium Font 中字体多少", mediumStyle);
+        Label large = new Label("Large Font 大字体大师", largeStyle);
 
         Table table = new Table();
         table.setFillParent(true);

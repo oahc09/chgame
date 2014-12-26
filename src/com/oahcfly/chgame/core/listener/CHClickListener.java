@@ -31,6 +31,10 @@ public class CHClickListener extends InputListener {
 
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        if (pointer > 0) {
+            // 屏蔽2指同时点击的情况
+            return false;
+        }
         switch (clickType) {
             case SCALE:
                 event.getListenerActor().setScale(1.1f);
@@ -48,6 +52,10 @@ public class CHClickListener extends InputListener {
 
     @Override
     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+        if (pointer > 0) {
+            // 屏蔽2指同时点击的情况
+            return;
+        }
         switch (clickType) {
             case SCALE:
                 event.getListenerActor().setScale(1f);

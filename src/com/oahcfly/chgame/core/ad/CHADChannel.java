@@ -23,7 +23,7 @@ public class CHADChannel {
 
     public static final String CHANNEL_BAIDU = "baidu";
 
-    public static final String CHANNEL_TENGXUN_STRING = "tengxun";
+    public static final String CHANNEL_TENGXUN_STRING = "tengxu";
 
     public static final String CHANNEL_MEIZU = "meizu";
 

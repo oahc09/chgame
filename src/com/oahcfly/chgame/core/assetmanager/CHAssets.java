@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 /**
  * 
  * <pre>
+ * 【资源管理】
  * 
  * 格式：
  * bigstar代表group
