@@ -20,6 +20,15 @@ public class Version {
      * 0.1.4 新增toast和loading相关UI
      * 0.1.5 集成SmartFont，对中文支持不是很好。labelaltes 居中问题。
      * 0.1.6 TTFLabel优化，未设置TTF路径，则使用系统自带字体。
+     * 0.1.7  封装各种action，【倒计时，文字挨个显示】
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
      *  */
     public static final String VERSION = "0.1.6";
 }

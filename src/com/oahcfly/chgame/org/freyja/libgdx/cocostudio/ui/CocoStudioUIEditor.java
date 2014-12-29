@@ -531,7 +531,7 @@ public class CocoStudioUIEditor {
         }
 
         if (fontFile == null) {
-            debug(option, "ttf字体:" + option.getFontName() + " 不存在,使用默认字体");
+            debug(option, "ttf字体:" + option.getFontName() + " 不存在,使用系统默认字体");
         }
 
         BitmapFont font = defaultBitmapFont;//FontUtil.createFont(fontFile, option.getText(), option.getFontSize());

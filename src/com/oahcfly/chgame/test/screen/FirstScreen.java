@@ -22,6 +22,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.oahcfly.chgame.core.actions.CountDownAction;
+import com.oahcfly.chgame.core.actions.LabelTickerAction;
 import com.oahcfly.chgame.core.event.CHEvent;
 import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
@@ -83,6 +85,16 @@ public class FirstScreen extends CHScreen {
 
         addLabelAtlas(10, 20, 100);
         addLabelAtlas(100, 30, 127);
+
+        LabelTickerAction ticker = new LabelTickerAction(2f, "人类逆天了啊！哈哈哈");
+        label.addAction(ticker);
+
+        // 倒计时
+        TextureRegion textureRegion = new TextureRegion(CHGame.getInstance().getTexture("screen/score_numlist.png"));
+        TextureRegion[][] textureRegions = textureRegion.split(23, 27);
+         CountDownAction countDownAction =CountDownAction.obtain(10f, textureRegions[0]);
+         getStage().addAction(countDownAction);
+         
     }
 
     private LabelAtlas addLabelAtlas(int num, int x, int y) {
