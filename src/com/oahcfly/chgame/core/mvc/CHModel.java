@@ -21,6 +21,7 @@ public abstract class CHModel {
         screen = chScreen;
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends CHScreen> T getScreen() {
         return (T)screen;
     }

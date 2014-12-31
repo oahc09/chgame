@@ -9,16 +9,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.listener.CHClickListener.CLICKTYPE;
 import com.oahcfly.chgame.core.mvc.CHGame;
+import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHUI;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.LabelAtlas;
 
 public class MainUI extends CHUI {
 
+    public MainUI(CHScreen chScreen) {
+        super(chScreen, null, "screen/MainScreen_1.json");
+        initUI();
+    }
+
     public MainUI(Stage stage) {
         super(stage, null, "screen/MainScreen_1.json");
         initUI();
     }
-
+    
     public void initUI() {
         getEditor().findActor("img_rush_bg").addListener(new CHClickListener(CLICKTYPE.FADE));
 //        getEditor().findActor("img_rush_bg").addListener(new DragListener() {

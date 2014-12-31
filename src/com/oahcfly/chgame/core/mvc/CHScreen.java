@@ -1,12 +1,15 @@
 
 package com.oahcfly.chgame.core.mvc;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.oahcfly.chgame.core.ui.CHUI;
 
 /**
  * 
@@ -14,6 +17,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * 【View层】
  * 场景抽像类
  * 
+ * 内部管理多个UI。
+ * UI数据通过CHModel进行管理。
  * date: 2014-5-11
  * </pre>
  * @author caohao
@@ -35,6 +40,8 @@ public abstract class CHScreen implements Screen {
 
     private int stageW = 0, stageH = 0;
 
+    private HashMap<String, CHUI> chuiMap = new HashMap<String, CHUI>();
+
     public CHScreen() {
         this.stageW = game.getGameWidth();
         this.stageH = game.getGameHeight();
@@ -43,10 +50,6 @@ public abstract class CHScreen implements Screen {
     public CHScreen(int stageW, int stageH) {
         this.stageW = stageW;
         this.stageH = stageH;
-    }
-
-    public void dispose() {
-
     }
 
     private Stage stage;
@@ -64,7 +67,7 @@ public abstract class CHScreen implements Screen {
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
+        chuiMap.clear();
         endScreen();
         stage.dispose();
         dispose();
@@ -137,4 +140,16 @@ public abstract class CHScreen implements Screen {
         this.chModel = chModel;
     }
 
+    public void addUI(CHUI chui) {
+        chuiMap.put(chui.getClass().getSimpleName(), chui);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends CHUI> T getUI(String name) {
+        return (T)chuiMap.get(name);
+    }
+
+    public void dispose() {
+
+    }
 }

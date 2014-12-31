@@ -95,6 +95,7 @@ public class FirstScreen extends CHScreen {
          CountDownAction countDownAction =CountDownAction.obtain(10f, textureRegions[0]);
          getStage().addAction(countDownAction);
          
+         System.out.println(""+MainUI.class.getSimpleName());
     }
 
     private LabelAtlas addLabelAtlas(int num, int x, int y) {

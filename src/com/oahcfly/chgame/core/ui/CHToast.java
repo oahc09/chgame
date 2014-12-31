@@ -41,14 +41,43 @@ public class CHToast {
         style.background = new TextureRegionDrawable(
                 new TextureRegion(CHGame.getInstance().getTexture("ui/tip_bg.png")));
         label = new Label(" " + text + " ", style);
-        label.setHeight(style.background.getMinHeight()+label.getTextBounds().height);
-        label.setWidth(400);
-        label.setAlignment(Align.center);
         label.setWrap(true);
+        label.setWidth(400);
+        label.setHeight(style.background.getMinHeight() + label.getTextBounds().height);
+
+        label.setAlignment(Align.center);
+
         textWidth = bitmapFont.getBounds(text).width;
         textHeight = bitmapFont.getBounds(text).height;
-        label.setPosition(CHGame.getInstance().gameWidth / 2 - textWidth / 2, CHGame.getInstance().gameHeight / 4
-                - textHeight / 2);
+        label.setPosition(CHGame.getInstance().gameWidth / 2 - textWidth / 2, CHGame.getInstance().gameHeight / 2
+                - label.getHeight() / 2);
+
+        setDelayDuration(1.5f);
+        // 点击事件
+        //        label.setTouchable(Touchable.enabled);
+        //        label.addListener(new InputListener(){
+        //
+        //            @Override
+        //            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+        //                // TODO Auto-generated method stub
+        //                super.touchUp(event, x, y, pointer, button);
+        //                label.clear();
+        //                label.remove();
+        //            }
+        //
+        //            @Override
+        //            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        //                // TODO Auto-generated method stub
+        //                return true;
+        //            }
+        //            
+        //        });
+    }
+
+    private float duration;
+
+    public void setDelayDuration(float duration) {
+        this.duration = duration;
     }
 
     public void setCenterPosition(float centerX, float centerY) {
@@ -63,7 +92,7 @@ public class CHToast {
                 label.remove();
             }
         });
-        label.addAction(Actions.delay(1.5f, delayedAction));
+        label.addAction(Actions.delay(duration, delayedAction));
         CHGame.getInstance().getScreen().addActor(label);
     }
 }

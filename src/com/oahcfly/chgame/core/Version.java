@@ -20,9 +20,9 @@ public class Version {
      * 0.1.4 新增toast和loading相关UI
      * 0.1.5 集成SmartFont，对中文支持不是很好。labelaltes 居中问题。
      * 0.1.6 TTFLabel优化，未设置TTF路径，则使用系统自带字体。
-     * 0.1.7  封装各种action，【倒计时，文字挨个显示】
-     * 
-     * 
+     * 0.1.7  封装各种action，【倒计时，文字挨个显示，跳动《左右，上下》，缩放，旋转】
+     * 0.1.8 CHScreen内部管理一系列CHUI。CHUI切换特效。构造函数优化。数字标签颜色处理。
+     * 0.1.9 
      * 
      * 
      * 
@@ -30,5 +30,5 @@ public class Version {
      * 
      * 
      *  */
-    public static final String VERSION = "0.1.6";
+    public static final String VERSION = "0.1.8";
 }

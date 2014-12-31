@@ -89,6 +89,7 @@ public class LabelAtlas extends Table {
             } else {
                 img = new Image(tr);
             }
+            img.setColor(getColor());
             add(img);
         }
 
