@@ -61,7 +61,7 @@ public class LabelTickerAction extends TemporalAction {
      * @see #setActor(Actor);
      */
     @Override
-    public void setActor(Actor actor) {
+    public void setTarget(Actor actor) {
         if (!(actor instanceof Label))
             if (actor == null)
                 super.setActor(actor);

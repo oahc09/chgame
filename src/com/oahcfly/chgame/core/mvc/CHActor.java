@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Pool.Poolable;
 
 /**
  * 
@@ -15,9 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * </pre>
  * @author caohao
  */
-public abstract class CHActor extends Actor {
+public abstract class CHActor extends Actor implements Poolable {
     private Texture bgTexture;
-    
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -35,10 +35,14 @@ public abstract class CHActor extends Actor {
         }
     }
 
-
     public void setBgTexture(Texture bgTexture) {
         this.bgTexture = bgTexture;
         setBounds(0, 0, bgTexture.getWidth(), bgTexture.getHeight());
+    }
+
+    protected void clearBgTexture() {
+        this.bgTexture.dispose();
+        this.bgTexture = null;
     }
 
 }

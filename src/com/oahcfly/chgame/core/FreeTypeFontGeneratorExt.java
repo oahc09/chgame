@@ -72,7 +72,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
  * 
  */
 public class FreeTypeFontGeneratorExt implements Disposable {
-	public static final String DEFAULT_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890\"!`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*";
+	public static final String DEFAULT_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890\"!`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*";
 	final Library library;
 	Face face;
 	String filePath;
@@ -321,7 +321,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
 		FreeTypeBitmapFontData data = generateData(size, "", flip, null);
 		font = new BitmapFont(data, data.getTextureRegions(), false);
 		font.setOwnsTexture(true);
-		appendToFont(DEFAULT_CHARS);
+		//appendToFont(DEFAULT_CHARS);
 		font = appendToFont(DEFAULT_CHARS);
 	}
 

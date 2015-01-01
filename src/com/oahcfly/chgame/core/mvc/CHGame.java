@@ -122,7 +122,7 @@ public abstract class CHGame extends Game {
         // 初始化字体方案
         generator = new FreeTypeFontGeneratorExt(30, false);
         FileHandle baseFileHandle = Gdx.files.internal("values/strings");
-        if (baseFileHandle.exists()) {
+        if (localeListener != null && baseFileHandle.name() != null) {
             // 读取国际化资源
             Locale locale = localeListener.getLocale();
             international = International.createBundle(baseFileHandle, locale);
@@ -332,7 +332,7 @@ public abstract class CHGame extends Game {
             texture = assetManager.get(fileName, Texture.class);
         }
         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
+        texture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
         return texture;
     }
 
@@ -351,6 +351,7 @@ public abstract class CHGame extends Game {
         Texture texture = new Texture(pixmap);
         // 抗锯齿
         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        texture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
         return texture;
     }
 

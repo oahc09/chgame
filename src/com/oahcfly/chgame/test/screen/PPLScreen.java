@@ -1,38 +1,103 @@
 
 package com.oahcfly.chgame.test.screen;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.oahcfly.chgame.core.mvc.CHScreen;
-import com.oahcfly.chgame.test.ui.MainUI;
-import com.oahcfly.chgame.test.ui.TestUI;
+import java.util.HashSet;
 
-public class PPLScreen extends CHScreen {
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
+import com.badlogic.gdx.scenes.scene2d.ui.SplitPane.SplitPaneStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.oahcfly.chgame.core.mvc.CHGame;
+import com.oahcfly.chgame.core.mvc.CHScreen;
+
+public class PPLScreen extends CHScreen implements GestureListener {
 
     @Override
     public void initScreen() {
         // TODO Auto-generated method stub
 
-        addUI(new MainUI(this));
-        addUI(new TestUI(this));
+        for (int i = 0; i < 5; i++) {
+            Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
+            image.setName("xin_" + (i + 1));
+            image.setPosition(10 + image.getWidth() * i, 100);
 
-        getUI("TestUI").show();
-
-        Action[] sAction = new Action[10];
-        // 使用action实现定时器
-        for (int i = 0; i < 10; i++) {
-            Action delayedAction = Actions.run(new Runnable() {
-
-                @Override
-                public void run() {
-                    System.out.println("time:" + (System.currentTimeMillis() / 1000) + ",发射:");
-                }
-            });
-            Action action = Actions.delay(1f, delayedAction);
-            sAction[i] = action;
+            //   addActor(image);
         }
-        getStage().addAction(Actions.sequence(sAction));
 
+        // 监听器
+        InputMultiplexer inputMultiplexer = new InputMultiplexer(new GestureDetector(this), getStage());
+        Gdx.input.setInputProcessor(inputMultiplexer);
+
+        testSplitPane();
+    }
+
+    private void testSplitPane() {
+        Image image1 = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", 1));
+        Image image2 = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", 2));
+        SplitPane splitPane = new SplitPane(image1, image2, true, new SplitPaneStyle(new TextureRegionDrawable(
+                new TextureRegion(CHGame.getInstance().getTexture("screen/en_panel_piece.png")))));
+        splitPane.pack();
+ 
+        addActor(splitPane);
+    }
+
+    private void testStack() {
+        // 没什么特别的
+        Stack stack = new Stack();
+        for (int i = 0; i < 5; i++) {
+            Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
+            image.setName("xin_" + (i + 1));
+            stack.add(image);
+        }
+        stack.pack();
+        addActor(stack);
+    }
+
+    private void testNewActions() {
+        // 图片6移动到400,400,闪动3下，接着图片7移动到600,200
+        Image image6 = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", 6));
+        Image image7 = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", 7));
+        Action action71 = Actions.moveTo(600, 200, 2f);
+
+        Action action61 = Actions.moveTo(400, 400, 2f);
+        Action action62 = Actions.repeat(3, Actions.sequence(Actions.alpha(0.2f, 0.3f), Actions.alpha(1f, 0.3f)));
+        SequenceAction sequenceAction = new SequenceAction(action61, action62, Actions.addAction(action71, image7));
+        image6.addAction(sequenceAction);
+
+        addActor(image6);
+        addActor(image7);
+    }
+
+    private void testOldActions() {
+        // 图片6移动到400,400,闪动3下，接着图片7移动到600,200
+        Image image6 = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", 6));
+        final Image image7 = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", 7));
+        final Action action71 = Actions.moveTo(600, 200, 2f);
+
+        Action action61 = Actions.moveTo(400, 400, 2f);
+        Action action62 = Actions.repeat(3, Actions.sequence(Actions.alpha(0.2f, 0.3f), Actions.alpha(1f, 0.3f)));
+        SequenceAction sequenceAction = new SequenceAction(action61, action62, Actions.run(new Runnable() {
+
+            @Override
+            public void run() {
+                image7.addAction(action71);
+            }
+        }));
+        image6.addAction(sequenceAction);
+
+        addActor(image6);
+        addActor(image7);
     }
 
     @Override
@@ -45,6 +110,71 @@ public class PPLScreen extends CHScreen {
     public void clickBackKey() {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void render(float delta) {
+        // TODO Auto-generated method stub
+        super.render(delta);
+    }
+
+    HashSet<String> actorNameList;
+
+    @Override
+    public boolean touchDown(float x, float y, int pointer, int button) {
+        System.out.println("touchDown");
+        Vector2 vector2 = getStage().screenToStageCoordinates(new Vector2(x, y));
+        System.out.println("touchDown : x=" + vector2.x + ",y=" + vector2.y);
+        actorNameList = new HashSet<String>();
+        return false;
+    }
+
+    @Override
+    public boolean tap(float x, float y, int count, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean longPress(float x, float y) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean fling(float velocityX, float velocityY, int button) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean pan(float x, float y, float deltaX, float deltaY) {
+        Vector2 vector2 = getStage().screenToStageCoordinates(new Vector2(x, y));
+        //System.out.println("pan : x=" + vector2.x + ",y=" + vector2.y);
+        Actor actor = getStage().hit(vector2.x, vector2.y, true);
+        if (actor != null) {
+            System.out.println("actor:" + actor.getName());
+            actorNameList.add(actor.getName());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean panStop(float x, float y, int pointer, int button) {
+        Vector2 vector2 = getStage().screenToStageCoordinates(new Vector2(x, y));
+        System.out.println("panStop : actorNameList=" + actorNameList.toString());
+        return false;
+    }
+
+    @Override
+    public boolean zoom(float initialDistance, float distance) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+        System.out.println("pinch");
+        return false;
     }
 
 }

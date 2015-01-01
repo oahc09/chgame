@@ -86,7 +86,7 @@ public class MyGame extends ApplicationAdapter {
 
                     }
                 };
-                Gdx.input.getTextInput(listen, international.get("please"), name.getText().toString());
+                Gdx.input.getTextInput(listen, international.get("please"), "title",name.getText().toString());
             }
         });
         Gdx.input.setInputProcessor(stage);
