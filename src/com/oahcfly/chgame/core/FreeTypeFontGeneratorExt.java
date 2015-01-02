@@ -912,6 +912,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
 	 * @return
 	 */
 	public Label createLabel(String text) {
+	    appendToFont(text);
 		return new Label(text, new LabelStyle(font, Color.WHITE));
 	}
 	

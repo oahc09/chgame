@@ -19,6 +19,9 @@ import com.badlogic.gdx.utils.Array;
  * @author caohao
  */
 public class CHParticle {
+    public enum ParticleType {
+        DEFAULT, STAR
+    }
 
     //当前粒子列表
     private Array<PooledEffect> _effects;
@@ -28,11 +31,31 @@ public class CHParticle {
 
     public CHParticle() {
         // Particle effects
+        //        ParticleEffect _effect = new ParticleEffect();//particleStars
+        //        _effect.load(Gdx.files.classpath("com/oahcfly/chgame/particle/star.p"),
+        //                Gdx.files.classpath("com/oahcfly/chgame/particle"));
+        //        _effectPool = new ParticleEffectPool(_effect, 20, 100);
+        //        _effects = new Array<PooledEffect>();
+        this(ParticleType.DEFAULT);
+    }
+
+    public CHParticle(ParticleType particleType) {
+        String fileName = "";
+        switch (particleType) {
+            case DEFAULT:
+                fileName = "particleStars";
+                break;
+            case STAR:
+                fileName = "star.p";
+                break;
+        }
+
         ParticleEffect _effect = new ParticleEffect();
-        _effect.load(Gdx.files.classpath("com/oahcfly/chgame/particle/particleStars"),
+        _effect.load(Gdx.files.classpath("com/oahcfly/chgame/particle/" + fileName),
                 Gdx.files.classpath("com/oahcfly/chgame/particle"));
-        _effectPool = new ParticleEffectPool(_effect, 20, 100);
+        _effectPool = new ParticleEffectPool(_effect, 20, 200);
         _effects = new Array<PooledEffect>();
+
     }
 
     public CHParticle(FileHandle effectFile, FileHandle imagesDir) {

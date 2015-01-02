@@ -163,7 +163,7 @@ public class CocoStudioUIEditor {
         jj.setIgnoreUnknownFields(true);
         export = jj.fromJson(CCExport.class, json);
 
-        defaultBitmapFont = CHGame.getInstance().getMenuFont();
+        defaultBitmapFont = new BitmapFont();
     }
 
     /**
@@ -605,5 +605,7 @@ public class CocoStudioUIEditor {
         this.parsers = null;
         this.textureAtlas = null;
         this.ttfs = null;
+        this.defaultBitmapFont.dispose();
+        
     }
 }

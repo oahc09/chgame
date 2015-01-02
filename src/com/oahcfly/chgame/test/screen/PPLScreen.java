@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
@@ -14,19 +15,24 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane.SplitPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
+import com.oahcfly.chgame.core.ui.CHParticle;
+import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
 
 public class PPLScreen extends CHScreen implements GestureListener {
 
+    CHParticle chParticle;
+
     @Override
     public void initScreen() {
-        // TODO Auto-generated method stub
-
+        chParticle=new CHParticle(ParticleType.STAR);
+        
         for (int i = 0; i < 5; i++) {
             Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
             image.setName("xin_" + (i + 1));
@@ -40,6 +46,13 @@ public class PPLScreen extends CHScreen implements GestureListener {
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         testSplitPane();
+
+        String saveString = CHGame.getInstance().getInternational().get("list");
+        Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
+        CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
+        saveLabel.setColor(Color.WHITE);
+        saveLabel.setPosition(500, 100);
+        addActor(saveLabel);
     }
 
     private void testSplitPane() {
@@ -48,7 +61,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         SplitPane splitPane = new SplitPane(image1, image2, true, new SplitPaneStyle(new TextureRegionDrawable(
                 new TextureRegion(CHGame.getInstance().getTexture("screen/en_panel_piece.png")))));
         splitPane.pack();
- 
+
         addActor(splitPane);
     }
 
@@ -116,6 +129,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
     public void render(float delta) {
         // TODO Auto-generated method stub
         super.render(delta);
+        chParticle.render(getStage().getBatch());
     }
 
     HashSet<String> actorNameList;
@@ -126,6 +140,8 @@ public class PPLScreen extends CHScreen implements GestureListener {
         Vector2 vector2 = getStage().screenToStageCoordinates(new Vector2(x, y));
         System.out.println("touchDown : x=" + vector2.x + ",y=" + vector2.y);
         actorNameList = new HashSet<String>();
+        
+        chParticle.createEffect(vector2.x, vector2.y);
         return false;
     }
 

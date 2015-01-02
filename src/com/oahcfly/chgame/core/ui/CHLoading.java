@@ -47,7 +47,6 @@ public class CHLoading {
         chAniamtionPlayer.setName("actor_loading");
 
         // 添加loading组件
-
         parentTable.add(chAniamtionPlayer);
     }
 

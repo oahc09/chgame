@@ -6,10 +6,10 @@ import java.util.Locale;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -74,10 +74,6 @@ public abstract class CHGame extends Game {
 
     private Label fpsLabel;
 
-    private BitmapFont fontNumber, fontMenu;
-
-    private Preferences preferences;
-
     private CHAssets chAssets;
 
     public CHGame() {
@@ -115,21 +111,14 @@ public abstract class CHGame extends Game {
 
     public final static String TAG = "CHGame";
 
+    private CHLoading chLoading;
+
     @Override
     public void create() {
+
         Gdx.app.log(TAG, "version : " + Version.VERSION);
 
-        // 初始化字体方案
-        generator = new FreeTypeFontGeneratorExt(30, false);
-        FileHandle baseFileHandle = Gdx.files.internal("values/strings");
-        if (localeListener != null && baseFileHandle.name() != null) {
-            // 读取国际化资源
-            Locale locale = localeListener.getLocale();
-            international = International.createBundle(baseFileHandle, locale);
-            // end
-        } else {
-            Gdx.app.error(TAG, "not find values/strings in asset");
-        }
+        long starttime = System.currentTimeMillis();
 
         musicManager = new MusicManager();
         soundManager = new SoundManager();
@@ -142,53 +131,56 @@ public abstract class CHGame extends Game {
 
         instance = this;
 
-        setPreferences(Gdx.app.getPreferences("chdata"));
+        Gdx.app.log(TAG, "create :" + (System.currentTimeMillis() - starttime));
 
-        //spriteBatch = new SpriteBatch();
-
-        try {
-            fontNumber = new BitmapFont(Gdx.files.classpath("com/oahcfly/chgame/font/number.fnt"),
-                    Gdx.files.classpath("com/oahcfly/chgame/font/number.png"), false, true);
-        } catch (Exception e) {
-            fontNumber = new BitmapFont();
-            Gdx.app.error("chgame", "fontNumber load error :" + e.getMessage());
-        }
-
-        try {
-            fontMenu = new BitmapFont(Gdx.files.classpath("com/oahcfly/chgame/font/menu.fnt"),
-                    Gdx.files.classpath("com/oahcfly/chgame/font/menu.png"), false, true);
-        } catch (Exception e) {
-            fontMenu = new BitmapFont();
-            Gdx.app.error("chgame", "fontMenu load error :" + e.getMessage());
-        }
-
-        fontNumber.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        fontMenu.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
-        LabelStyle style = new LabelStyle(fontMenu, fontMenu.getColor());
-
-        fpsLabel = new Label("FPS", style);
-        fpsLabel.setY(20);
-        fpsLabel.setX(10);
-
-        for (int i = 0; i < 6; i++) {
-            FileHandle fileHandle = Gdx.files.classpath(String.format("com/oahcfly/chgame/res/l_%d.png", i));
-            Texture texture = new Texture(fileHandle);
-            loadingKeyFrames.add(new TextureRegion(texture));
-        }
-        chLoading = new CHLoading();
         init();
+
     }
 
-    private CHLoading chLoading;
+    /**
+     * 
+     * <pre>
+     * 读取多语言
+     * 
+     * date: 2015-1-2
+     * </pre>
+     * @author caohao
+     */
+    private void loadInternationalValues() {
+        FileHandle baseFileHandle = Gdx.files.internal("values/strings");
+        if (baseFileHandle.name() != null) {
+            // 读取国际化资源
+            Locale locale = new Locale("chgame");
+            if (localeListener != null) {
+                locale = localeListener.getLocale();
+            }
+            international = International.createBundle(baseFileHandle, locale);
+            // 创建国际化方案里的当前语言的所有字符纹理  太耗时了。。。。
+            //  generator.appendToFont(international.getVaulesString());
+            // end
+        } else {
+            Gdx.app.error(TAG, "not find values/strings in asset");
+        }
+    }
+
+    /**
+     * 
+     * <pre>
+     * 初始化字体方案
+     * 
+     * date: 2015-1-2
+     * </pre>
+     * @author caohao
+     */
+    private void loadSystemTTF() {
+        generator = new FreeTypeFontGeneratorExt(30, false);
+    }
 
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
         super.dispose();
         //spriteBatch.dispose();
-        fontMenu.dispose();
-        fontNumber.dispose();
         musicManager.dispose();
         soundManager.dispose();
         chAssets.dispose();
@@ -215,21 +207,26 @@ public abstract class CHGame extends Game {
         super.render();
 
         if (openFPS) {
-            Batch spriteBatch = getScreen().getStage().getBatch();
+            if (fpsLabel == null) {
+                // fps
+                BitmapFont fontMenu = new BitmapFont();
+                fontMenu.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+                LabelStyle style = new LabelStyle(fontMenu, fontMenu.getColor());
+                fpsLabel = new Label("FPS", style);
+                fpsLabel.setColor(Color.RED);
+                fpsLabel.setY(20);
+                fpsLabel.setX(10);
+                // fps
+            }
+            Batch fpsSpriteBatch = getScreen().getStage().getBatch();
             // 初始要有begin起始
-            spriteBatch.begin();
+            fpsSpriteBatch.begin();
             // 显示文字到屏幕指定位置
             fpsLabel.setText("FPS :" + Gdx.graphics.getFramesPerSecond() + ",M:"
                     + (Gdx.app.getJavaHeap() / (1024 * 1024)) + ",TS:" + Texture.getNumManagedTextures());
-            fpsLabel.draw(spriteBatch, 1);
-
-            //            String text = "FPS:" + Math.min(Gdx.graphics.getFramesPerSecond(), 60) + "\nJHeap:" + Gdx.app.getJavaHeap()
-            //                    / 1024 / 1204 + "M" + "\nNHeap:" + Gdx.app.getNativeHeap() / 1024 / 1024 + "M";
-            //
-            //            //don not follow the main camera . 
-            //            getMenuFont().drawMultiLine(spriteBatch, text, 0,   200);
+            fpsLabel.draw(fpsSpriteBatch, 1);
             // 结束要有end结尾
-            spriteBatch.end();
+            fpsSpriteBatch.end();
         }
     }
 
@@ -269,41 +266,6 @@ public abstract class CHGame extends Game {
 
     public AssetManager getAssetManager() {
         return assetManager;
-    }
-
-    /**
-     * 
-     * <pre>
-     *   
-     * 
-     * date: 2014-10-24
-     * </pre>
-     * @author caohao
-     * @return 数字字体
-     */
-    public BitmapFont getNumberFont() {
-        return fontNumber;
-    }
-
-    /**
-     * 
-     * <pre>
-     * 
-     * date: 2014-10-24
-     * </pre>
-     * @author caohao
-     * @return 适用于菜单的字体
-     */
-    public BitmapFont getMenuFont() {
-        return fontMenu;
-    }
-
-    public Preferences getPreferences() {
-        return preferences;
-    }
-
-    private void setPreferences(Preferences preferences) {
-        this.preferences = preferences;
     }
 
     public CHADListener getADListener() {
@@ -444,7 +406,6 @@ public abstract class CHGame extends Game {
     public void addTTF(String filePath) {
         int begin = filePath.lastIndexOf("/");
         ttfMap.put(filePath.substring(begin), Gdx.files.internal(filePath));
-        System.out.println("ttf:" + ttfMap.toString());
     }
 
     public MusicManager getMusicManager() {
@@ -456,6 +417,13 @@ public abstract class CHGame extends Game {
     }
 
     public Array<TextureRegion> getLoadingKeyFrames() {
+        if (loadingKeyFrames.size == 0) {
+            for (int i = 0; i < 6; i++) {
+                FileHandle fileHandle = Gdx.files.classpath(String.format("com/oahcfly/chgame/res/l_%d.png", i));
+                Texture texture = new Texture(fileHandle);
+                loadingKeyFrames.add(new TextureRegion(texture));
+            }
+        }
         return loadingKeyFrames;
     }
 
@@ -469,6 +437,9 @@ public abstract class CHGame extends Game {
      * @author caohao
      */
     public void showLoadingUI() {
+        if (chLoading == null) {
+            chLoading = new CHLoading();
+        }
         chLoading.show();
     }
 
@@ -482,6 +453,9 @@ public abstract class CHGame extends Game {
      * @author caohao
      */
     public void closeLoadingUI() {
+        if (chLoading == null) {
+            chLoading = new CHLoading();
+        }
         chLoading.dismiss();
     }
 
@@ -496,6 +470,9 @@ public abstract class CHGame extends Game {
      * @return
      */
     public International getInternational() {
+        if (international == null) {
+            loadInternationalValues();
+        }
         return international;
     }
 
@@ -510,7 +487,14 @@ public abstract class CHGame extends Game {
      * @return
      */
     public FreeTypeFontGeneratorExt getInternationalGenerator() {
+        if (generator == null) {
+            loadSystemTTF();
+        }
         return generator;
+    }
+
+    public LocaleListener getLocaleListener() {
+        return localeListener;
     }
 
 }
