@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonValue.JsonIterator;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.oahcfly.chgame.core.mvc.CHGame;
 
 /**
  * 
@@ -54,7 +55,7 @@ public class CHAssets implements Disposable, AssetErrorListener {
     private ObjectMap<String, Array<Asset>> groups;
 
     public CHAssets() {
-        manager = new AssetManager();
+        manager = CHGame.getInstance().getAssetManager();
         manager.setErrorListener(this);
         //loadToGroups(assetFile);
     }
@@ -163,7 +164,6 @@ public class CHAssets implements Disposable, AssetErrorListener {
     @Override
     public void dispose() {
         Gdx.app.log(TAG, "shutting down");
-        manager.dispose();
     }
 
     @Override

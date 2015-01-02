@@ -42,7 +42,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         }
 
         // 监听器
-        InputMultiplexer inputMultiplexer = new InputMultiplexer(new GestureDetector(this), getStage());
+        InputMultiplexer inputMultiplexer = new InputMultiplexer(getStage(),new GestureDetector(this));
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         testSplitPane();

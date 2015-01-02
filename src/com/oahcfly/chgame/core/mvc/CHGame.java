@@ -25,12 +25,11 @@ import com.oahcfly.chgame.core.FreeTypeFontGeneratorExt;
 import com.oahcfly.chgame.core.International;
 import com.oahcfly.chgame.core.Version;
 import com.oahcfly.chgame.core.ad.CHADListener;
-import com.oahcfly.chgame.core.assetmanager.CHAssets;
 import com.oahcfly.chgame.core.listener.LocaleListener;
 import com.oahcfly.chgame.core.manager.MusicManager;
 import com.oahcfly.chgame.core.manager.SoundManager;
 import com.oahcfly.chgame.core.transition.ScreenTransition;
-import com.oahcfly.chgame.core.ui.CHLoading;
+import com.oahcfly.chgame.core.ui.CHWaiting;
 
 /**
  * 
@@ -74,8 +73,6 @@ public abstract class CHGame extends Game {
 
     private Label fpsLabel;
 
-    private CHAssets chAssets;
-
     public CHGame() {
 
     }
@@ -111,27 +108,26 @@ public abstract class CHGame extends Game {
 
     public final static String TAG = "CHGame";
 
-    private CHLoading chLoading;
+    private CHWaiting chLoading;
 
     @Override
     public void create() {
 
         Gdx.app.log(TAG, "version : " + Version.VERSION);
 
-        long starttime = System.currentTimeMillis();
+        //long starttime = System.currentTimeMillis();
 
         musicManager = new MusicManager();
         soundManager = new SoundManager();
 
-        chAssets = new CHAssets();
-        assetManager = chAssets.getAssetManager();
+        assetManager = new AssetManager();
 
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setCatchMenuKey(true);
 
         instance = this;
 
-        Gdx.app.log(TAG, "create :" + (System.currentTimeMillis() - starttime));
+        // Gdx.app.log(TAG, "create :" + (System.currentTimeMillis() - starttime));
 
         init();
 
@@ -183,7 +179,6 @@ public abstract class CHGame extends Game {
         //spriteBatch.dispose();
         musicManager.dispose();
         soundManager.dispose();
-        chAssets.dispose();
     }
 
     @Override
@@ -381,10 +376,6 @@ public abstract class CHGame extends Game {
         }
     }
 
-    public CHAssets getCHAssets() {
-        return chAssets;
-    }
-
     public <T extends CHModel> T getModel() {
         return getScreen().getModel();
     }
@@ -436,9 +427,9 @@ public abstract class CHGame extends Game {
      * </pre>
      * @author caohao
      */
-    public void showLoadingUI() {
+    public void showWaitingUI() {
         if (chLoading == null) {
-            chLoading = new CHLoading();
+            chLoading = new CHWaiting();
         }
         chLoading.show();
     }
@@ -452,9 +443,9 @@ public abstract class CHGame extends Game {
      * </pre>
      * @author caohao
      */
-    public void closeLoadingUI() {
+    public void closeWaitingUI() {
         if (chLoading == null) {
-            chLoading = new CHLoading();
+            chLoading = new CHWaiting();
         }
         chLoading.dismiss();
     }
@@ -497,4 +488,9 @@ public abstract class CHGame extends Game {
         return localeListener;
     }
 
+    public BitmapFont getDefaultBitmapFont() {
+        BitmapFont fontMenu = new BitmapFont();
+        fontMenu.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        return fontMenu;
+    }
 }

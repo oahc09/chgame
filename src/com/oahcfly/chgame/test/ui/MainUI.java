@@ -76,7 +76,7 @@ public class MainUI extends CHUI {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
                 Gdx.app.log("ccc", "pause touch down");
-                CHGame.getInstance().showLoadingUI();
+                CHGame.getInstance().showWaitingUI();
                 return true;
             }
 

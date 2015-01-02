@@ -24,7 +24,7 @@ public class Version {
      * 0.1.8 CHScreen内部管理一系列CHUI。CHUI切换特效。构造函数优化。数字标签颜色处理。
      * 0.1.9 PixmapHelper封装常见图形绘制。 
      * 0.2.0修改chgame初始加载字体方案提供加载速度，改完在createLabel时加载文字纹理。
-     * 
+     * 0.2.1 新增CHLoadingScreen。
      * 
      * 
      * 

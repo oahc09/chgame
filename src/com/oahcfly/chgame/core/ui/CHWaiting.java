@@ -16,18 +16,18 @@ import com.oahcfly.chgame.core.mvc.CHGame;
 /**
  * 
  * <pre>
- * loading界面[5秒超时自动消失]
+ * waiting界面[5秒超时自动消失]
  * 由table+帧动画实现
  * date: 2014-12-23
  * </pre>
  * @author caohao
  */
-public class CHLoading {
+public class CHWaiting {
     private CHAniamtionPlayer chAniamtionPlayer;
 
     private Table parentTable;
 
-    public CHLoading() {
+    public CHWaiting() {
         parentTable = new Table();
         parentTable.setName("loading_table");
         parentTable.setSize(CHGame.getInstance().gameWidth, CHGame.getInstance().gameHeight);
