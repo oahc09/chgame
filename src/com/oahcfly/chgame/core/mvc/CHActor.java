@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pool.Poolable;
+import com.badlogic.gdx.utils.Pools;
 
 /**
  * 
@@ -16,8 +18,12 @@ import com.badlogic.gdx.utils.Pool.Poolable;
  * </pre>
  * @author caohao
  */
-public abstract class CHActor extends Actor implements Poolable {
+public class CHActor extends Actor implements Poolable {
+
     private Texture bgTexture;
+
+    public CHActor() {
+    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -37,7 +43,9 @@ public abstract class CHActor extends Actor implements Poolable {
 
     public void setBgTexture(Texture bgTexture) {
         this.bgTexture = bgTexture;
-        setBounds(0, 0, bgTexture.getWidth(), bgTexture.getHeight());
+        if (bgTexture != null) {
+            setBounds(0, 0, bgTexture.getWidth(), bgTexture.getHeight());
+        }
     }
 
     protected void clearBgTexture() {
@@ -45,4 +53,26 @@ public abstract class CHActor extends Actor implements Poolable {
         this.bgTexture = null;
     }
 
+    /**
+     * 
+     * <pre>
+     * 使用缓存池
+     * 
+     * date: 2015-1-3
+     * </pre>
+     * @author caohao
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends CHActor> T obtain(Class<T> type) {
+        Pool<CHActor> pool = (Pool<CHActor>)Pools.get(type);
+        CHActor actor = pool.obtain();
+        actor.setBgTexture(null);
+        return (T)actor;
+    }
+
+    @Override
+    public void reset() {
+        clearBgTexture();
+    }
 }

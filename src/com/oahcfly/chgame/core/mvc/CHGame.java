@@ -286,7 +286,12 @@ public abstract class CHGame extends Game {
             assetManager.finishLoading();
             texture = assetManager.get(fileName, Texture.class);
         } else {
-            texture = assetManager.get(fileName, Texture.class);
+            // 此处不知为何报错，特殊处理一下
+            try {
+                texture = assetManager.get(fileName, Texture.class);
+            } catch (Exception e) {
+                texture = new Texture(Gdx.files.internal(fileName));
+            }
         }
         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         texture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);

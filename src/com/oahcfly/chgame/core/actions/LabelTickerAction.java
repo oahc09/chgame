@@ -115,12 +115,12 @@ public class LabelTickerAction extends TemporalAction {
      */
     public static LabelTickerAction obtain(CharSequence text, float duration) {
         Pool<LabelTickerAction> pool = Pools.get(LabelTickerAction.class);
+        System.out.println("pool size:" + pool.getFree());
         LabelTickerAction t = pool.obtain();
         t.setPool(pool);
         t.setDuration(duration);
         t.completeText = text;
         t.currentDisplay.setLength(text.length());
         return t;
-
     }
 }

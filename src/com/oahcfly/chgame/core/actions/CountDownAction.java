@@ -17,7 +17,7 @@ import com.oahcfly.chgame.core.mvc.CHGame;
  * 
  * <pre>
  *  倒计时action。10->9->8.....
- * 
+ *  如，Ready->Go、一系列图片按倒计时显示
  * date: 2014-12-29
  * </pre>
  * @author caohao
@@ -33,6 +33,10 @@ public class CountDownAction extends TemporalAction {
     public CountDownAction() {
     }
 
+    /**
+     * 
+     * @param duration 总时长
+     */
     public CountDownAction(float duration) {
         super(duration);
     }

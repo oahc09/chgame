@@ -20,10 +20,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane.SplitPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.oahcfly.chgame.core.mvc.CHActor;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
+import com.oahcfly.chgame.test.ui.TestActor;
 
 public class PPLScreen extends CHScreen implements GestureListener {
 
@@ -31,8 +33,11 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
     @Override
     public void initScreen() {
-        chParticle=new CHParticle(ParticleType.STAR);
-        
+
+        TestActor actor = CHActor.obtain(TestActor.class);
+
+        chParticle = new CHParticle(ParticleType.STAR);
+
         for (int i = 0; i < 5; i++) {
             Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
             image.setName("xin_" + (i + 1));
@@ -42,7 +47,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         }
 
         // 监听器
-        InputMultiplexer inputMultiplexer = new InputMultiplexer(getStage(),new GestureDetector(this));
+        InputMultiplexer inputMultiplexer = new InputMultiplexer(getStage(), new GestureDetector(this));
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         testSplitPane();
@@ -140,7 +145,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         Vector2 vector2 = getStage().screenToStageCoordinates(new Vector2(x, y));
         System.out.println("touchDown : x=" + vector2.x + ",y=" + vector2.y);
         actorNameList = new HashSet<String>();
-        
+
         chParticle.createEffect(vector2.x, vector2.y);
         return false;
     }
