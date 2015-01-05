@@ -83,19 +83,18 @@ public class FirstScreen extends CHScreen {
         label.setPosition(200, 200);
         addActor(label);
 
-        addLabelAtlas(10, 20, 100);
-        addLabelAtlas(100, 30, 127);
-
         LabelTickerAction ticker = new LabelTickerAction(2f, "人类逆天了啊！哈哈哈");
         label.addAction(ticker);
 
+        Image image = CHGame.getInstance().getImage("screen/big_star.png");
+        addActor(image);
         // 倒计时
         TextureRegion textureRegion = new TextureRegion(CHGame.getInstance().getTexture("screen/score_numlist.png"));
         TextureRegion[][] textureRegions = textureRegion.split(23, 27);
-         CountDownAction countDownAction =CountDownAction.obtain(10f, textureRegions[0]);
-         getStage().addAction(countDownAction);
-         
-         System.out.println(""+MainUI.class.getSimpleName());
+        CountDownAction countDownAction = CountDownAction.obtain(10f, textureRegions[0]);
+        image.addAction(countDownAction);
+
+        System.out.println("" + MainUI.class.getSimpleName());
     }
 
     private LabelAtlas addLabelAtlas(int num, int x, int y) {

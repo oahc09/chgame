@@ -48,11 +48,6 @@ public class CHActor extends Actor implements Poolable {
         }
     }
 
-    protected void clearBgTexture() {
-        this.bgTexture.dispose();
-        this.bgTexture = null;
-    }
-
     /**
      * 
      * <pre>
@@ -73,6 +68,10 @@ public class CHActor extends Actor implements Poolable {
 
     @Override
     public void reset() {
-        clearBgTexture();
+        this.bgTexture = null;
+    }
+
+    public Texture getBgTexture() {
+        return bgTexture;
     }
 }

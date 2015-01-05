@@ -22,10 +22,10 @@ public class Version {
      * 0.1.6 TTFLabel优化，未设置TTF路径，则使用系统自带字体。
      * 0.1.7  封装各种action，【倒计时，文字挨个显示，跳动《左右，上下》，缩放，旋转】
      * 0.1.8 CHScreen内部管理一系列CHUI。CHUI切换特效。构造函数优化。数字标签颜色处理。
-     * 0.1.9 PixmapHelper封装常见图形绘制。 
+     * 0.1.9 PixmapHelper封装常见图形绘制。 BmobListener移除。
      * 0.2.0修改chgame初始加载字体方案提供加载速度，改完在createLabel时加载文字纹理。
      * 0.2.1 新增CHLoadingScreen。CHActor使用缓存池。CHEvent优化。
-     * 
+     * 0.2.2Action特辑：旋转+掉落并发效果，滑动回弹效果，中心缩放效果。
      * 
      * 
      * 

@@ -2,6 +2,7 @@
 package com.oahcfly.chgame.core.mvc;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -67,10 +68,21 @@ public abstract class CHScreen implements Screen {
 
     @Override
     public void hide() {
+        Set<String> keys = chuiMap.keySet();
+        for (String key : keys) {
+            // 依次关闭CHUI
+            chuiMap.get(key).dismiss();
+        }
         chuiMap.clear();
+
         endScreen();
-        stage.dispose();
-        dispose();
+
+        if (stage != null) {
+            // 此处可能报错：java.lang.IllegalArgumentException: buffer not allocated with newUnsafeByteBuffer or already disposed
+            // 具体原因不清楚。。。。
+            stage.dispose();
+        }
+
     }
 
     @Override

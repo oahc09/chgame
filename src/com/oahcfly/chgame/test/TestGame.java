@@ -4,19 +4,19 @@ package com.oahcfly.chgame.test;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.oahcfly.chgame.core.mvc.CHGame;
-import com.oahcfly.chgame.test.screen.PPLScreen;
+import com.oahcfly.chgame.test.screen.FirstScreen;
 
 public class TestGame extends CHGame {
 
     @Override
     public void init() {
-        setGameWidthAndHeight(480, 800);
+        setGameWidthAndHeight(800, 480);
         setFPS(true);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
         //CHADChannel androidAdChannel= new CHADChannel("{\"360\":false,\"baidu\":true,\"tengxu\":false,\"meizu\":false,\"anzhi\":false}");
 
-        setScreen(new PPLScreen());
+        setScreen(new FirstScreen());
 
         //        String chineseExtraStr="nihao你好哈哈哈你是煞笔";
         //        char[] array = chineseExtraStr.toCharArray();

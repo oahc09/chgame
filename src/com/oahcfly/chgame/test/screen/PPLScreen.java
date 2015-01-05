@@ -5,7 +5,6 @@ import java.util.HashSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
@@ -15,11 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane.SplitPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.oahcfly.chgame.core.actions.CHActions;
 import com.oahcfly.chgame.core.mvc.CHActor;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
@@ -50,14 +50,19 @@ public class PPLScreen extends CHScreen implements GestureListener {
         InputMultiplexer inputMultiplexer = new InputMultiplexer(getStage(), new GestureDetector(this));
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-        testSplitPane();
+        // testSplitPane();
 
-        String saveString = CHGame.getInstance().getInternational().get("list");
-        Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
-        CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
-        saveLabel.setColor(Color.WHITE);
-        saveLabel.setPosition(500, 100);
-        addActor(saveLabel);
+        //        String saveString = CHGame.getInstance().getInternational().get("list");
+        //        Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
+        //        CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
+        //        saveLabel.setColor(Color.WHITE);
+        //        saveLabel.setPosition(500, 100);
+        //        addActor(saveLabel);
+        Image image1 = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", 1));
+        image1.addAction(CHActions.createRotateAndFallingAction(true));
+        image1.setOrigin(Align.center);
+        image1.setPosition(200, 300);
+        addActor(image1);
     }
 
     private void testSplitPane() {

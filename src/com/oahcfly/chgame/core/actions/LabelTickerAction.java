@@ -61,7 +61,7 @@ public class LabelTickerAction extends TemporalAction {
      * @see #setActor(Actor);
      */
     @Override
-    public void setTarget(Actor actor) {
+    public void setActor(Actor actor) {
         if (!(actor instanceof Label))
             if (actor == null)
                 super.setActor(actor);
@@ -115,7 +115,6 @@ public class LabelTickerAction extends TemporalAction {
      */
     public static LabelTickerAction obtain(CharSequence text, float duration) {
         Pool<LabelTickerAction> pool = Pools.get(LabelTickerAction.class);
-        System.out.println("pool size:" + pool.getFree());
         LabelTickerAction t = pool.obtain();
         t.setPool(pool);
         t.setDuration(duration);

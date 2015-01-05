@@ -46,13 +46,6 @@ public abstract class CHGame extends Game {
 
     private HashMap<String, FileHandle> ttfMap = new HashMap<String, FileHandle>();
 
-    private static CHGame instance = null;
-
-    @SuppressWarnings("unchecked")
-    public static <T extends CHGame> T getInstance() {
-        return (T)instance;
-    }
-
     private CHADListener chadListener;
 
     private boolean debug;
@@ -73,6 +66,13 @@ public abstract class CHGame extends Game {
 
     private Label fpsLabel;
 
+    private static CHGame instance = null;
+
+    @SuppressWarnings("unchecked")
+    public static <T extends CHGame> T getInstance() {
+        return (T)instance;
+    }
+
     public CHGame() {
 
     }
@@ -84,15 +84,6 @@ public abstract class CHGame extends Game {
     public CHGame(CHADListener adListener, LocaleListener localeListener) {
         this.chadListener = adListener;
         this.localeListener = localeListener;
-    }
-
-    /**
-     * 是否绘制FPS
-     * 
-     * @param showFPS
-     */
-    public void setFPS(boolean showFPS) {
-        openFPS = showFPS;
     }
 
     private MusicManager musicManager;
@@ -160,6 +151,15 @@ public abstract class CHGame extends Game {
     }
 
     /**
+     * 是否绘制FPS
+     * 
+     * @param showFPS
+     */
+    public void setFPS(boolean showFPS) {
+        openFPS = showFPS;
+    }
+
+    /**
      * 
      * <pre>
      * 初始化字体方案
@@ -176,9 +176,12 @@ public abstract class CHGame extends Game {
     public void dispose() {
         // TODO Auto-generated method stub
         super.dispose();
-        //spriteBatch.dispose();
+        if (generator != null) {
+            generator.dispose();
+        }
         musicManager.dispose();
         soundManager.dispose();
+        assetManager.dispose();
     }
 
     @Override
@@ -259,6 +262,18 @@ public abstract class CHGame extends Game {
         transition.transition((CHScreen)this.getScreen(), toScreen);
     }
 
+    /**
+     * 
+     * <pre> 
+     * 同过getAssetManager管理的资源，不要手动释放资源
+     * 请使用：AssetManager.unload()
+     * 
+     * AssetManager.dispose() 将清理掉自身，调用这个方法后，就不能再使用AssetManager了。
+     * date: 2015-1-5
+     * </pre>
+     * @author caohao
+     * @return
+     */
     public AssetManager getAssetManager() {
         return assetManager;
     }
