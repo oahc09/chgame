@@ -58,10 +58,17 @@ public class PPLScreen extends CHScreen implements GestureListener {
         //        saveLabel.setColor(Color.WHITE);
         //        saveLabel.setPosition(500, 100);
         //        addActor(saveLabel);
+
+        testParabolaAction();
+
+    }
+
+    private void testParabolaAction() {
         Image image1 = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", 1));
-        image1.addAction(CHActions.createRotateAndFallingAction(true));
+        image1.setDebug(true);
+        image1.addAction(CHActions.createRotateAndMoveAction(1.8f, 2, 400, -490));
         image1.setOrigin(Align.center);
-        image1.setPosition(200, 300);
+        image1.setPosition(0, 400);
         addActor(image1);
     }
 

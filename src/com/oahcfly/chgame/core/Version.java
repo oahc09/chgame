@@ -1,6 +1,7 @@
 
 package com.oahcfly.chgame.core;
 
+
 public class Version {
 
     /**
@@ -25,25 +26,28 @@ public class Version {
      * 0.1.9 PixmapHelper封装常见图形绘制。 BmobListener移除。
      * 0.2.0修改chgame初始加载字体方案提供加载速度，改完在createLabel时加载文字纹理。
      * 0.2.1 新增CHLoadingScreen。CHActor使用缓存池。CHEvent优化。
-     * 0.2.2Action特辑：旋转+掉落并发效果，滑动回弹效果，中心缩放效果。
+     * 0.2.2Action特辑：旋转+掉落并发效果，滑动回弹效果，中心缩放效果。TTFLabel新增setText方法。
      * 
      * 
      * 
      *  */
     public static final String VERSION = "0.2.1";
 
-    //        Action[] sAction = new Action[10];
+    //    public void a() {
+    //        Action[] sAction = new Action[20];
     //        // 使用action实现定时器
-    //        for (int i = 0; i < 10; i++) {
+    //        for (int i = 0; i < sAction.length; i++) {
     //            Action delayedAction = Actions.run(new Runnable() {
     //
     //                @Override
     //                public void run() {
-    //                    System.out.println("time:" + (System.currentTimeMillis() / 1000) + ",发射:");
+    //                    System.out.println("time:" + (System.currentTimeMillis() / 1000) + ",执行something");
     //                }
     //            });
+    //            // 延迟1s后执行delayedAction
     //            Action action = Actions.delay(1f, delayedAction);
     //            sAction[i] = action;
     //        }
     //        getStage().addAction(Actions.sequence(sAction));
+    //    }
 }

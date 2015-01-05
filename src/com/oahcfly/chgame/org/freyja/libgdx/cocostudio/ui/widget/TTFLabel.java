@@ -20,6 +20,21 @@ public class TTFLabel extends Label {
 
     @Override
     public void setText(CharSequence newText) {
+        setText(newText, false);
+    }
+
+    /**
+     * 
+     * <pre>
+     * TODO
+     * 
+     * date: 2015-1-5
+     * </pre>
+     * @author caohao
+     * @param newText
+     * @param useSysFont 是否调用系统字体
+     */
+    public void setText(CharSequence newText, boolean useSysFont) {
         if (textEquals(newText))
             return;
 
@@ -28,7 +43,8 @@ public class TTFLabel extends Label {
             style.font = createFont(style, "" + newText);
         } else {
             // 使用系统自带字体
-            style.font = CHGame.getInstance().getInternationalGenerator().appendToFont(newText.toString());
+            style.font = useSysFont ? CHGame.getInstance().getInternationalGenerator().appendToFont(newText.toString())
+                    : CHGame.getInstance().getDefaultBitmapFont();
         }
         super.setStyle(style);
         super.setText(newText);

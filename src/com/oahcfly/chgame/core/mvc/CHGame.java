@@ -508,9 +508,23 @@ public abstract class CHGame extends Game {
         return localeListener;
     }
 
+    private BitmapFont bitmapFont;
+
+    /**
+     * 
+     * <pre>
+     * Gdx自带英文字体
+     * 
+     * date: 2015-1-5
+     * </pre>
+     * @author caohao
+     * @return
+     */
     public BitmapFont getDefaultBitmapFont() {
-        BitmapFont fontMenu = new BitmapFont();
-        fontMenu.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        return fontMenu;
+        if (bitmapFont == null) {
+            bitmapFont = new BitmapFont();
+            bitmapFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
+        return bitmapFont;
     }
 }
