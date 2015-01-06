@@ -74,4 +74,14 @@ public class CHActor extends Actor implements Poolable {
     public Texture getBgTexture() {
         return bgTexture;
     }
+
+    @Override
+    public boolean remove() {
+        boolean remove = super.remove();
+        if (remove) {
+            Pools.free(this);
+        }
+        return remove;
+    }
+
 }

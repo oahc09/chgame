@@ -38,55 +38,66 @@ public class MyGame extends ApplicationAdapter {
         FileHandle baseFileHandle = Gdx.files.internal("values/strings");// 读取国际化资源
         Locale locale = listener.getLocale();
         international = International.createBundle(baseFileHandle, locale);//
- 
+
         Generator.appendToFont(international.getVaulesString());// 创建国际化方案里的当前语言的所有字符纹理
         // 初始化舞台
-        stage = new Stage(new StretchViewport(480, 800));
+        stage = new Stage(new StretchViewport(800, 480));
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         // 创建文本
         Label label = Generator.createLabel(international.get("wrong"));
         label.setColor(Color.GREEN);
-        label.setPosition(240 - label.getWidth() / 2, 700);
+        label.setPosition(400 - label.getWidth() / 2, 400);
         stage.addActor(label);
         Label label0 = Generator.createLabel(international.get("toolong"));
         label0.setColor(Color.BLUE);
-        label0.setPosition(240 - label0.getWidth() / 2, 600);
+        label0.setPosition(400 - label0.getWidth() / 2, 300);
         stage.addActor(label0);
         Label label00 = Generator.createLabel(international.get("please"));
         label00.setColor(Color.LIGHT_GRAY);
-        label00.setPosition(240 - label00.getWidth() / 2, 550);
+        label00.setPosition(400 - label00.getWidth() / 2, 240);
         stage.addActor(label00);
         Label label1 = Generator.createLabel(international.get("user"));
         label1.setColor(Color.ORANGE);
-        label1.setPosition(240 - label1.getWidth() / 2, 500);
+        label1.setPosition(400 - label1.getWidth() / 2, 500);
         stage.addActor(label1);
         Label label2 = Generator.createLabel(international.get("newgame"));
         label2.setFontScale(0.9f);
         label2.setColor(Color.YELLOW);
-        label2.setPosition(240 - label2.getPrefWidth() / 2, 350);
+        label2.setPosition(400 - label2.getPrefWidth() / 2, 100);
         stage.addActor(label2);
         Label label3 = Generator.createLabel(international.get("continue"));
         label3.setFontScale(0.8f);
         label3.setColor(Color.RED);
-        label3.setPosition(240 - label3.getPrefWidth() / 2, 250);
+        label3.setPosition(400 - label3.getPrefWidth() / 2, 250);
         stage.addActor(label3);
         final Label name = Generator.createLabel(international.get("list"));
-        name.setPosition(240 - name.getPrefWidth() / 2, 200);
+        name.setPosition(400 - name.getPrefWidth() / 2, 200);
         stage.addActor(name);
         // 输入框
         name.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
+
+                //        String text ="测距道具卡的卡拉都是";
+
                 TextInputListener listen = new TextInputListener() {
                     public void input(String text) {
-                        Generator.appendToFont(text);
-                        name.setText(text);
+                        final String reed = text;
+                        Gdx.app.postRunnable(new Runnable() {
+                            
+                            @Override
+                            public void run() {
+                                Generator.appendToFont(reed);
+                                name.setText(reed); 
+                            }
+                        });
+   
                     }
 
                     public void canceled() {
 
                     }
                 };
-                Gdx.input.getTextInput(listen, international.get("please"), "title",name.getText().toString());
+                Gdx.input.getTextInput(listen, international.get("please"), "", "");
             }
         });
         Gdx.input.setInputProcessor(stage);

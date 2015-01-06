@@ -179,9 +179,11 @@ public abstract class CHGame extends Game {
         if (generator != null) {
             generator.dispose();
         }
+
         musicManager.dispose();
         soundManager.dispose();
         assetManager.dispose();
+        bitmapFont.dispose();
     }
 
     @Override
@@ -207,7 +209,7 @@ public abstract class CHGame extends Game {
         if (openFPS) {
             if (fpsLabel == null) {
                 // fps
-                BitmapFont fontMenu = new BitmapFont();
+                BitmapFont fontMenu = getDefaultBitmapFont();
                 fontMenu.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
                 LabelStyle style = new LabelStyle(fontMenu, fontMenu.getColor());
                 fpsLabel = new Label("FPS", style);

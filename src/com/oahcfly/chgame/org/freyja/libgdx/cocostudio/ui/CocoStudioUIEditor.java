@@ -163,7 +163,7 @@ public class CocoStudioUIEditor {
         jj.setIgnoreUnknownFields(true);
         export = jj.fromJson(CCExport.class, json);
 
-        defaultBitmapFont = new BitmapFont();
+        defaultBitmapFont = CHGame.getInstance().getDefaultBitmapFont();
     }
 
     /**
@@ -588,7 +588,7 @@ public class CocoStudioUIEditor {
     }
 
     public Texture getTexture(Pixmap pixmap) {
-        Texture texture = new Texture(pixmap);
+        Texture texture = CHGame.getInstance().getTexture(pixmap);
         // 抗锯齿
         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         return texture;

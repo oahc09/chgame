@@ -77,11 +77,9 @@ public abstract class CHScreen implements Screen {
 
         endScreen();
 
-        if (stage != null) {
-            // 此处可能报错：java.lang.IllegalArgumentException: buffer not allocated with newUnsafeByteBuffer or already disposed
-            // 具体原因不清楚。。。。
-            stage.dispose();
-        }
+        // 此处可能报错：java.lang.IllegalArgumentException: buffer not allocated with newUnsafeByteBuffer or already disposed
+        // 具体原因不清楚。。。。
+        stage.dispose();
 
     }
 

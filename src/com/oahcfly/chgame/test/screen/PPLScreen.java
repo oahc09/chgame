@@ -20,12 +20,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.oahcfly.chgame.core.actions.CHActions;
-import com.oahcfly.chgame.core.mvc.CHActor;
+import com.oahcfly.chgame.core.actions.CountDownAction;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
-import com.oahcfly.chgame.test.ui.TestActor;
 
 public class PPLScreen extends CHScreen implements GestureListener {
 
@@ -34,8 +33,6 @@ public class PPLScreen extends CHScreen implements GestureListener {
     @Override
     public void initScreen() {
 
-        TestActor actor = CHActor.obtain(TestActor.class);
-
         chParticle = new CHParticle(ParticleType.STAR);
 
         for (int i = 0; i < 5; i++) {
@@ -43,7 +40,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
             image.setName("xin_" + (i + 1));
             image.setPosition(10 + image.getWidth() * i, 100);
 
-            //   addActor(image);
+            addActor(image);
         }
 
         // 监听器
@@ -59,8 +56,18 @@ public class PPLScreen extends CHScreen implements GestureListener {
         //        saveLabel.setPosition(500, 100);
         //        addActor(saveLabel);
 
-        testParabolaAction();
+        //testParabolaAction();
 
+    }
+
+    private void testCDAction() {
+        Image image = CHGame.getInstance().getImage("screen/big_star.png");
+        addActor(image);
+        // 倒计时
+        TextureRegion textureRegion = new TextureRegion(CHGame.getInstance().getTexture("screen/score_numlist.png"));
+        TextureRegion[][] textureRegions = textureRegion.split(23, 27);
+        CountDownAction countDownAction = CountDownAction.obtain(10f, textureRegions[0]);
+        image.addAction(countDownAction);
     }
 
     private void testParabolaAction() {
@@ -147,6 +154,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         // TODO Auto-generated method stub
         super.render(delta);
         chParticle.render(getStage().getBatch());
+
     }
 
     HashSet<String> actorNameList;

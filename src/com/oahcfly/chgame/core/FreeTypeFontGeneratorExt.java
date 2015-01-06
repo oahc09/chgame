@@ -888,6 +888,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
 						getTextureData().consumePixmap().dispose();
 					}
 				};
+				
 				tex.setFilter(parameter.minFilter, parameter.magFilter);
 				t = tex;
 				data.regions[i] = new TextureRegion(tex);

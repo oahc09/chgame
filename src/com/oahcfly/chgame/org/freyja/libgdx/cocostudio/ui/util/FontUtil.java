@@ -9,6 +9,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.oahcfly.chgame.core.mvc.CHGame;
 
 public class FontUtil {
     static FreeTypeFontGenerator generator;
@@ -17,7 +18,7 @@ public class FontUtil {
 
     public static BitmapFont createFont(FileHandle fontHandle, String text, int fontSize) {
         if (fontHandle == null) {
-            return new BitmapFont();
+            return CHGame.getInstance().getDefaultBitmapFont();
         }
 
         BitmapFont font = null;
@@ -41,7 +42,7 @@ public class FontUtil {
         }
 
         if (font == null) {
-            return new BitmapFont();
+            return CHGame.getInstance().getDefaultBitmapFont();
         }
 
         return font;
