@@ -5,15 +5,18 @@ import java.util.HashSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane.SplitPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -21,6 +24,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.oahcfly.chgame.core.actions.CHActions;
 import com.oahcfly.chgame.core.actions.CountDownAction;
+import com.oahcfly.chgame.core.listener.CHClickListener;
+import com.oahcfly.chgame.core.listener.CHTextInputListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHParticle;
@@ -49,12 +54,31 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
         // testSplitPane();
 
-        //        String saveString = CHGame.getInstance().getInternational().get("list");
-        //        Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
-        //        CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
-        //        saveLabel.setColor(Color.WHITE);
-        //        saveLabel.setPosition(500, 100);
-        //        addActor(saveLabel);
+        String saveString = CHGame.getInstance().getInternational().get("list");
+        final Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
+        CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
+        saveLabel.setColor(Color.WHITE);
+        saveLabel.setPosition(500, 100);
+        addActor(saveLabel);
+
+        final CHTextInputListener chTextInputListener = new CHTextInputListener(saveLabel) {
+
+            @Override
+            public void getInput(String input) {
+
+            }
+        };
+        saveLabel.addListener(new CHClickListener() {
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                // TODO Auto-generated method stub
+                super.touchUp(event, x, y, pointer, button);
+
+                chTextInputListener.show("测试");
+            }
+
+        });
 
         //testParabolaAction();
 
