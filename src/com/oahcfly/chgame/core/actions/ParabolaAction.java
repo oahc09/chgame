@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
  * 
  * <pre>
  * 抛物线Action
- * X^2=-2*P*Y+Y0
- * 
+ * 公式：y=a*(x-x0)^2+y0
+ * 起始点为顶点坐标
  * date: 2015-1-5
  * </pre>
  * @author caohao
@@ -18,10 +18,7 @@ public class ParabolaAction extends TemporalAction {
 
     private float startX, startY;
 
-    //[p为焦准距（p>0）]
-    float P;
-
-    float y0;
+    float a;
 
     public ParabolaAction() {
     }
@@ -32,23 +29,24 @@ public class ParabolaAction extends TemporalAction {
     }
 
     protected void begin() {
-        startX = target.getX();
-        startY = target.getY();
+        startX = actor.getX();
+        startY = actor.getY();
 
         float endX = startX + amountX;
         float endY = startY + amountY;
-        P = (float)((-0.5) * (endX * endX - startX * startX) / (endY - startY));
-        y0 = startX * startX + 2 * P * startY;
 
+        //y=a*(x-x0)^2+y0
+        a = (float)((endY - startY) / (Math.pow((endX - startX), 2)));
     }
 
     @Override
     protected void update(float percent) {
 
         float newX = startX + percent * amountX;
-        float newY = (newX * newX - y0) / ((-2) * P);
+        //y=a*(x-x0)^2+y0
+        float newY = a * (newX - startX) * (newX - startX) + startY;
 
-        target.setPosition(newX, newY);
+        actor.setPosition(newX, newY);
 
     }
 

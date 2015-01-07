@@ -19,7 +19,7 @@ public class CHActions {
      * 
      * <pre>
      * 旋转并按照抛物线移动某段距离
-     * 
+     * 【起始点为抛物线的顶点】
      * date: 2015-1-5
      * </pre>
      * @author caohao
@@ -38,4 +38,44 @@ public class CHActions {
         return parallelAction;
     }
 
+    /**
+     * 
+     * <pre>
+     * 自动缩放
+     * 
+     * date: 2015-1-7
+     * </pre>
+     * @author caohao
+     * @param targetScale 目标缩放倍数 如：缩小=0.8f,放大=1.2f
+     * @param singleScaleDuration 缩放到目标倍数耗时（单位:s）
+     * @param repeatCount -1=无限次执行，1=执行1次
+     * @return
+     */
+    public static Action createAutoScaleToCenter(float targetScale, float singleScaleDuration, int repeatCount) {
+        Action repeatedAction = Actions.sequence(Actions.scaleTo(targetScale, targetScale, singleScaleDuration),
+                Actions.scaleTo(1f, 1f, singleScaleDuration));
+        Action action = Actions.repeat(repeatCount, repeatedAction);
+        return action;
+    }
+
+    /**
+     * 
+     * <pre>
+     * 回弹效果【仅限横向】
+     * 
+     * date: 2015-1-7
+     * </pre>
+     * @author caohao
+     * @param targetX 目标X
+     * @param targetY 目标Y
+     * @param duration 时长
+     * @param backDistance 回弹距离
+     * @return
+     */
+    public static Action createMoveBackAction(float targetX, float targetY, float duration, int backDistance) {
+        Action passAction = Actions.moveTo(targetX + backDistance, targetY, duration - 0.05f);
+        Action backAction = Actions.moveTo(targetX - backDistance, targetY, 0.1f);
+        Action action = Actions.sequence(passAction, backAction, Actions.moveTo(targetX, targetY, 0.1f));
+        return action;
+    }
 }

@@ -80,7 +80,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
         });
 
-        //testParabolaAction();
+        testParabolaAction();
 
     }
 
@@ -97,9 +97,11 @@ public class PPLScreen extends CHScreen implements GestureListener {
     private void testParabolaAction() {
         Image image1 = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", 1));
         image1.setDebug(true);
-        image1.addAction(CHActions.createRotateAndMoveAction(1.8f, 2, 400, -490));
+        image1.addAction(CHActions.createMoveBackAction(194, 353, 0.3f, 10));
+                //CHActions.createAutoScaleToCenter(1.2f, 0.5f, 4));
+        //CHActions.createRotateAndMoveAction(1.8f, 2,  200, -200));
         image1.setOrigin(Align.center);
-        image1.setPosition(0, 400);
+        image1.setPosition(94, 253);
         addActor(image1);
     }
 
