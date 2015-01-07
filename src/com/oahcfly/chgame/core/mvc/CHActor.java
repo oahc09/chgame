@@ -69,6 +69,13 @@ public class CHActor extends Actor implements Poolable {
     @Override
     public void reset() {
         this.bgTexture = null;
+        setScale(1);
+        setRotation(0);
+        clear();
+        setUserObject(null);
+        this.setColor(new Color(1, 1, 1, 1));
+        setStage(null);
+        setParent(null);
     }
 
     public Texture getBgTexture() {

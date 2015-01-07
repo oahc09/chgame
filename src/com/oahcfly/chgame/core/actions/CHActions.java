@@ -78,4 +78,22 @@ public class CHActions {
         Action action = Actions.sequence(passAction, backAction, Actions.moveTo(targetX, targetY, 0.1f));
         return action;
     }
+
+    /**
+     * 
+     * <pre>
+     * 闪烁效果
+     * 
+     * date: 2015-1-7
+     * </pre>
+     * @author caohao
+     * @param duration 单次闪烁时长[不可见->可见]
+     * @param repeatCount 闪烁次数
+     * @return
+     */
+    public static Action createAutoTwinkleAction(float duration, int repeatCount) {
+        Action action = Actions.repeat(repeatCount,
+                Actions.sequence(Actions.fadeOut(duration / 2), Actions.fadeIn(duration / 2)));
+        return action;
+    }
 }

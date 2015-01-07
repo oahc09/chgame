@@ -6,6 +6,7 @@ import java.util.HashSet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
@@ -30,6 +31,7 @@ import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
+import com.oahcfly.chgame.test.ui.MyActor;
 
 public class PPLScreen extends CHScreen implements GestureListener {
 
@@ -82,6 +84,11 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
         testParabolaAction();
 
+        MyActor myActor = MyActor.obtain(MyActor.class);
+        Texture bgTexture = CHGame.getInstance().getTexture("screen/score_numlist.png");
+
+        myActor.setBgTexture(bgTexture);
+        addActor(myActor);
     }
 
     private void testCDAction() {
@@ -97,11 +104,12 @@ public class PPLScreen extends CHScreen implements GestureListener {
     private void testParabolaAction() {
         Image image1 = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", 1));
         image1.setDebug(true);
-        image1.addAction(CHActions.createMoveBackAction(194, 353, 0.3f, 10));
-                //CHActions.createAutoScaleToCenter(1.2f, 0.5f, 4));
+        image1.addAction(CHActions.createAutoTwinkleAction(1f, -1));
+        //CHActions.createAutoScaleToCenter(1.2f, 0.5f, 4));
         //CHActions.createRotateAndMoveAction(1.8f, 2,  200, -200));
         image1.setOrigin(Align.center);
         image1.setPosition(94, 253);
+
         addActor(image1);
     }
 
