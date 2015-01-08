@@ -516,7 +516,7 @@ public abstract class CHGame extends Game {
      * 
      * <pre>
      * Gdx自带英文字体
-     * 
+     * 【禁止自行释放】
      * date: 2015-1-5
      * </pre>
      * @author caohao

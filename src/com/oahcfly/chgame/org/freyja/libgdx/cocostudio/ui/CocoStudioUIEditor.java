@@ -605,7 +605,6 @@ public class CocoStudioUIEditor {
         this.parsers = null;
         this.textureAtlas = null;
         this.ttfs = null;
-        this.defaultBitmapFont.dispose();
 
     }
 }
