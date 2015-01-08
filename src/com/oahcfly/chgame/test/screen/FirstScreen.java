@@ -2,6 +2,7 @@
 package com.oahcfly.chgame.test.screen;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net.HttpMethods;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.Net.HttpRequest;
 import com.badlogic.gdx.Net.HttpResponse;
 import com.badlogic.gdx.Net.HttpResponseListener;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -95,14 +97,18 @@ public class FirstScreen extends CHScreen {
         image.addAction(countDownAction);
 
         System.out.println("" + MainUI.class.getSimpleName());
+
+        addLabelAtlas(10199, 100, 100);
     }
 
     private LabelAtlas addLabelAtlas(int num, int x, int y) {
         final LabelAtlas labelAtlas = new LabelAtlas(new TextureRegion(CHGame.getInstance().getTexture(
                 "screen/score_numlist.png")), 23, 27, "0123456789");
+        labelAtlas.setColor(Color.RED);
         labelAtlas.setText("" + num);
         labelAtlas.setX(x);
         labelAtlas.setY(y);
+
         labelAtlas.setOrigin(Align.center);
         labelAtlas.addListener(new CHClickListener() {
 
@@ -110,7 +116,8 @@ public class FirstScreen extends CHScreen {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 // TODO Auto-generated method stub
                 super.touchUp(event, x, y, pointer, button);
-                labelAtlas.setText("1000");
+
+                labelAtlas.setText("" + new Random().nextInt(1000) + 100);
             }
 
         });

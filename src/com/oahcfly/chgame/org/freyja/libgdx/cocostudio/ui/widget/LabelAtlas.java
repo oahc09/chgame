@@ -2,7 +2,6 @@
 package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
@@ -47,7 +46,7 @@ public class LabelAtlas extends Table {
         setText(stringValue);
 
         // 设置为true，缩放才生效
-        setTransform(true);
+        // setTransform(true);
 
     }
 
@@ -69,6 +68,7 @@ public class LabelAtlas extends Table {
      */
     public void setText(String text) {
         this.text = text;
+
         clearChildren();
 
         if (text == null) {
@@ -77,24 +77,29 @@ public class LabelAtlas extends Table {
         char[] arr = text.toCharArray();
         for (char c : arr) {
             int index = index(c, chars);
-            Image img = null;
+            //Image img = null;
             TextureRegion tr = null;
             if (index != -1) {
                 tr = trs[index];
             }
 
+            NumberActor numberActor = NumberActor.obtain(NumberActor.class);
             if (tr == null) {
-                img = new Image();
-                img.setSize(tileWidth, tileHeight);// 没有的字符显示空格
+                //img = new Image();
+                //img.setSize(tileWidth, tileHeight);// 没有的字符显示空格
+                numberActor.setSize(tileWidth, tileHeight);// 没有的字符显示空格
             } else {
-                img = new Image(tr);
+                //                img = new Image(tr);
+                numberActor.setRegion(tr);
             }
-            img.setColor(getColor());
-            add(img);
+            //            img.setColor(getColor());
+            //                        add(img);
+            numberActor.setColor(getColor());
+            add(numberActor);
         }
 
         float oldX = getX(Align.center);
-        
+
         setSize(tileWidth * arr.length, tileHeight);
 
         // 修改坐标
