@@ -29,6 +29,8 @@ public class CHADChannel {
 
     public static final String CHANNEL_ANZHI = "anzhi";
 
+    public static final String CHANNEL_MUMAYI = "mumayi";
+
     private HashMap<String, Boolean> channelMap = new HashMap<String, Boolean>();
 
     /**
@@ -48,9 +50,9 @@ public class CHADChannel {
                 }
             } catch (Exception e) {
                 // do nothing
-                System.err.println(getClass().getSimpleName()+":parse ad json error!!!!"+e.getMessage());
+                System.err.println(getClass().getSimpleName() + ":parse ad json error!!!!" + e.getMessage());
             }
-            
+
         }
     }
 

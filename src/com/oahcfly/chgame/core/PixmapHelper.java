@@ -33,11 +33,7 @@ public class PixmapHelper {
     public static Texture createRectangleTexture(Color color, int width, int height) {
         // 绘制方块
         Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
-        // 背景
-        //        pixmap.setColor(Color.WHITE);
-        //        pixmap.fill();
-
-        // 圆
+        // 设置颜色
         pixmap.setColor(color);
         // 以左上角为原点
         pixmap.fillRectangle(0, 0, width, height);
@@ -67,11 +63,7 @@ public class PixmapHelper {
     public static Texture createCircleTexture(Color color, int radius) {
         // 绘制圆
         Pixmap pixmap = new Pixmap(radius * 2, radius * 2, Format.RGBA8888);
-        // 背景
-        //        pixmap.setColor(Color.WHITE);
-        //        pixmap.fill();
-
-        // 圆
+        // 设置颜色
         pixmap.setColor(color);
         // 以左上角为原点
         pixmap.fillCircle(radius, radius, radius);

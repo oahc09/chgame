@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -45,7 +46,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         for (int i = 0; i < 5; i++) {
             Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
             image.setName("xin_" + (i + 1));
-            image.setPosition(10 + image.getWidth() * i, 100);
+            image.setPosition(300 + image.getWidth() * i, 100);
 
             addActor(image);
         }
@@ -85,10 +86,11 @@ public class PPLScreen extends CHScreen implements GestureListener {
         testParabolaAction();
 
         MyActor myActor = MyActor.obtain(MyActor.class);
-        Texture bgTexture = CHGame.getInstance().getTexture("screen/score_numlist.png");
+        Texture bgTexture = CHGame.getInstance().getTexture("badlogic.jpg");
 
         myActor.setBgTexture(bgTexture);
         addActor(myActor);
+        getStage().getRoot().setCullingArea(new Rectangle(100, 100, 100, 100));
     }
 
     private void testCDAction() {

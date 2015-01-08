@@ -27,7 +27,7 @@ public class Version {
      * 0.2.0修改chgame初始加载字体方案提供加载速度，改完在createLabel时加载文字纹理。
      * 0.2.1 新增CHLoadingScreen。CHActor使用缓存池。CHEvent优化。
      * 0.2.2Action特辑：旋转+掉落并发效果，滑动回弹效果，中心缩放效果。TTFLabel新增setText方法。新增文本输入框抽象类。
-     * 0.2.3
+     * 0.2.3插屏广告比例控制。
      * 
      * 
      *  */

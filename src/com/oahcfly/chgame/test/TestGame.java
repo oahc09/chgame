@@ -3,6 +3,8 @@ package com.oahcfly.chgame.test;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.oahcfly.chgame.core.ad.CHInterstitialAd;
+import com.oahcfly.chgame.core.ad.CHInterstitialAd.InterstitialAdType;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.test.screen.PPLScreen;
 
@@ -39,6 +41,9 @@ public class TestGame extends CHGame {
         //        System.out.println(""+sharePreferenceUtil.loadIntSharedPreference("ab3", -1));
         //        
 
+        CHInterstitialAd chInterstitialAd =  new CHInterstitialAd("{\"waps\"10,\"dyd\":20,\"changsi\":70}");
+        for(int i=0;i<100;i++){
+        InterstitialAdType interstitialAdType = chInterstitialAd.getInterstitalAdType();
+        System.out.println(""+interstitialAdType.getTypeValue());}
     }
-
 }
