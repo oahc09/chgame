@@ -28,7 +28,7 @@ public class Version {
      * 0.2.1 新增CHLoadingScreen。CHActor使用缓存池。CHEvent优化。
      * 0.2.2Action特辑：旋转+掉落并发效果，滑动回弹效果，中心缩放效果。TTFLabel新增setText方法。新增文本输入框抽象类。
      * 0.2.3插屏广告比例控制。优化LabelAltas减少new Image的次数。
-     * 
+     * 0.2.4
      * 
      *  */
     public static final String VERSION = "0.2.3";

@@ -24,8 +24,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.oahcfly.chgame.core.actions.CountDownAction;
-import com.oahcfly.chgame.core.actions.LabelTickerAction;
 import com.oahcfly.chgame.core.event.CHEvent;
 import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
@@ -80,25 +78,38 @@ public class FirstScreen extends CHScreen {
 
         TTFLabelStyle labelStyle = new TTFLabelStyle(new LabelStyle(CHGame.getInstance().getInternationalGenerator()
                 .getBitmapFont(), null), null, 30);
-        TTFLabel label = new TTFLabel("abcdxyz123s撒啊啊啊啊啊啊啊啊测试", labelStyle);
-        label.setText("测试文本系统显示啊好大的加拉开始");
+        final TTFLabel label = new TTFLabel("abcdxyz123s撒啊啊啊啊啊啊啊啊测试", labelStyle);
+        label.setAlignment(8, 2);
+        label.setDebug(true);
+        label.setOrigin(Align.center);
+        label.setSize(100, 30);
         label.setPosition(200, 200);
+        label.setText("TTFLabel", true);
+        label.addListener(new CHClickListener(){
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                // TODO Auto-generated method stub
+                super.touchUp(event, x, y, pointer, button);
+                label.setText("重新测试文本", true);
+            }
+            
+        });
+
         addActor(label);
 
-        LabelTickerAction ticker = new LabelTickerAction(2f, "人类逆天了啊！哈哈哈");
-        label.addAction(ticker);
+        addLabelAtlas(12345, 200, 160);
+        //        LabelTickerAction ticker = new LabelTickerAction(2f, "人类逆天了啊！哈哈哈");
+        //        label.addAction(ticker);
 
-        Image image = CHGame.getInstance().getImage("screen/big_star.png");
-        addActor(image);
-        // 倒计时
-        TextureRegion textureRegion = new TextureRegion(CHGame.getInstance().getTexture("screen/score_numlist.png"));
-        TextureRegion[][] textureRegions = textureRegion.split(23, 27);
-        CountDownAction countDownAction = CountDownAction.obtain(10f, textureRegions[0]);
-        image.addAction(countDownAction);
+        //        Image image = CHGame.getInstance().getImage("screen/big_star.png");
+        //        addActor(image);
+        //        // 倒计时
+        //        TextureRegion textureRegion = new TextureRegion(CHGame.getInstance().getTexture("screen/score_numlist.png"));
+        //        TextureRegion[][] textureRegions = textureRegion.split(23, 27);
+        //        CountDownAction countDownAction = CountDownAction.obtain(10f, textureRegions[0]);
+        //        image.addAction(countDownAction);
 
-        System.out.println("" + MainUI.class.getSimpleName());
-
-        addLabelAtlas(10199, 100, 100);
     }
 
     private LabelAtlas addLabelAtlas(int num, int x, int y) {

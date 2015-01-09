@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 /**
  * 数字标签控件,暂时不支持.首字符设置.也就是说数字图片必须是0-9
- * 
+ *      setTransform(true);缩放才生效
  * @author i see
  * 
  */

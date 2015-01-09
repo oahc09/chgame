@@ -35,13 +35,7 @@ public abstract class CHLoadingScreen extends CHScreen {
 
     private CHAssets chAssets;
 
-    private CHScreen nextScreen;
-
     public CHLoadingScreen() {
-    }
-
-    public CHLoadingScreen(CHScreen nextScreen) {
-        this(nextScreen, null);
     }
 
     private float startX, endX;
@@ -54,12 +48,11 @@ public abstract class CHLoadingScreen extends CHScreen {
 
     private CHAniamtionPlayer aniamtionPlayer;
 
-    public CHLoadingScreen(CHScreen nxtScreen, String logoFilePath) {
+    public CHLoadingScreen(String logoFilePath) {
         if (logoFilePath != null) {
             Texture texture = new Texture(Gdx.files.internal(logoFilePath));
             logoImage = new Image(texture);
         }
-        this.nextScreen = nxtScreen;
     }
 
     private TextureAtlas atlas;
@@ -80,7 +73,6 @@ public abstract class CHLoadingScreen extends CHScreen {
 
         loadingBg = new Image(atlas.findRegion("loading-frame-bg"));
         Image loadingFrame = new Image(atlas.findRegion("loading-frame"));
-        loadingFrame.setSize(getStage().getWidth(), loadingFrame.getHeight());
         Image screenBg = new Image(atlas.findRegion("screen-bg"));
         screenBg.setBounds(0, 0, getStage().getWidth(), getStage().getHeight());
 
@@ -116,7 +108,7 @@ public abstract class CHLoadingScreen extends CHScreen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (touchTipLabel.isVisible()) {
-                    CHGame.getInstance().setScreen(nextScreen);
+                    changeToNextScreen();
                 }
             }
 
@@ -126,6 +118,11 @@ public abstract class CHLoadingScreen extends CHScreen {
         addActor(logoImage);
         addActor(aniamtionPlayer);
         addActor(loadingFrame);
+
+        //        loadingBg.setDebug(true);
+        //        loadingBarHidden.setDebug(true);
+        //        aniamtionPlayer.setDebug(true);
+        //        loadingFrame.setDebug(true);
 
         addActor(loadingBg);
         addActor(loadingBarHidden);
@@ -139,6 +136,7 @@ public abstract class CHLoadingScreen extends CHScreen {
                 Actions.moveTo(logoImage.getX(), logoImage.getY() - 10, 0.5f));
         logoImage.addAction(Actions.forever(repeatedAction));
 
+        // 居中
         loadingFrame.setX((getStage().getWidth() - loadingFrame.getWidth()) / 2);
         loadingFrame.setY((getStage().getHeight() - loadingFrame.getHeight()) / 2);
         aniamtionPlayer.setX(loadingFrame.getX() + 15);
@@ -146,13 +144,13 @@ public abstract class CHLoadingScreen extends CHScreen {
         loadingBarHidden.setX(aniamtionPlayer.getX() + 35);
         loadingBarHidden.setY(aniamtionPlayer.getY() - 3);
 
-        loadingBg.setSize(getStage().getWidth(), 50);
-        loadingBg.setX(loadingBarHidden.getX() + 30);
+        loadingBg.setSize(aniamtionPlayer.getWidth() - 65, 50);
+        loadingBg.setX(loadingBarHidden.getRight());
         loadingBg.setY(loadingBarHidden.getY() + 3);
 
         // The start position and how far to move the hidden loading bar
         startX = loadingBarHidden.getX();
-        endX = getStage().getWidth();
+        endX = aniamtionPlayer.getRight() - loadingBarHidden.getWidth() + 2;
 
         touchTipLabel.setWidth(touchTipLabel.getTextBounds().width);
         touchTipLabel.setPosition(getStage().getWidth() / 2, getStage().getHeight() / 2, Align.center);
@@ -173,6 +171,17 @@ public abstract class CHLoadingScreen extends CHScreen {
      * @param filePath
      */
     public abstract void loadAssetFile();
+
+    /**
+     * 
+     * <pre>
+     * 资源加载完毕。切换到下一个Screen
+     * 
+     * date: 2015-1-9
+     * </pre>
+     * @author caohao
+     */
+    public abstract void changeToNextScreen();
 
     @Override
     public void endScreen() {
@@ -212,10 +221,12 @@ public abstract class CHLoadingScreen extends CHScreen {
         percent = Interpolation.linear.apply(percent, chAssets.getProgress(), 0.1f);
 
         // Update positions (and size) to match the percentage
-        loadingBarHidden.setX(startX + endX * percent);
-        loadingBg.setX(loadingBarHidden.getX() + 30);
-        loadingBg.setWidth(getStage().getWidth() * (1 - percent));
-        loadingBg.invalidate();
+        loadingBarHidden.setX(startX + (endX - startX) * percent);
+        loadingBg.setX(loadingBarHidden.getRight());
+        loadingBg.setWidth((aniamtionPlayer.getWidth() - 71) * (1 - percent));
+        if (percent > 0.99) {
+            loadingBarHidden.setVisible(false);
+        }
 
     }
 
