@@ -44,7 +44,7 @@ public class CHActor extends Actor implements Poolable {
     public void setBgTexture(Texture bgTexture) {
         this.bgTexture = bgTexture;
         if (bgTexture != null) {
-            setBounds(0, 0, bgTexture.getWidth(), bgTexture.getHeight());
+            setSize(bgTexture.getWidth(), bgTexture.getHeight());
         }
     }
 

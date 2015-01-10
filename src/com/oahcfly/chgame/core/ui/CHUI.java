@@ -104,6 +104,17 @@ public abstract class CHUI {
     /**
      * 
      * <pre>
+     * 加入到舞台前初始化UI变量[在CHUI构造方法内调用]
+     * 
+     * date: 2015-1-10
+     * </pre>
+     * @author caohao
+     */
+    public abstract void initUIBeforeShow();
+
+    /**
+     * 
+     * <pre>
      * 加入到舞台后，刷新UI数据
      * 
      * date: 2015-1-10
@@ -112,14 +123,4 @@ public abstract class CHUI {
      */
     public abstract void refreshUIAfterShow();
 
-    /**
-     * 
-     * <pre>
-     * 加入到舞台前初始化UI变量
-     * 
-     * date: 2015-1-10
-     * </pre>
-     * @author caohao
-     */
-    public abstract void initUIBeforeShow();
 }

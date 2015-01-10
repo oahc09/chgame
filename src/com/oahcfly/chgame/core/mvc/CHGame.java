@@ -309,6 +309,7 @@ public abstract class CHGame extends Game {
             try {
                 texture = assetManager.get(fileName, Texture.class);
             } catch (Exception e) {
+                Gdx.app.error(TAG, e.getMessage());
                 texture = new Texture(Gdx.files.internal(fileName));
             }
         }
@@ -436,6 +437,7 @@ public abstract class CHGame extends Game {
             for (int i = 0; i < 6; i++) {
                 FileHandle fileHandle = Gdx.files.classpath(String.format("com/oahcfly/chgame/res/l_%d.png", i));
                 Texture texture = new Texture(fileHandle);
+                texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
                 loadingKeyFrames.add(new TextureRegion(texture));
             }
         }

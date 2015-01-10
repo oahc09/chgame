@@ -3,12 +3,12 @@ package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.parser.group;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCOption;
@@ -47,7 +47,8 @@ public class CCPanel extends GroupParser {
         }
 
         if (option.getBackGroundImageData() != null) {// Panel的图片并不是拉伸平铺的!!.但是这里修改为填充
-            Drawable tr = editor.findDrawable(option, option.getBackGroundImageData().getPath());
+            //Drawable tr = editor.findDrawable(option, option.getBackGroundImageData().getPath());
+            Texture tr = editor.findTexture(option.getBackGroundImageData().getPath());
             if (tr != null) {
                 Image bg = new Image(tr);
                 bg.setPosition((option.getWidth() - bg.getWidth()) / 2, (option.getHeight() - bg.getHeight()) / 2);

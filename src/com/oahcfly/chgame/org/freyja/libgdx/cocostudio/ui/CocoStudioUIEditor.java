@@ -323,6 +323,10 @@ public class CocoStudioUIEditor {
         return tr;
     }
 
+    public Texture findTexture(String name) {
+        return getTexture(dirName + name);
+    }
+
     public Drawable findDrawable(CCOption option, String name) {
 
         if (option.isScale9Enable()) {// 九宫格支持
@@ -461,7 +465,7 @@ public class CocoStudioUIEditor {
         this.actors = actors;
     }
 
-    public Texture getTexture(String path) {
+    private Texture getTexture(String path) {
         Gdx.app.debug("Game", "getTexture:" + path);
         return CHGame.getInstance().getTexture(path);
     }
