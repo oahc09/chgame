@@ -47,4 +47,16 @@ public class TestUI extends CHUI {
         addActor(labelAtlas);
     }
 
+    @Override
+    public void refreshUIAfterShow() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void initUIBeforeShow() {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

@@ -15,7 +15,7 @@ import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
 /**
  * 
  * <pre>
- * UI面板
+ * UI面板 : 可以dismiss后重新show
  * 
  * date: 2014-10-24
  * </pre>
@@ -33,10 +33,19 @@ public abstract class CHUI {
 
     private CHScreen parentScreen;
 
+    public CHUI(CHScreen screen, String jsonPath) {
+        this.parentScreen = screen;
+        this.stage = parentScreen.getStage();
+        editor = new CocoStudioUIEditor(Gdx.files.internal(jsonPath), null, null, null, null);
+        group = editor.createGroup();
+        initUIBeforeShow();
+    }
+
     public CHUI(Stage stage, Map<String, FileHandle> ttfs, String jsonPath) {
         this.stage = stage;
         editor = new CocoStudioUIEditor(Gdx.files.internal(jsonPath), ttfs, null, null, null);
         group = editor.createGroup();
+        initUIBeforeShow();
     }
 
     public CHUI(CHScreen screen, Map<String, FileHandle> ttfs, String jsonPath) {
@@ -44,14 +53,17 @@ public abstract class CHUI {
         this.stage = parentScreen.getStage();
         editor = new CocoStudioUIEditor(Gdx.files.internal(jsonPath), ttfs, null, null, null);
         group = editor.createGroup();
+        initUIBeforeShow();
     }
 
     public void show() {
         isShowing = true;
         stage.addActor(group);
+        refreshUIAfterShow();
     }
 
     public void dismiss() {
+        isShowing = false;
         group.remove();
         editor.clear();
     }
@@ -89,4 +101,25 @@ public abstract class CHUI {
         return isShowing;
     }
 
+    /**
+     * 
+     * <pre>
+     * 加入到舞台后，刷新UI数据
+     * 
+     * date: 2015-1-10
+     * </pre>
+     * @author caohao
+     */
+    public abstract void refreshUIAfterShow();
+
+    /**
+     * 
+     * <pre>
+     * 加入到舞台前初始化UI变量
+     * 
+     * date: 2015-1-10
+     * </pre>
+     * @author caohao
+     */
+    public abstract void initUIBeforeShow();
 }

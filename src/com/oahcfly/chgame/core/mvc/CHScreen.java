@@ -18,7 +18,7 @@ import com.oahcfly.chgame.core.ui.CHUI;
  * 【View层】
  * 场景抽像类
  * 
- * 内部管理多个UI。
+ * 内部管理多个UI。UI可以自由切换，关闭和打开。
  * UI数据通过CHModel进行管理。
  * date: 2014-5-11
  * </pre>
