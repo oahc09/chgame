@@ -25,7 +25,7 @@ public class MainUI extends CHUI {
     }
 
     public void initUI() {
-        getEditor().findActor("img_rush_bg").addListener(new CHClickListener(CLICKTYPE.FADE));
+        findActor("img_rush_bg").addListener(new CHClickListener(CLICKTYPE.FADE));
         //        getEditor().findActor("img_rush_bg").addListener(new DragListener() {
         //
         //            @Override
@@ -68,7 +68,7 @@ public class MainUI extends CHUI {
         //            
         //        }
         //        
-        Image imgPause = (Image)getEditor().findActor("img_pause");
+        Image imgPause = findActor("img_pause");
         imgPause.addListener(new InputListener() {
 
             @Override

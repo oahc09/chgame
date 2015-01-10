@@ -183,7 +183,9 @@ public abstract class CHGame extends Game {
         musicManager.dispose();
         soundManager.dispose();
         assetManager.dispose();
-        bitmapFont.dispose();
+        if (bitmapFont != null) {
+            bitmapFont.dispose();
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.oahcfly.chgame.test.screen;
 
 import com.oahcfly.chgame.core.mvc.CHGame;
+import com.oahcfly.chgame.core.transition.TransitionFade;
 import com.oahcfly.chgame.core.ui.CHLoadingScreen;
 
 public class MyLoadingScreen extends CHLoadingScreen{
@@ -18,7 +19,7 @@ public class MyLoadingScreen extends CHLoadingScreen{
 
     @Override
     public void changeToNextScreen() {
-         CHGame.getInstance().setScreen(new FirstScreen());
+         CHGame.getInstance().setScreen(new FirstScreen(), new TransitionFade());
     }
 
 }
