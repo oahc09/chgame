@@ -41,7 +41,7 @@ public class CHToast {
      */
     public CHToast(String text, Color fontColor) {
         BitmapFont bitmapFont = CHGame.getInstance().getInternationalGenerator().appendToFont(text);
-        init(bitmapFont, text);
+        init(bitmapFont, text, fontColor);
     }
 
     /**
@@ -58,11 +58,12 @@ public class CHToast {
         } else {
             bitmapFont = FontUtil.createFont(CHGame.getInstance().getTTFMap().get(ttfName), text, fontSize);
         }
-        init(bitmapFont, text);
+
+        init(bitmapFont, text, fontColor);
     }
 
-    private void init(BitmapFont bitmapFont, String text) {
-        LabelStyle style = new LabelStyle(bitmapFont, Color.BLACK);
+    private void init(BitmapFont bitmapFont, String text, Color color) {
+        LabelStyle style = new LabelStyle(bitmapFont, color);
         FileHandle imgFileHandle = Gdx.files.classpath("com/oahcfly/chgame/res/tip_bg.png");
         style.background = new TextureRegionDrawable(new TextureRegion(new Texture(imgFileHandle)));
         label = new Label(" " + text + " ", style);

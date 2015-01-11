@@ -79,10 +79,7 @@ public class MainUI extends CHUI {
                 Gdx.app.log("ccc", "pause touch down");
                 dismiss();
                 new TestUI(getParentStage()).show();
-                CHToast chToast = new CHToast(
-                        null,
-                        "你好！adadsa \n dadasds啊哈哈哈哈【游戏玩法说明】 \n 1.勇闯难关 \n 游戏共213关，让你一次闯到底。每关10道，注意答题时间哦，\n超过了自动跳到下一题，答对6道以上才可通关！ \n 2. 争分夺秒 \n 60s内看你能够最高答对多少道题目。\n 注：\n关卡挑战失败和参与争分夺秒都会消耗一颗能量心。\n每隔10分钟恢复1颗能量心~",
-                        Color.BLACK, 30);
+                CHToast chToast = new CHToast("的间谍记得", Color.RED);
                 chToast.setDelayDuration(11);
                 chToast.show();
                 return true;
