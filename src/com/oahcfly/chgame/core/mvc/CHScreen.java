@@ -148,6 +148,8 @@ public abstract class CHScreen implements Screen {
 
     public void setModel(CHModel chModel) {
         this.chModel = chModel;
+        if (chModel.getScreen() == null)
+            chModel.setScreen(this);
     }
 
     public void addUI(CHUI chui) {

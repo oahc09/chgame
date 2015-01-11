@@ -26,4 +26,8 @@ public abstract class CHModel {
         return (T)screen;
     }
 
+    public void setScreen(CHScreen screen) {
+        this.screen = screen;
+    }
+
 }

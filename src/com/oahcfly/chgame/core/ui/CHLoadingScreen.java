@@ -86,17 +86,12 @@ public abstract class CHLoadingScreen extends CHScreen {
             //new Image(atlas.findRegion("libgdx-logo"));
         }
 
-        touchTipLabel = new Label("Touch to start ", new LabelStyle(CHGame.getInstance().getDefaultBitmapFont(),
-                Color.WHITE));
-
-        touchTipLabel.getStyle().font.setScale(2f);
-
         aniamtionPlayer.setTouchable(Touchable.disabled);
         loadingFrame.setTouchable(Touchable.disabled);
         logoImage.setTouchable(Touchable.disabled);
         loadingBg.setTouchable(Touchable.disabled);
         loadingBarHidden.setTouchable(Touchable.disabled);
-        touchTipLabel.setTouchable(Touchable.disabled);
+
         screenBg.addListener(new InputListener() {
 
             @Override
@@ -107,7 +102,7 @@ public abstract class CHLoadingScreen extends CHScreen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touchTipLabel.isVisible()) {
+                if (touchTipLabel != null) {
                     changeToNextScreen();
                 }
             }
@@ -119,14 +114,8 @@ public abstract class CHLoadingScreen extends CHScreen {
         addActor(aniamtionPlayer);
         addActor(loadingFrame);
 
-        //        loadingBg.setDebug(true);
-        //        loadingBarHidden.setDebug(true);
-        //        aniamtionPlayer.setDebug(true);
-        //        loadingFrame.setDebug(true);
-
         addActor(loadingBg);
         addActor(loadingBarHidden);
-        addActor(touchTipLabel);
 
         logoImage.setX((getStage().getWidth() - logoImage.getWidth()) / 2);
         logoImage.setY((getStage().getHeight()) / 2 + 100);
@@ -152,12 +141,20 @@ public abstract class CHLoadingScreen extends CHScreen {
         startX = loadingBarHidden.getX();
         endX = aniamtionPlayer.getRight() - loadingBarHidden.getWidth() + 2;
 
-        touchTipLabel.setWidth(touchTipLabel.getTextBounds().width);
-        touchTipLabel.setPosition(getStage().getWidth() / 2, getStage().getHeight() / 2, Align.center);
-        touchTipLabel.setVisible(false);
-
         loadAssetFile();
 
+    }
+
+    private void showTouchTip() {
+        touchTipLabel = new Label("Touch to start ", new LabelStyle(CHGame.getInstance().getDefaultBitmapFont(),
+                Color.WHITE));
+
+        touchTipLabel.getStyle().font.setScale(2f);
+        touchTipLabel.setTouchable(Touchable.disabled);
+        touchTipLabel.setWidth(touchTipLabel.getTextBounds().width);
+        touchTipLabel.setPosition(getStage().getWidth() / 2, getStage().getHeight() / 2, Align.center);
+        touchTipLabel.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.1f, 0.4f), Actions.alpha(1f, 0.8f))));
+        addActor(touchTipLabel);
     }
 
     /**
@@ -188,7 +185,6 @@ public abstract class CHLoadingScreen extends CHScreen {
         // TODO Auto-gene4rated method stub
         getCHAssets().dispose();
         atlas.dispose();
-        touchTipLabel.clear();
     }
 
     @Override
@@ -211,10 +207,8 @@ public abstract class CHLoadingScreen extends CHScreen {
                 // If the screen is touched after the game is done loading, go to the next screen
                 // 处理down事件->切换screen>处理up事件
             }
-            if (!touchTipLabel.isVisible()) {
-                touchTipLabel.setVisible(true);
-                touchTipLabel.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.1f, 0.4f),
-                        Actions.alpha(1f, 0.8f))));
+            if (touchTipLabel == null) {
+                showTouchTip();
             }
         }
         // Interpolate the percentage to make it more smooth

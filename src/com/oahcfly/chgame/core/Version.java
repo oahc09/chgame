@@ -29,9 +29,9 @@ public class Version {
      * 0.2.2Action特辑：旋转+掉落并发效果，滑动回弹效果，中心缩放效果。TTFLabel新增setText方法。新增文本输入框抽象类。
      * 0.2.3插屏广告比例控制。优化LabelAltas减少new Image的次数。
      * 0.2.4CocoStudioUIEditor优化去除无用代码。CHUI新增两个抽象方法，规范UI刷新。目前CHUI可以自由关闭打开，通过CHScreen控制。
-     * 0.2.5修复颜色设置无效问题，优化CHLoadingScreen
+     * 0.2.5修复颜色设置无效问题，优化CHLoadingScreen，labelatlas新增设置num方法。优化chtoast
      *  */
-    public static final String VERSION = "0.2.4";
+    public static final String VERSION = "0.2.5";
 
     //    public void a() {
     //        Action[] sAction = new Action[20];
