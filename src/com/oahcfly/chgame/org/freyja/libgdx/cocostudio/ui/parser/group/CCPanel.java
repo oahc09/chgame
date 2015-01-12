@@ -51,6 +51,7 @@ public class CCPanel extends GroupParser {
             Texture tr = editor.findTexture(option.getBackGroundImageData().getPath());
             if (tr != null) {
                 Image bg = new Image(tr);
+                bg.setName("panel_bg");
                 bg.setPosition((option.getWidth() - bg.getWidth()) / 2, (option.getHeight() - bg.getHeight()) / 2);
                 // bg.setFillParent(true);
                 bg.setTouchable(Touchable.disabled);

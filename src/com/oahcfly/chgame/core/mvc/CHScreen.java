@@ -24,7 +24,7 @@ import com.oahcfly.chgame.core.ui.CHUI;
  * </pre>
  * @author caohao
  */
-public abstract class CHScreen implements Screen {
+public abstract class CHScreen implements Screen, CHUIFocusListener {
 
     /** 初始化场景信息*/
     public abstract void initScreen();
@@ -39,9 +39,18 @@ public abstract class CHScreen implements Screen {
 
     private CHGame game = CHGame.getInstance();
 
+    // 舞台宽&高
     private int stageW = 0, stageH = 0;
 
+    // CHUI的缓存
     private HashMap<String, CHUI> chuiMap = new HashMap<String, CHUI>();
+
+    private Stage stage;
+
+    private CHModel chModel;
+
+    /**当前正在展示的CHUI*/
+    private CHUI topCHUI;
 
     public CHScreen() {
         this.stageW = game.getGameWidth();
@@ -53,21 +62,20 @@ public abstract class CHScreen implements Screen {
         this.stageH = stageH;
     }
 
-    private Stage stage;
-
-    private CHModel chModel;
-
     @Override
     public void show() {
         setBackKeyPressed(false);
+        // 自动拉伸舞台
         StretchViewport viewport = new StretchViewport(stageW, stageH);
         stage = new Stage(viewport);
+        // 注册触摸事件
         Gdx.input.setInputProcessor(stage);
         initScreen();
     }
 
     @Override
     public void hide() {
+        // screen销毁
         Set<String> keys = chuiMap.keySet();
         for (String key : keys) {
             // 依次关闭CHUI
@@ -96,6 +104,7 @@ public abstract class CHScreen implements Screen {
         draw();
         act(delta);
         if (Gdx.input.isKeyPressed(Input.Keys.BACK) && !backKey) {
+            // 监听返回键
             backKey = true;
             clickBackKey();
         }
@@ -156,6 +165,15 @@ public abstract class CHScreen implements Screen {
         chuiMap.put(chui.getClass().getSimpleName(), chui);
     }
 
+    public void showUI(String uiname) {
+        getUI(uiname).show();
+    }
+
+    public void changeUI(String oldUIName, String newUIName) {
+        getUI(oldUIName).dismiss();
+        getUI(newUIName).show();
+    }
+
     @SuppressWarnings("unchecked")
     public <T extends CHUI> T getUI(String name) {
         return (T)chuiMap.get(name);
@@ -164,4 +182,56 @@ public abstract class CHScreen implements Screen {
     public void dispose() {
 
     }
+
+    @Override
+    public void notifyUIUnFocus(CHUI chui) {
+
+    }
+
+    @Override
+    public void notifyUIFocus(CHUI chui) {
+        topCHUI = chui;
+
+    }
+
+    /**
+     * 
+     * <pre>
+     * 当前正在展示的CHUI
+     * 
+     * date: 2015-1-12
+     * </pre>
+     * @author caohao
+     * @return
+     */
+    public CHUI getTopCHUI() {
+        return topCHUI;
+    }
+
+}
+
+interface CHUIFocusListener {
+    /**
+     * 
+     * <pre>
+     * chui不显示，失去焦点
+     * 
+     * date: 2015-1-12
+     * </pre>
+     * @author caohao
+     * @param chui
+     */
+    public void notifyUIUnFocus(CHUI chui);
+
+    /**
+     * 
+     * <pre>
+     * chui显示，获得焦点
+     * 
+     * date: 2015-1-12
+     * </pre>
+     * @author caohao
+     * @param chui
+     */
+    public void notifyUIFocus(CHUI chui);
 }

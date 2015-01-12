@@ -23,6 +23,7 @@ import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
  */
 public abstract class CHUI {
 
+    // 是否在显示
     private boolean isShowing;
 
     private CocoStudioUIEditor editor;
@@ -56,16 +57,40 @@ public abstract class CHUI {
         initUIBeforeShow();
     }
 
+    /**
+     * 
+     * <pre>
+     * 显示CHUI
+     * 
+     * date: 2015-1-12
+     * </pre>
+     * @author caohao
+     */
     public void show() {
         isShowing = true;
         stage.addActor(group);
         refreshUIAfterShow();
+        if (parentScreen != null) {
+            parentScreen.notifyUIFocus(this);
+        }
     }
 
+    /**
+     * 
+     * <pre>
+     * 隐藏CHUI
+     * 
+     * date: 2015-1-12
+     * </pre>
+     * @author caohao
+     */
     public void dismiss() {
         isShowing = false;
         group.remove();
         editor.clear();
+        if (parentScreen != null) {
+            parentScreen.notifyUIUnFocus(this);
+        }
     }
 
     public CocoStudioUIEditor getEditor() {
@@ -97,6 +122,16 @@ public abstract class CHUI {
         return parentScreen.getModel();
     }
 
+    /**
+     * 
+     * <pre>
+     * 是否在显示
+     * 
+     * date: 2015-1-12
+     * </pre>
+     * @author caohao
+     * @return
+     */
     public boolean isShowing() {
         return isShowing;
     }

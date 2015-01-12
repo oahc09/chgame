@@ -20,6 +20,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.oahcfly.chgame.core.FreeTypeFontGeneratorExt;
 import com.oahcfly.chgame.core.International;
@@ -180,6 +182,10 @@ public abstract class CHGame extends Game {
             generator.dispose();
         }
 
+        for (TextureRegion textureRegion : this.loadingKeyFrames) {
+            textureRegion.getTexture().dispose();
+        }
+
         musicManager.dispose();
         soundManager.dispose();
         assetManager.dispose();
@@ -284,6 +290,11 @@ public abstract class CHGame extends Game {
 
     public CHADListener getADListener() {
         return this.chadListener;
+    }
+
+    public Drawable getDrawable(String fileName) {
+        Texture texture = getTexture(fileName);
+        return new TextureRegionDrawable(new TextureRegion(texture));
     }
 
     /**
