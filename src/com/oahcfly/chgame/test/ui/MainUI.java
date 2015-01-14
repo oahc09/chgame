@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.listener.CHClickListener.CLICKTYPE;
+import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHToast;
 import com.oahcfly.chgame.core.ui.CHUI;
@@ -82,13 +83,14 @@ public class MainUI extends CHUI {
                 CHToast chToast = new CHToast("的间谍记得", Color.RED);
                 chToast.setDelayDuration(11);
                 chToast.show();
+                CHGame.getInstance().showWaitingUI();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("ccc", "pause touch up");
-                //CHGame.getInstance().closeLoadingUI();
+              
                 super.touchUp(event, x, y, pointer, button);
             }
         });

@@ -37,8 +37,6 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
 
     private String TAG = getClass().getSimpleName();
 
-    private CHGame game = CHGame.getInstance();
-
     // 舞台宽&高
     private int stageW = 0, stageH = 0;
 
@@ -53,21 +51,26 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     private CHUI topCHUI;
 
     public CHScreen() {
-        this.stageW = game.getGameWidth();
-        this.stageH = game.getGameHeight();
+        this(CHGame.getInstance().getGameWidth(), CHGame.getInstance().getGameHeight());
     }
 
     public CHScreen(int stageW, int stageH) {
         this.stageW = stageW;
         this.stageH = stageH;
+        createStage();
+    }
+
+    private void createStage() {
+        // 自动拉伸舞台
+        StretchViewport viewport = new StretchViewport(stageW, stageH);
+        stage = new Stage(viewport);
+        Gdx.app.debug(TAG, "screen-init-createStage");
     }
 
     @Override
     public void show() {
+        Gdx.app.debug(TAG, "screen-show");
         setBackKeyPressed(false);
-        // 自动拉伸舞台
-        StretchViewport viewport = new StretchViewport(stageW, stageH);
-        stage = new Stage(viewport);
         // 注册触摸事件
         Gdx.input.setInputProcessor(stage);
         initScreen();
@@ -75,6 +78,7 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
 
     @Override
     public void hide() {
+        Gdx.app.debug(TAG, "screen-hide");
         // screen销毁
         Set<String> keys = chuiMap.keySet();
         for (String key : keys) {
@@ -94,7 +98,7 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     @Override
     public void pause() {
         // TODO Auto-generated method stub
-        Gdx.app.log(TAG, "screen-pause");
+        Gdx.app.debug(TAG, "screen-pause");
     }
 
     private boolean backKey = false;
@@ -121,17 +125,17 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     @Override
     public void resize(int width, int height) {
         // TODO Auto-generated method stub
-        Gdx.app.log(TAG, "screen-resize");
+        Gdx.app.debug(TAG, "screen-resize");
     }
 
     @Override
     public void resume() {
         // TODO Auto-generated method stub
-        Gdx.app.log(getClass().getName(), "screen-resume");
+        Gdx.app.debug(getClass().getName(), "screen-resume");
     }
 
     public CHGame getGame() {
-        return game;
+        return CHGame.getInstance();
     }
 
     public Stage getStage() {
@@ -169,11 +173,33 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
         getUI(uiname).show();
     }
 
+    /**
+     * 
+     * <pre>
+     * 切换UI
+     * 
+     * date: 2015-1-12
+     * </pre>
+     * @author caohao
+     * @param oldUIName
+     * @param newUIName
+     */
     public void changeUI(String oldUIName, String newUIName) {
         getUI(oldUIName).dismiss();
         getUI(newUIName).show();
     }
 
+    /**
+     * 
+     * <pre>
+     * 根据名称得到CHUI
+     * 
+     * date: 2015-1-12
+     * </pre>
+     * @author caohao
+     * @param name
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public <T extends CHUI> T getUI(String name) {
         return (T)chuiMap.get(name);

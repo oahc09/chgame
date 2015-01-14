@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -30,7 +31,6 @@ import com.oahcfly.chgame.core.ad.CHADListener;
 import com.oahcfly.chgame.core.listener.LocaleListener;
 import com.oahcfly.chgame.core.manager.MusicManager;
 import com.oahcfly.chgame.core.manager.SoundManager;
-import com.oahcfly.chgame.core.transition.ScreenTransition;
 import com.oahcfly.chgame.core.ui.CHWaiting;
 
 /**
@@ -252,24 +252,12 @@ public abstract class CHGame extends Game {
 
     @Override
     public void setScreen(Screen screen) {
+        if (getScreen() != null) {
+            // 不可点击
+            getScreen().getStage().getRoot().setTouchable(Touchable.disabled);
+        }
         Gdx.input.setInputProcessor(null);
         super.setScreen(screen);
-    }
-
-    /**
-     * 
-     * <pre>
-     * 切换Screen
-     * 
-     * date: 2014-10-24
-     * </pre>
-     * @author caohao
-     * @param screen
-     * @param transition
-     */
-    public void setScreen(CHScreen toScreen, ScreenTransition transition) {
-        Gdx.input.setInputProcessor(null);
-        transition.transition((CHScreen)this.getScreen(), toScreen);
     }
 
     /**
@@ -543,5 +531,13 @@ public abstract class CHGame extends Game {
             bitmapFont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         }
         return bitmapFont;
+    }
+
+    public void setChADListener(CHADListener chadListener) {
+        this.chadListener = chadListener;
+    }
+
+    public void setLocaleListener(LocaleListener localeListener) {
+        this.localeListener = localeListener;
     }
 }
