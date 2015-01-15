@@ -335,4 +335,4 @@ additive: true
 behind: false
 premultipliedAlpha: false
 - Image Path -
-/Users/tian/Desktop/star.png
+/Users/hao/Desktop/star.png

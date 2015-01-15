@@ -48,9 +48,6 @@ import com.oahcfly.chgame.core.mvc.CHGame;
  */
 public class CHAssets implements Disposable, AssetErrorListener {
 
-    // 文件解析OK?
-    private boolean assetFileLoaded=false;
-    
     private static final String TAG = "Assets";
 
     private AssetManager manager;
@@ -197,10 +194,10 @@ public class CHAssets implements Disposable, AssetErrorListener {
             JsonValue root = reader.parse(Gdx.files.internal(assetFile));
 
             JsonIterator groupIt = root.iterator();
-            
+
             Gdx.app.debug(TAG, "asset time 1 : " + (System.currentTimeMillis() - stattime));
             stattime = System.currentTimeMillis();
-            
+
             while (groupIt.hasNext()) {
                 JsonValue groupValue = groupIt.next();
 
@@ -228,13 +225,7 @@ public class CHAssets implements Disposable, AssetErrorListener {
         } catch (Exception e) {
             Gdx.app.log(TAG, "error loading file " + assetFile + " " + e.getMessage());
         }
-        
-        this.assetFileLoaded=true;
+
     }
 
-    public boolean isAssetFileLoaded() {
-        return assetFileLoaded;
-    }
-    
-    
 }

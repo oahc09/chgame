@@ -58,78 +58,13 @@ public abstract class CHLoadingScreen extends CHScreen {
         long startime = System.currentTimeMillis();
 
         chAssets = new CHAssets();
-
-        FileHandle screenbgFileHandle = Gdx.files.classpath("com/oahcfly/chgame/res/screen-bg.png");
-
+        
+        loadingUI();
         Gdx.app.debug(getTAG(), "loading step -01  :" + (System.currentTimeMillis() - startime));
         startime = System.currentTimeMillis();
 
-        screenbgTexture = new Texture(screenbgFileHandle);
-        screenbgTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        Image screenBg = new Image(screenbgTexture);
-        screenBg.setSize(CHGame.getInstance().gameWidth, CHGame.getInstance().gameHeight);
-
-        addActor(screenBg);
-
-        Gdx.app.debug(getTAG(), "loading step -02  :" + (System.currentTimeMillis() - startime));
-        startime = System.currentTimeMillis();
-
         loadAssetFile();
-
-        Gdx.app.debug(getTAG(), "loading step -03 :" + (System.currentTimeMillis() - startime));
-    }
-
-    protected void loadingUI() {
-        FileHandle loadingBarFileHandle = Gdx.files.classpath("com/oahcfly/chgame/res/loadingbar.png");
-        FileHandle loadingProgressFileHandle = Gdx.files.classpath("com/oahcfly/chgame/res/loadingprogress.png");
-
-        barTexture = new Texture(loadingBarFileHandle);
-        progressTexture = new Texture(loadingProgressFileHandle);
-
-        barTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        progressTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        loadingBarBg = new Image(barTexture);
-        loadingPrgressBg = new Image(progressTexture);
-
-        if (logoImage == null) {
-            logoImage = new Image(new Texture(Gdx.files.classpath("com/oahcfly/chgame/res/studio_logo.png")));
-        }
-
-        loadingBarBg.setTouchable(Touchable.disabled);
-        logoImage.setTouchable(Touchable.disabled);
-        loadingPrgressBg.setTouchable(Touchable.disabled);
-
-        logoImage.setX((getStage().getWidth() - logoImage.getWidth()) / 2);
-        logoImage.setY((getStage().getHeight()) / 2 + 100);
-        logoImage.setOrigin(Align.center);
-        Action repeatedAction = Actions.sequence(Actions.moveTo(logoImage.getX(), logoImage.getY() + 10, 0.5f),
-                Actions.moveTo(logoImage.getX(), logoImage.getY(), 0.5f),
-                Actions.moveTo(logoImage.getX(), logoImage.getY() - 10, 0.5f));
-        logoImage.addAction(Actions.forever(repeatedAction));
-
-        // 居中
-        loadingBarBg.setX((getStage().getWidth() - loadingBarBg.getWidth()) / 2);
-        loadingBarBg.setY((getStage().getHeight() - loadingBarBg.getHeight()) / 2);
-        loadingPrgressBg.setX(loadingBarBg.getX());
-        loadingPrgressBg.setY(loadingBarBg.getY() + 5);
-        loadingPrgressBg.setSize(20, loadingPrgressBg.getHeight());
-
-        addActor(logoImage);
-        addActor(loadingPrgressBg);
-        addActor(loadingBarBg);
-
-    }
-
-    private void addProgressLabel() {
-        progressLabel = new Label("Loading...100%", new LabelStyle(CHGame.getInstance().getDefaultBitmapFont(),
-                Color.WHITE));
-
-        progressLabel.getStyle().font.setScale(2f);
-        progressLabel.setTouchable(Touchable.disabled);
-        progressLabel.setWidth(progressLabel.getTextBounds().width);
-        progressLabel.setPosition(getStage().getWidth() / 2, getStage().getHeight() / 2, Align.center);
-        //touchTipLabel.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.1f, 0.4f), Actions.alpha(1f, 0.8f))));
-        addActor(progressLabel);
+        Gdx.app.debug(getTAG(), "loading step -02 :" + (System.currentTimeMillis() - startime));
     }
 
     /**
@@ -162,22 +97,7 @@ public abstract class CHLoadingScreen extends CHScreen {
     @Override
     public void render(float delta) {
 
-        if (barTexture == null) {
-            // 下次绘制前加载
-            Gdx.app.postRunnable(new Runnable() {
-
-                @Override
-                public void run() {
-                    loadingUI();
-                }
-            });
-            return;
-        }
         super.render(delta);
-
-        if (!getCHAssets().isAssetFileLoaded()) {
-            return;
-        }
 
         if (chAssets.update()) { // Load some, will return true if done loading
             if (Gdx.input.justTouched()) {
@@ -197,6 +117,67 @@ public abstract class CHLoadingScreen extends CHScreen {
         if (percent > 0.990f) {
             changeToNextScreen();
         }
+    }
+
+    protected void loadingUI() {
+        FileHandle loadingBarFileHandle = Gdx.files.classpath("com/oahcfly/chgame/res/loadingbar.png");
+        FileHandle loadingProgressFileHandle = Gdx.files.classpath("com/oahcfly/chgame/res/loadingprogress.png");
+        FileHandle screenbgFileHandle = Gdx.files.classpath("com/oahcfly/chgame/res/screen-bg.png");
+
+        screenbgTexture = new Texture(screenbgFileHandle);
+        screenbgTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        Image screenBg = new Image(screenbgTexture);
+        screenBg.setSize(CHGame.getInstance().gameWidth, CHGame.getInstance().gameHeight);
+        screenBg.setTouchable(Touchable.disabled);
+        
+        addActor(screenBg);
+        barTexture = new Texture(loadingBarFileHandle);
+        progressTexture = new Texture(loadingProgressFileHandle);
+
+        barTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        progressTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        loadingBarBg = new Image(barTexture);
+        loadingPrgressBg = new Image(progressTexture);
+
+        if (logoImage == null) {
+            logoImage = new Image(new Texture(Gdx.files.classpath("com/oahcfly/chgame/res/studio_logo.png")));
+        }
+
+        loadingBarBg.setTouchable(Touchable.disabled);
+        logoImage.setTouchable(Touchable.disabled);
+        loadingPrgressBg.setTouchable(Touchable.disabled);
+
+        logoImage.setX((getStage().getWidth() - logoImage.getWidth()) / 2);
+        logoImage.setY((getStage().getHeight()) / 2 + 100);
+        logoImage.setOrigin(Align.center);
+        Action repeatedAction = Actions.sequence(Actions.moveTo(logoImage.getX(), logoImage.getY() + 10, 0.5f),
+                Actions.moveTo(logoImage.getX(), logoImage.getY(), 0.5f),
+                Actions.moveTo(logoImage.getX(), logoImage.getY() - 10, 0.5f));
+        logoImage.addAction(Actions.forever(repeatedAction));
+
+        // 居中
+        loadingBarBg.setX((getStage().getWidth() - loadingBarBg.getWidth()) / 2);
+        loadingBarBg.setY((getStage().getHeight() - loadingBarBg.getHeight()) / 2);
+        loadingPrgressBg.setX(loadingBarBg.getX());
+        loadingPrgressBg.setY(loadingBarBg.getY() + 5);
+        loadingPrgressBg.setSize(30, loadingPrgressBg.getHeight());
+
+        addActor(logoImage);
+        addActor(loadingPrgressBg);
+        addActor(loadingBarBg);
+
+    }
+
+    private void addProgressLabel() {
+        progressLabel = new Label("Loading...100%", new LabelStyle(CHGame.getInstance().getDefaultBitmapFont(),
+                Color.WHITE));
+
+        progressLabel.getStyle().font.setScale(2f);
+        progressLabel.setTouchable(Touchable.disabled);
+        progressLabel.setWidth(progressLabel.getTextBounds().width);
+        progressLabel.setPosition(getStage().getWidth() / 2, getStage().getHeight() / 2, Align.center);
+        //touchTipLabel.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.1f, 0.4f), Actions.alpha(1f, 0.8f))));
+        addActor(progressLabel);
     }
 
     @Override

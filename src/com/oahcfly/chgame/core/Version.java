@@ -32,7 +32,7 @@ public class Version {
      * 0.2.6优化CHUI,优化chgame.chscreen。chloadingscreen加载速度提升，逻辑简化。
      * 0.2.7新增各种粒子特效。
      *  */
-    public static final String VERSION = "0.2.6.1";
+    public static final String VERSION = "0.2.7";
 
     //    public void a() {
     //        Action[] sAction = new Action[20];

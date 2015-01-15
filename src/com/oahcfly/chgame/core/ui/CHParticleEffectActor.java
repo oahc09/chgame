@@ -8,6 +8,15 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * 
+ * <pre>
+ * 粒子效果，持续的展示效果【雪花飘落....】
+ * 
+ * date: 2015-1-15
+ * </pre>
+ * @author caohao
+ */
 public class CHParticleEffectActor extends Actor {
 
     private ParticleEffect particleEffect;

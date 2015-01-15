@@ -7,10 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -32,6 +32,7 @@ import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
+import com.oahcfly.chgame.core.ui.CHParticleEffectActor;
 import com.oahcfly.chgame.test.ui.MyActor;
 
 public class PPLScreen extends CHScreen implements GestureListener {
@@ -42,7 +43,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
     public void initScreen() {
 
         chParticle = new CHParticle(ParticleType.STAR);
-
+addActor(chParticle);
         for (int i = 0; i < 5; i++) {
             Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
             image.setName("xin_" + (i + 1));
@@ -90,7 +91,15 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
         myActor.setBgTexture(bgTexture);
         addActor(myActor);
-        getStage().getRoot().setCullingArea(new Rectangle(100, 100, 100, 100));
+ 
+
+        // 粒子
+        ParticleEffect particleEffect = new ParticleEffect();
+        particleEffect.load(Gdx.files.classpath("com/oahcfly/chgame/particle/snow.p"),
+                Gdx.files.classpath("com/oahcfly/chgame/particle/"));
+        CHParticleEffectActor actor = new CHParticleEffectActor(particleEffect, "snow");
+        actor.setPosition(100, 400);
+        addActor(actor);
     }
 
     private void testCDAction() {
@@ -189,7 +198,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
     public void render(float delta) {
         // TODO Auto-generated method stub
         super.render(delta);
-        chParticle.render(getStage().getBatch());
+      //  chParticle.render(getStage().getBatch());
 
     }
 

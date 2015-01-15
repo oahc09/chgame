@@ -108,8 +108,6 @@ public abstract class CHGame extends Game {
 
         Gdx.app.log(TAG, "version : " + Version.VERSION);
 
-        //long starttime = System.currentTimeMillis();
-
         musicManager = new MusicManager();
         soundManager = new SoundManager();
 
@@ -119,8 +117,6 @@ public abstract class CHGame extends Game {
         Gdx.input.setCatchMenuKey(true);
 
         instance = this;
-
-        // Gdx.app.log(TAG, "create :" + (System.currentTimeMillis() - starttime));
 
         init();
 
