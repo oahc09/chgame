@@ -15,7 +15,7 @@ public class TestGame extends CHGame {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
         //CHADChannel androidAdChannel= new CHADChannel("{\"360\":false,\"baidu\":true,\"tengxu\":false,\"meizu\":false,\"anzhi\":false}");
-
+ 
         setScreen(new MyLoadingScreen());
 
         //        String chineseExtraStr="nihao你好哈哈哈你是煞笔";
@@ -43,5 +43,10 @@ public class TestGame extends CHGame {
         //        for(int i=0;i<100;i++){
         //        InterstitialAdType interstitialAdType = chInterstitialAd.getInterstitalAdType();
         //        System.out.println(""+interstitialAdType.getTypeValue());}
+
+        //        long starttime = System.currentTimeMillis();
+        //        FileHandle bigFileHandle = CHFileHelper.searchFileHandle("", "big_star.png");
+        //        System.out.println("bigFileHandle:" + bigFileHandle.path() + "," + bigFileHandle.nameWithoutExtension());
+        //        System.out.println("consume:" + (System.currentTimeMillis() - starttime));
     }
 }

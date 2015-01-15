@@ -57,7 +57,16 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     public CHScreen(int stageW, int stageH) {
         this.stageW = stageW;
         this.stageH = stageH;
+    }
+
+    @Override
+    public void show() {
+        Gdx.app.debug(TAG, "screen-show");
+        setBackKeyPressed(false);
         createStage();
+        // 注册触摸事件
+        Gdx.input.setInputProcessor(stage);
+        initScreen();
     }
 
     private void createStage() {
@@ -65,15 +74,6 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
         StretchViewport viewport = new StretchViewport(stageW, stageH);
         stage = new Stage(viewport);
         Gdx.app.debug(TAG, "screen-init-createStage");
-    }
-
-    @Override
-    public void show() {
-        Gdx.app.debug(TAG, "screen-show");
-        setBackKeyPressed(false);
-        // 注册触摸事件
-        Gdx.input.setInputProcessor(stage);
-        initScreen();
     }
 
     @Override
@@ -211,7 +211,9 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
 
     @Override
     public void notifyUIUnFocus(CHUI chui) {
-
+        if (topCHUI == chui) {
+            topCHUI = null;
+        }
     }
 
     @Override

@@ -6,12 +6,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -38,15 +34,9 @@ public abstract class CHLoadingScreen extends CHScreen {
     public CHLoadingScreen() {
     }
 
-    private float startX, endX;
-
     private float percent;
 
-    private Image loadingBarHidden;
-
     private Image logoImage;
-
-    private CHAniamtionPlayer aniamtionPlayer;
 
     public CHLoadingScreen(String logoFilePath) {
         if (logoFilePath != null) {
@@ -55,67 +45,59 @@ public abstract class CHLoadingScreen extends CHScreen {
         }
     }
 
-    private TextureAtlas atlas;
+    private Image loadingBarBg;
 
-    private Image loadingBg;
+    private Image loadingPrgressBg;
 
-    private Label touchTipLabel;
+    private Label progressLabel;
+
+    private Texture barTexture, progressTexture, screenbgTexture;
 
     @Override
     public void initScreen() {
+        long startime = System.currentTimeMillis();
 
         chAssets = new CHAssets();
-        FileHandle packFile = Gdx.files.classpath("com/oahcfly/chgame/res/loading.pack");
-        FileHandle imagesDir = Gdx.files.classpath("com/oahcfly/chgame/res/");
-        atlas = new TextureAtlas(packFile, imagesDir);
-        atlas.getRegions().get(0).getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        // Grab the regions from the atlas and create some images
 
-        loadingBg = new Image(atlas.findRegion("loading-frame-bg"));
-        Image loadingFrame = new Image(atlas.findRegion("loading-frame"));
-        Image screenBg = new Image(atlas.findRegion("screen-bg"));
-        screenBg.setBounds(0, 0, getStage().getWidth(), getStage().getHeight());
+        FileHandle screenbgFileHandle = Gdx.files.classpath("com/oahcfly/chgame/res/screen-bg.png");
 
-        loadingBarHidden = new Image(atlas.findRegion("loading-bar-hidden"));
-        // 帧动画
-        aniamtionPlayer = new CHAniamtionPlayer(0.05f, atlas.findRegions("loading-bar-anim"), PlayMode.LOOP_REVERSED);
-        aniamtionPlayer.play();
+        Gdx.app.debug(getTAG(), "loading step -01  :" + (System.currentTimeMillis() - startime));
+        startime = System.currentTimeMillis();
+
+        screenbgTexture = new Texture(screenbgFileHandle);
+        screenbgTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        Image screenBg = new Image(screenbgTexture);
+        screenBg.setSize(CHGame.getInstance().gameWidth, CHGame.getInstance().gameHeight);
+
+        addActor(screenBg);
+
+        Gdx.app.debug(getTAG(), "loading step -02  :" + (System.currentTimeMillis() - startime));
+        startime = System.currentTimeMillis();
+
+        loadAssetFile();
+
+        Gdx.app.debug(getTAG(), "loading step -03 :" + (System.currentTimeMillis() - startime));
+    }
+
+    protected void loadingUI() {
+        FileHandle loadingBarFileHandle = Gdx.files.classpath("com/oahcfly/chgame/res/loadingbar.png");
+        FileHandle loadingProgressFileHandle = Gdx.files.classpath("com/oahcfly/chgame/res/loadingprogress.png");
+
+        barTexture = new Texture(loadingBarFileHandle);
+        progressTexture = new Texture(loadingProgressFileHandle);
+
+        barTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        progressTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        loadingBarBg = new Image(barTexture);
+        loadingPrgressBg = new Image(progressTexture);
 
         if (logoImage == null) {
             logoImage = new Image(new Texture(Gdx.files.classpath("com/oahcfly/chgame/res/studio_logo.png")));
-            //new Image(atlas.findRegion("libgdx-logo"));
         }
 
-        aniamtionPlayer.setTouchable(Touchable.disabled);
-        loadingFrame.setTouchable(Touchable.disabled);
+        loadingBarBg.setTouchable(Touchable.disabled);
         logoImage.setTouchable(Touchable.disabled);
-        loadingBg.setTouchable(Touchable.disabled);
-        loadingBarHidden.setTouchable(Touchable.disabled);
-
-        screenBg.addListener(new InputListener() {
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // TODO Auto-generated method stub
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (touchTipLabel != null) {
-                    changeToNextScreen();
-                }
-            }
-
-        });
-
-        addActor(screenBg);
-        addActor(logoImage);
-        addActor(aniamtionPlayer);
-        addActor(loadingFrame);
-
-        addActor(loadingBg);
-        addActor(loadingBarHidden);
+        loadingPrgressBg.setTouchable(Touchable.disabled);
 
         logoImage.setX((getStage().getWidth() - logoImage.getWidth()) / 2);
         logoImage.setY((getStage().getHeight()) / 2 + 100);
@@ -126,35 +108,28 @@ public abstract class CHLoadingScreen extends CHScreen {
         logoImage.addAction(Actions.forever(repeatedAction));
 
         // 居中
-        loadingFrame.setX((getStage().getWidth() - loadingFrame.getWidth()) / 2);
-        loadingFrame.setY((getStage().getHeight() - loadingFrame.getHeight()) / 2);
-        aniamtionPlayer.setX(loadingFrame.getX() + 15);
-        aniamtionPlayer.setY(loadingFrame.getY() + 5);
-        loadingBarHidden.setX(aniamtionPlayer.getX() + 35);
-        loadingBarHidden.setY(aniamtionPlayer.getY() - 3);
+        loadingBarBg.setX((getStage().getWidth() - loadingBarBg.getWidth()) / 2);
+        loadingBarBg.setY((getStage().getHeight() - loadingBarBg.getHeight()) / 2);
+        loadingPrgressBg.setX(loadingBarBg.getX());
+        loadingPrgressBg.setY(loadingBarBg.getY() + 5);
+        loadingPrgressBg.setSize(20, loadingPrgressBg.getHeight());
 
-        loadingBg.setSize(aniamtionPlayer.getWidth() - 65, 50);
-        loadingBg.setX(loadingBarHidden.getRight());
-        loadingBg.setY(loadingBarHidden.getY() + 3);
-
-        // The start position and how far to move the hidden loading bar
-        startX = loadingBarHidden.getX();
-        endX = aniamtionPlayer.getRight() - loadingBarHidden.getWidth() + 2;
-
-        loadAssetFile();
+        addActor(logoImage);
+        addActor(loadingPrgressBg);
+        addActor(loadingBarBg);
 
     }
 
-    private void showTouchTip() {
-        touchTipLabel = new Label("Touch to start ", new LabelStyle(CHGame.getInstance().getDefaultBitmapFont(),
+    private void addProgressLabel() {
+        progressLabel = new Label("Loading...100%", new LabelStyle(CHGame.getInstance().getDefaultBitmapFont(),
                 Color.WHITE));
 
-        touchTipLabel.getStyle().font.setScale(2f);
-        touchTipLabel.setTouchable(Touchable.disabled);
-        touchTipLabel.setWidth(touchTipLabel.getTextBounds().width);
-        touchTipLabel.setPosition(getStage().getWidth() / 2, getStage().getHeight() / 2, Align.center);
-        touchTipLabel.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.1f, 0.4f), Actions.alpha(1f, 0.8f))));
-        addActor(touchTipLabel);
+        progressLabel.getStyle().font.setScale(2f);
+        progressLabel.setTouchable(Touchable.disabled);
+        progressLabel.setWidth(progressLabel.getTextBounds().width);
+        progressLabel.setPosition(getStage().getWidth() / 2, getStage().getHeight() / 2, Align.center);
+        //touchTipLabel.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.1f, 0.4f), Actions.alpha(1f, 0.8f))));
+        addActor(progressLabel);
     }
 
     /**
@@ -180,47 +155,62 @@ public abstract class CHLoadingScreen extends CHScreen {
      */
     public abstract void changeToNextScreen();
 
-    @Override
-    public void endScreen() {
-        // TODO Auto-gene4rated method stub
-        getCHAssets().dispose();
-        atlas.dispose();
-    }
-
-    @Override
-    public void clickBackKey() {
-        // TODO Auto-generated method stub
-
-    }
-
     public CHAssets getCHAssets() {
         return chAssets;
     }
 
     @Override
     public void render(float delta) {
-        // TODO Auto-generated method stub
+
+        if (barTexture == null) {
+            // 下次绘制前加载
+            Gdx.app.postRunnable(new Runnable() {
+
+                @Override
+                public void run() {
+                    loadingUI();
+                }
+            });
+            return;
+        }
         super.render(delta);
+
+        if (!getCHAssets().isAssetFileLoaded()) {
+            return;
+        }
 
         if (chAssets.update()) { // Load some, will return true if done loading
             if (Gdx.input.justTouched()) {
                 // If the screen is touched after the game is done loading, go to the next screen
                 // 处理down事件->切换screen>处理up事件
             }
-            if (touchTipLabel == null) {
-                showTouchTip();
-            }
         }
         // Interpolate the percentage to make it more smooth
         percent = Interpolation.linear.apply(percent, chAssets.getProgress(), 0.1f);
 
-        // Update positions (and size) to match the percentage
-        loadingBarHidden.setX(startX + (endX - startX) * percent);
-        loadingBg.setX(loadingBarHidden.getRight());
-        loadingBg.setWidth((aniamtionPlayer.getWidth() - 71) * (1 - percent));
-        if (percent > 0.99) {
-            loadingBarHidden.setVisible(false);
+        loadingPrgressBg.setSize(20 + 420 * percent, loadingPrgressBg.getHeight());
+
+        if (progressLabel == null) {
+            addProgressLabel();
         }
+        progressLabel.setText("Loading..." + (int)(percent * 100) + "%");
+        if (percent > 0.990f) {
+            changeToNextScreen();
+        }
+    }
+
+    @Override
+    public void endScreen() {
+        // TODO Auto-gene4rated method stub
+        getCHAssets().dispose();
+        barTexture.dispose();
+        progressTexture.dispose();
+        screenbgTexture.dispose();
+    }
+
+    @Override
+    public void clickBackKey() {
+        // TODO Auto-generated method stub
 
     }
 

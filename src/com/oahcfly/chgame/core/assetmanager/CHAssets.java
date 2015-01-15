@@ -48,6 +48,9 @@ import com.oahcfly.chgame.core.mvc.CHGame;
  */
 public class CHAssets implements Disposable, AssetErrorListener {
 
+    // 文件解析OK?
+    private boolean assetFileLoaded=false;
+    
     private static final String TAG = "Assets";
 
     private AssetManager manager;
@@ -96,8 +99,8 @@ public class CHAssets implements Disposable, AssetErrorListener {
      * @param groupName
      */
     @SuppressWarnings("unchecked")
-    public void loadGroup(String groupName) {
-        Gdx.app.log(TAG, "loading group " + groupName);
+    private void loadGroup(String groupName) {
+        // Gdx.app.log(TAG, "loading group " + groupName);
 
         Array<Asset> assets = groups.get(groupName, null);
 
@@ -186,6 +189,7 @@ public class CHAssets implements Disposable, AssetErrorListener {
         groups = new ObjectMap<String, Array<Asset>>();
 
         Gdx.app.log(TAG, "loading file " + assetFile);
+        long stattime = System.currentTimeMillis();
 
         try {
             Json json = new Json();
@@ -193,7 +197,10 @@ public class CHAssets implements Disposable, AssetErrorListener {
             JsonValue root = reader.parse(Gdx.files.internal(assetFile));
 
             JsonIterator groupIt = root.iterator();
-
+            
+            Gdx.app.debug(TAG, "asset time 1 : " + (System.currentTimeMillis() - stattime));
+            stattime = System.currentTimeMillis();
+            
             while (groupIt.hasNext()) {
                 JsonValue groupValue = groupIt.next();
 
@@ -202,7 +209,7 @@ public class CHAssets implements Disposable, AssetErrorListener {
                     continue;
                 }
 
-                Gdx.app.log(TAG, "registering group " + groupValue.name);
+                // Gdx.app.log(TAG, "registering group " + groupValue.name);
 
                 Array<Asset> assets = new Array<Asset>();
 
@@ -210,15 +217,24 @@ public class CHAssets implements Disposable, AssetErrorListener {
 
                 while (assetIt.hasNext()) {
                     JsonValue assetValue = assetIt.next();
-
                     Asset asset = json.fromJson(Asset.class, assetValue.toString());
                     assets.add(asset);
                 }
 
                 groups.put(groupValue.name, assets);
             }
+
+            Gdx.app.debug(TAG, "asset time 2: " + (System.currentTimeMillis() - stattime));
         } catch (Exception e) {
             Gdx.app.log(TAG, "error loading file " + assetFile + " " + e.getMessage());
         }
+        
+        this.assetFileLoaded=true;
     }
+
+    public boolean isAssetFileLoaded() {
+        return assetFileLoaded;
+    }
+    
+    
 }

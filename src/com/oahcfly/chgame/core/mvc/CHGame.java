@@ -226,6 +226,7 @@ public abstract class CHGame extends Game {
                 fpsLabel.setX(10);
                 // fps
             }
+
             Batch fpsSpriteBatch = getScreen().getStage().getBatch();
             // 初始要有begin起始
             fpsSpriteBatch.begin();

@@ -1,7 +1,6 @@
 
 package com.oahcfly.chgame.core;
 
-
 public class Version {
 
     /**
@@ -30,9 +29,10 @@ public class Version {
      * 0.2.3插屏广告比例控制。优化LabelAltas减少new Image的次数。
      * 0.2.4CocoStudioUIEditor优化去除无用代码。CHUI新增两个抽象方法，规范UI刷新。目前CHUI可以自由关闭打开，通过CHScreen控制。
      * 0.2.5修复颜色设置无效问题，优化CHLoadingScreen，labelatlas新增设置num方法。优化chtoast
-     * 0.2.6优化CHUI,优化chgame.chscreen。
+     * 0.2.6优化CHUI,优化chgame.chscreen。chloadingscreen加载速度提升，逻辑简化。
+     * 0.2.7新增各种粒子特效。
      *  */
-    public static final String VERSION = "0.2.6";
+    public static final String VERSION = "0.2.6.1";
 
     //    public void a() {
     //        Action[] sAction = new Action[20];

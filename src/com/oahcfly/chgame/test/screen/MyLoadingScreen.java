@@ -14,7 +14,7 @@ public class MyLoadingScreen extends CHLoadingScreen {
 
     @Override
     public void changeToNextScreen() {
-        CHGame.getInstance().setScreen(new FirstScreen());
+        CHGame.getInstance().setScreen(new PPLScreen());
     }
 
 }
