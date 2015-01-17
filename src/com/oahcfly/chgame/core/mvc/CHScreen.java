@@ -10,6 +10,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.oahcfly.chgame.core.async.CHAsyncTask;
 import com.oahcfly.chgame.core.ui.CHUI;
 
 /**
@@ -112,6 +113,7 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
             backKey = true;
             clickBackKey();
         }
+
     }
 
     public void draw() {
@@ -236,6 +238,19 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
         return topCHUI;
     }
 
+    /**
+     * 
+     * <pre>
+     * 加入异步任务处理
+     * 
+     * date: 2015-1-17
+     * </pre>
+     * @author caohao
+     * @param asyncTask
+     */
+    public void addAsyncTask(CHAsyncTask asyncTask) {
+        CHGame.getInstance().getAsyncManager().loadTask(asyncTask);
+    }
 }
 
 interface CHUIFocusListener {
@@ -262,4 +277,5 @@ interface CHUIFocusListener {
      * @param chui
      */
     public void notifyUIFocus(CHUI chui);
+
 }

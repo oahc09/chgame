@@ -3,10 +3,13 @@ package com.oahcfly.chgame.test;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.oahcfly.chgame.core.async.CHAsyncManager;
 import com.oahcfly.chgame.core.mvc.CHGame;
+import com.oahcfly.chgame.test.async.MyTask;
 import com.oahcfly.chgame.test.screen.MyLoadingScreen;
 
 public class TestGame extends CHGame {
+    public static CHAsyncManager sAsyncManager;
 
     @Override
     public void init() {
@@ -15,9 +18,13 @@ public class TestGame extends CHGame {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
         //CHADChannel androidAdChannel= new CHADChannel("{\"360\":false,\"baidu\":true,\"tengxu\":false,\"meizu\":false,\"anzhi\":false}");
- 
+
+        sAsyncManager = new CHAsyncManager();
         setScreen(new MyLoadingScreen());
 
+        for (int i = 0; i < 1; i++) {
+            sAsyncManager.loadTask(new MyTask());
+        }
         //        String chineseExtraStr="nihao你好哈哈哈你是煞笔";
         //        char[] array = chineseExtraStr.toCharArray();
         //        StringBuffer stringBuffer = new StringBuffer();
@@ -48,5 +55,6 @@ public class TestGame extends CHGame {
         //        FileHandle bigFileHandle = CHFileHelper.searchFileHandle("", "big_star.png");
         //        System.out.println("bigFileHandle:" + bigFileHandle.path() + "," + bigFileHandle.nameWithoutExtension());
         //        System.out.println("consume:" + (System.currentTimeMillis() - starttime));
+
     }
 }

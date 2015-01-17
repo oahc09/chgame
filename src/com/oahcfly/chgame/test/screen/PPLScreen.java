@@ -33,6 +33,7 @@ import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
 import com.oahcfly.chgame.core.ui.CHParticleEffectActor;
+import com.oahcfly.chgame.test.TestGame;
 import com.oahcfly.chgame.test.ui.MyActor;
 
 public class PPLScreen extends CHScreen implements GestureListener {
@@ -43,7 +44,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
     public void initScreen() {
 
         chParticle = new CHParticle(ParticleType.STAR);
-addActor(chParticle);
+        addActor(chParticle);
         for (int i = 0; i < 5; i++) {
             Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
             image.setName("xin_" + (i + 1));
@@ -91,7 +92,6 @@ addActor(chParticle);
 
         myActor.setBgTexture(bgTexture);
         addActor(myActor);
- 
 
         // 粒子
         ParticleEffect particleEffect = new ParticleEffect();
@@ -198,8 +198,10 @@ addActor(chParticle);
     public void render(float delta) {
         // TODO Auto-generated method stub
         super.render(delta);
-      //  chParticle.render(getStage().getBatch());
-
+        //  chParticle.render(getStage().getBatch());
+        if(TestGame.sAsyncManager.update()){
+            System.out.println("异步任务处理完毕");
+        }
     }
 
     HashSet<String> actorNameList;

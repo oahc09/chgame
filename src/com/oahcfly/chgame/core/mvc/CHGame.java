@@ -28,6 +28,7 @@ import com.oahcfly.chgame.core.FreeTypeFontGeneratorExt;
 import com.oahcfly.chgame.core.International;
 import com.oahcfly.chgame.core.Version;
 import com.oahcfly.chgame.core.ad.CHADListener;
+import com.oahcfly.chgame.core.async.CHAsyncManager;
 import com.oahcfly.chgame.core.listener.LocaleListener;
 import com.oahcfly.chgame.core.manager.MusicManager;
 import com.oahcfly.chgame.core.manager.SoundManager;
@@ -69,6 +70,9 @@ public abstract class CHGame extends Game {
     private Label fpsLabel;
 
     private static CHGame instance = null;
+
+    // 异步任务管理者
+    private CHAsyncManager chAsyncManager;
 
     @SuppressWarnings("unchecked")
     public static <T extends CHGame> T getInstance() {
@@ -112,6 +116,8 @@ public abstract class CHGame extends Game {
         soundManager = new SoundManager();
 
         assetManager = new AssetManager();
+
+        chAsyncManager = new CHAsyncManager();
 
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setCatchMenuKey(true);
@@ -537,4 +543,9 @@ public abstract class CHGame extends Game {
     public void setLocaleListener(LocaleListener localeListener) {
         this.localeListener = localeListener;
     }
+
+    public CHAsyncManager getAsyncManager() {
+        return chAsyncManager;
+    }
+
 }
