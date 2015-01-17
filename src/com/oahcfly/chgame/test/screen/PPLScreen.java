@@ -33,7 +33,6 @@ import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
 import com.oahcfly.chgame.core.ui.CHParticleEffectActor;
-import com.oahcfly.chgame.test.TestGame;
 import com.oahcfly.chgame.test.ui.MyActor;
 
 public class PPLScreen extends CHScreen implements GestureListener {
@@ -199,9 +198,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         // TODO Auto-generated method stub
         super.render(delta);
         //  chParticle.render(getStage().getBatch());
-        if(TestGame.sAsyncManager.update()){
-            System.out.println("异步任务处理完毕");
-        }
+
     }
 
     HashSet<String> actorNameList;

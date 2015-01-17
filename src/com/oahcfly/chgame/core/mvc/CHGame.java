@@ -194,6 +194,7 @@ public abstract class CHGame extends Game {
         if (bitmapFont != null) {
             bitmapFont.dispose();
         }
+        chAsyncManager.dispose();
     }
 
     @Override

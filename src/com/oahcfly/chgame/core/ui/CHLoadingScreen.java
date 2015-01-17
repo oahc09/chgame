@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.oahcfly.chgame.core.assetmanager.CHAssets;
+import com.oahcfly.chgame.core.async.CHAsyncTask;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 
@@ -34,7 +35,7 @@ public abstract class CHLoadingScreen extends CHScreen {
     public CHLoadingScreen() {
     }
 
-    private float percent;
+    private float percent = 0f;
 
     private Image logoImage;
 
@@ -58,12 +59,32 @@ public abstract class CHLoadingScreen extends CHScreen {
         long startime = System.currentTimeMillis();
 
         chAssets = new CHAssets();
-        
+
         loadingUI();
         Gdx.app.debug(getTAG(), "loading step -01  :" + (System.currentTimeMillis() - startime));
         startime = System.currentTimeMillis();
 
-        loadAssetFile();
+        addAsyncTask(new CHAsyncTask() {
+
+            @Override
+            public void onPreExecute() {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onPostExecute(String result) {
+                Gdx.app.debug(getTAG(), "result:" + result);
+
+            }
+
+            @Override
+            public String doInBackground() {
+                loadAssetFile();
+                return "ok";
+            }
+        });
+
         Gdx.app.debug(getTAG(), "loading step -02 :" + (System.currentTimeMillis() - startime));
     }
 
@@ -99,21 +120,29 @@ public abstract class CHLoadingScreen extends CHScreen {
 
         super.render(delta);
 
-        if (chAssets.update()) { // Load some, will return true if done loading
-            if (Gdx.input.justTouched()) {
-                // If the screen is touched after the game is done loading, go to the next screen
-                // 处理down事件->切换screen>处理up事件
-            }
-        }
-        // Interpolate the percentage to make it more smooth
-        percent = Interpolation.linear.apply(percent, chAssets.getProgress(), 0.1f);
+        //        if (chAssets.update()) { // Load some, will return true if done loading
+        //            if (Gdx.input.justTouched()) {
+        //                // If the screen is touched after the game is done loading, go to the next screen
+        //                // 处理down事件->切换screen>处理up事件
+        //            }
+        //        }
 
+        float progress = 0.1f;
+        if (CHGame.getInstance().getAsyncManager().update()) {
+            // 文件加载完毕，才进行load，update操作
+            chAssets.update();
+            progress = chAssets.getProgress();
+        }
+
+        // Interpolate the percentage to make it more smooth
+        percent = Interpolation.linear.apply(percent, progress, 0.1f);
         loadingPrgressBg.setSize(20 + 420 * percent, loadingPrgressBg.getHeight());
 
         if (progressLabel == null) {
             addProgressLabel();
         }
         progressLabel.setText("Loading..." + (int)(percent * 100) + "%");
+
         if (percent > 0.990f) {
             changeToNextScreen();
         }
@@ -129,7 +158,7 @@ public abstract class CHLoadingScreen extends CHScreen {
         Image screenBg = new Image(screenbgTexture);
         screenBg.setSize(CHGame.getInstance().gameWidth, CHGame.getInstance().gameHeight);
         screenBg.setTouchable(Touchable.disabled);
-        
+
         addActor(screenBg);
         barTexture = new Texture(loadingBarFileHandle);
         progressTexture = new Texture(loadingProgressFileHandle);
