@@ -29,48 +29,7 @@ public class MainUI extends CHUI {
 
     public void initUI() {
         findActor("img_rush_bg").addListener(new CHClickListener(CLICKTYPE.FADE));
-        //        getEditor().findActor("img_rush_bg").addListener(new DragListener() {
-        //
-        //            @Override
-        //            public void dragStart(InputEvent event, float x, float y, int pointer) {
-        //                Gdx.app.log("ccc", "dragStart");
-        //                super.dragStart(event, x, y, pointer);
-        //            }
-        //
-        //            @Override
-        //            public void drag(InputEvent event, float x, float y, int pointer) {
-        //                Gdx.app.log("ccc", "drag+"+super.isDragging()+","+super.getStageTouchDownX()+","+super.getStageTouchDownY());
-        //                super.drag(event, x, y, pointer);
-        //            }
-        //
-        //            @Override
-        //            public void dragStop(InputEvent event, float x, float y, int pointer) {
-        //                Gdx.app.log("ccc", "dragStop");
-        //                super.dragStop(event, x, y, pointer);
-        //            }
-        //
-        //    
-        //
-        //        });
 
-        //        new InputListener() {
-        //
-        //            @Override
-        //            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        //
-        //                Gdx.app.log("ccc", "player jump touch down");
-        //                return super.touchDown(event, x, y, pointer, button);
-        //            }
-        //
-        //            @Override
-        //            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-        //                Gdx.app.log("ccc", "player touchDragged");
-        //                super.touchDragged(event, x, y, pointer);
-        //            }
-        //            
-        //            
-        //        }
-        //        
         Image imgPause = findActor("img_pause");
         imgPause.addListener(new InputListener() {
 
@@ -90,7 +49,7 @@ public class MainUI extends CHUI {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("ccc", "pause touch up");
-              
+
                 super.touchUp(event, x, y, pointer, button);
             }
         });

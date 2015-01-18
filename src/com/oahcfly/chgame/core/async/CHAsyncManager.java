@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.async.AsyncExecutor;
  * <pre>
  * 处理异步任务中心
  * 【参考AssetManager实现的】
+ * 主要依托在CHGame中进行update处理，可以在CHScreen中随时加入，并且可以调取CHAsyncTask.isDone()检测是否执行完毕。
  * date: 2015-1-17
  * </pre>
  * @author caohao

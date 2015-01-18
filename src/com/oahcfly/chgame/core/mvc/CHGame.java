@@ -215,13 +215,17 @@ public abstract class CHGame extends Game {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        if (chAsyncManager != null) {
+            // 异步任务处理
+            chAsyncManager.update();
+        }
+        
         super.render();
 
         if (openFPS) {
             if (fpsLabel == null) {
                 // fps
                 BitmapFont fontMenu = getDefaultBitmapFont();
-                fontMenu.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
                 LabelStyle style = new LabelStyle(fontMenu, fontMenu.getColor());
                 fpsLabel = new Label("FPS", style);
                 fpsLabel.setColor(Color.RED);

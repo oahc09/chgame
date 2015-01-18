@@ -6,7 +6,6 @@ import java.util.HashSet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
@@ -84,12 +83,6 @@ public class PPLScreen extends CHScreen implements GestureListener {
         });
 
         testParabolaAction();
-
-        MyActor myActor = MyActor.obtain(MyActor.class);
-        Texture bgTexture = CHGame.getInstance().getTexture("badlogic.jpg");
-
-        myActor.setBgTexture(bgTexture);
-        addActor(myActor);
 
         // 粒子
         ParticleEffect particleEffect = new ParticleEffect();

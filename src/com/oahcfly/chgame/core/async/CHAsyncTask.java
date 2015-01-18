@@ -5,6 +5,15 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.async.AsyncResult;
 import com.badlogic.gdx.utils.async.AsyncTask;
 
+/**
+ * 
+ * <pre>
+ * 异步Task
+ * 
+ * date: 2015-1-18
+ * </pre>
+ * @author caohao
+ */
 public abstract class CHAsyncTask implements AsyncTask<String> {
     private CHAsyncManager asyncManager;
 
@@ -63,5 +72,19 @@ public abstract class CHAsyncTask implements AsyncTask<String> {
 
     public CHAsyncManager getAsyncManager() {
         return asyncManager;
+    }
+
+    /**
+     * 
+     * <pre>
+     * 是否执行完毕
+     * 
+     * date: 2015-1-18
+     * </pre>
+     * @author caohao
+     * @return
+     */
+    public boolean isDone() {
+        return asyncDone;
     }
 }

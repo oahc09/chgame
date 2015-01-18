@@ -32,19 +32,9 @@ public abstract class CHLoadingScreen extends CHScreen {
 
     private CHAssets chAssets;
 
-    public CHLoadingScreen() {
-    }
-
     private float percent = 0f;
 
     private Image logoImage;
-
-    public CHLoadingScreen(String logoFilePath) {
-        if (logoFilePath != null) {
-            Texture texture = new Texture(Gdx.files.internal(logoFilePath));
-            logoImage = new Image(texture);
-        }
-    }
 
     private Image loadingBarBg;
 
@@ -53,6 +43,20 @@ public abstract class CHLoadingScreen extends CHScreen {
     private Label progressLabel;
 
     private Texture barTexture, progressTexture, screenbgTexture;
+
+    public CHLoadingScreen() {
+        super();
+    }
+
+    public CHLoadingScreen(String logoFilePath) {
+        super();
+        if (logoFilePath != null) {
+            Texture texture = new Texture(Gdx.files.internal(logoFilePath));
+            logoImage = new Image(texture);
+        }
+    }
+
+    private CHAsyncTask loadAssetFileAsyncTask;
 
     @Override
     public void initScreen() {
@@ -64,7 +68,7 @@ public abstract class CHLoadingScreen extends CHScreen {
         Gdx.app.debug(getTAG(), "loading step -01  :" + (System.currentTimeMillis() - startime));
         startime = System.currentTimeMillis();
 
-        addAsyncTask(new CHAsyncTask() {
+        loadAssetFileAsyncTask = new CHAsyncTask() {
 
             @Override
             public void onPreExecute() {
@@ -83,8 +87,10 @@ public abstract class CHLoadingScreen extends CHScreen {
                 loadAssetFile();
                 return "ok";
             }
-        });
+        };
+        addAsyncTask(loadAssetFileAsyncTask);
 
+        addProgressLabel();
         Gdx.app.debug(getTAG(), "loading step -02 :" + (System.currentTimeMillis() - startime));
     }
 
@@ -115,6 +121,8 @@ public abstract class CHLoadingScreen extends CHScreen {
         return chAssets;
     }
 
+    private float progress = 0.2f;
+
     @Override
     public void render(float delta) {
 
@@ -127,21 +135,20 @@ public abstract class CHLoadingScreen extends CHScreen {
         //            }
         //        }
 
-        float progress = 0.1f;
-        if (CHGame.getInstance().getAsyncManager().update()) {
+
+        if (loadAssetFileAsyncTask.isDone()) {
             // 文件加载完毕，才进行load，update操作
             chAssets.update();
             progress = chAssets.getProgress();
+            progress = progress < 0.2f ? 0.2f : progress;
         }
 
         // Interpolate the percentage to make it more smooth
         percent = Interpolation.linear.apply(percent, progress, 0.1f);
         loadingPrgressBg.setSize(20 + 420 * percent, loadingPrgressBg.getHeight());
 
-        if (progressLabel == null) {
-            addProgressLabel();
-        }
         progressLabel.setText("Loading..." + (int)(percent * 100) + "%");
+        //System.out.println("Loading:" + (int)(percent * 100) + "% , " + System.currentTimeMillis());
 
         if (percent > 0.990f) {
             changeToNextScreen();
@@ -198,10 +205,10 @@ public abstract class CHLoadingScreen extends CHScreen {
     }
 
     private void addProgressLabel() {
-        progressLabel = new Label("Loading...100%", new LabelStyle(CHGame.getInstance().getDefaultBitmapFont(),
+        progressLabel = new Label("Loading... 0%", new LabelStyle(CHGame.getInstance().getDefaultBitmapFont(),
                 Color.WHITE));
 
-        progressLabel.getStyle().font.setScale(2f);
+        // progressLabel.getStyle().font.setScale(2f);
         progressLabel.setTouchable(Touchable.disabled);
         progressLabel.setWidth(progressLabel.getTextBounds().width);
         progressLabel.setPosition(getStage().getWidth() / 2, getStage().getHeight() / 2, Align.center);

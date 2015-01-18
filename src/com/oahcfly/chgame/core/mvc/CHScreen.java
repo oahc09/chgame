@@ -191,6 +191,11 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
         getUI(newUIName).show();
     }
 
+    public void changeUI(CHUI chui, String newUIName) {
+        chui.dismiss();
+        getUI(newUIName).show();
+    }
+
     /**
      * 
      * <pre>
