@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -19,7 +18,7 @@ import com.badlogic.gdx.utils.Array;
  * </pre>
  * @author caohao
  */
-public class CHParticle extends Actor {
+public class CHParticle {
     public enum ParticleType {
         DEFAULT, STAR
     }
@@ -127,18 +126,16 @@ public class CHParticle extends Actor {
             _effects.get(i).update(Gdx.graphics.getDeltaTime());
         }
 
+        batch.begin();
         // Draw particle systems
         for (int i = 0; i < numParticles; ++i) {
             _effects.get(i).draw(batch);
         }
 
+        batch.end();
+        
         // Remove the ended particle systems
         removeEndedParticles();
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha == 1)
-            render(batch);
-    }
 }

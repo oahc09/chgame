@@ -33,7 +33,6 @@ import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
 import com.oahcfly.chgame.core.ui.CHParticleEffectActor;
-import com.oahcfly.chgame.test.ui.MyActor;
 
 public class PPLScreen extends CHScreen implements GestureListener {
 
@@ -43,7 +42,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
     public void initScreen() {
 
         chParticle = new CHParticle(ParticleType.STAR);
-        addActor(chParticle);
+
         for (int i = 0; i < 5; i++) {
             Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
             image.setName("xin_" + (i + 1));
@@ -197,7 +196,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
     public void render(float delta) {
         // TODO Auto-generated method stub
         super.render(delta);
-        //  chParticle.render(getStage().getBatch());
+        chParticle.render(getStage().getBatch());
 
     }
 

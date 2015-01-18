@@ -32,8 +32,6 @@ import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.LabelAtlas;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.TTFLabel;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.TTFLabelStyle;
 import com.oahcfly.chgame.plist.CHPListCenter;
-import com.oahcfly.chgame.test.ui.MainUI;
-import com.oahcfly.chgame.test.ui.TestUI;
 import com.oahcfly.chgame.util.astar.CHAStar;
 
 public class FirstScreen extends CHScreen {
@@ -43,11 +41,6 @@ public class FirstScreen extends CHScreen {
 
         Gdx.app.log(getTAG(), "init screen : first" + Texture.getManagedStatus());
 
-        //        tableTest();
-
-        //        testAstar();
-        //        plistTest();
-        //
         //        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("testAtlas.txt"));
         //        Image autumnImage = new Image(textureAtlas.findRegion("title_summer"));
         //        addActor(autumnImage);
@@ -56,25 +49,6 @@ public class FirstScreen extends CHScreen {
         //        sprite.setX(57);
 
         new MainUI(getStage()).show();
-        //
-        //        CHAssets chAssets = new CHAssets();
-        //        chAssets.loadAssetFile("asset.ch");
-        //        chAssets.loadGroup("bigstar");
-        //        chAssets.finishLoading();
-        //        System.out.println("p" + chAssets.getProgress());
-        //        Image image = new Image(chAssets.get("screen/big_star.png", Texture.class));
-        //        addActor(image);
-        //
-        //        image.addListener(new CHEventListener() {
-        //
-        //            @Override
-        //            public void handleEvent(CHEvent chEvent) {
-        //                System.out.println("refreshUI:" + chEvent.toString());
-        //                chEvent.getListenerActor().moveBy(100, 100);
-        //
-        //            }
-        //        });
-        //        httpTest(image);
 
         TTFLabelStyle labelStyle = new TTFLabelStyle(new LabelStyle(CHGame.getInstance().getInternationalGenerator()
                 .getBitmapFont(), null), null, 30);
@@ -85,7 +59,7 @@ public class FirstScreen extends CHScreen {
         label.setSize(100, 30);
         label.setPosition(200, 200);
         label.setText("TTFLabel", true);
-        label.addListener(new CHClickListener(){
+        label.addListener(new CHClickListener() {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -93,22 +67,12 @@ public class FirstScreen extends CHScreen {
                 super.touchUp(event, x, y, pointer, button);
                 label.setText("重新测试文本", true);
             }
-            
+
         });
 
         addActor(label);
 
         addLabelAtlas(12345, 200, 160);
-        //        LabelTickerAction ticker = new LabelTickerAction(2f, "人类逆天了啊！哈哈哈");
-        //        label.addAction(ticker);
-
-        //        Image image = CHGame.getInstance().getImage("screen/big_star.png");
-        //        addActor(image);
-        //        // 倒计时
-        //        TextureRegion textureRegion = new TextureRegion(CHGame.getInstance().getTexture("screen/score_numlist.png"));
-        //        TextureRegion[][] textureRegions = textureRegion.split(23, 27);
-        //        CountDownAction countDownAction = CountDownAction.obtain(10f, textureRegions[0]);
-        //        image.addAction(countDownAction);
 
     }
 
@@ -292,8 +256,5 @@ public class FirstScreen extends CHScreen {
         // TODO Auto-generated method stub
         super.draw();
 
-        //        getStage().getBatch().begin();
-        //        sprite.draw(getStage().getBatch());
-        //        getStage().getBatch().end();
     }
 }

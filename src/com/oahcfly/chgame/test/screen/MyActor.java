@@ -1,5 +1,5 @@
 
-package com.oahcfly.chgame.test.ui;
+package com.oahcfly.chgame.test.screen;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.oahcfly.chgame.core.mvc.CHActor;

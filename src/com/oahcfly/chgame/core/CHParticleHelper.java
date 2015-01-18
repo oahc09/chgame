@@ -26,7 +26,7 @@ public class CHParticleHelper {
      * @author caohao
      * @return
      */
-    public CHParticleEffectActor createSonwParticleEffectActor() {
+    public static CHParticleEffectActor createSonwParticleEffectActor() {
         ParticleEffect particleEffect = new ParticleEffect();
         particleEffect.load(Gdx.files.classpath("com/oahcfly/chgame/particle/snow.p"),
                 Gdx.files.classpath("com/oahcfly/chgame/particle/"));
@@ -44,7 +44,7 @@ public class CHParticleHelper {
      * @author caohao
      * @return
      */
-    public CHParticleEffectActor createDotParticleEffectActor() {
+    public static CHParticleEffectActor createDotParticleEffectActor() {
         ParticleEffect particleEffect = new ParticleEffect();
         particleEffect.load(Gdx.files.classpath("com/oahcfly/chgame/particle/level.p"),
                 Gdx.files.classpath("com/oahcfly/chgame/particle/"));

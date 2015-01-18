@@ -1,5 +1,5 @@
 
-package com.oahcfly.chgame.test.ui;
+package com.oahcfly.chgame.test.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
