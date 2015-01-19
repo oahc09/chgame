@@ -32,9 +32,12 @@ public class Version {
      * 0.2.6优化CHUI,优化chgame.chscreen。chloadingscreen加载速度提升，逻辑简化。
      * 0.2.7新增各种粒子特效。
      * 0.2.8封装异步任务。负责加载xml，json等耗时操作避免影响主线程。新增chsocialListenr.
-     * 0.2.9对于异步任务优化，update依托于CHGame.
+     * 0.2.9对于异步任务优化，update依托于CHGame. CHActions封装跳动，晃动的action。
+     * 0.3.0
+     * 
+     * 
      *  */
-    public static final String VERSION = "0.2.8";
+    public static final String VERSION = "0.2.9";
 
     //    public void a() {
     //        Action[] sAction = new Action[20];

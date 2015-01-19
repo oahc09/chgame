@@ -256,6 +256,10 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     public void addAsyncTask(CHAsyncTask asyncTask) {
         CHGame.getInstance().getAsyncManager().loadTask(asyncTask);
     }
+
+    public void setTopCHUI(CHUI topCHUI) {
+        this.topCHUI = topCHUI;
+    }
 }
 
 interface CHUIFocusListener {

@@ -9,12 +9,51 @@ import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
  * 
  * <pre>
  * 封装各类Action：
- * 旋转+掉落并发效果，滑动回弹效果，中心缩放效果。
+ * 旋转+掉落并发效果，滑动回弹效果，中心缩放效果。上下跳动，左右跳动。
  * date: 2015-1-4
  * </pre>
  * @author caohao
  */
 public class CHActions {
+
+    /**
+     * 
+     * <pre>
+     * 上下跳动
+     * 
+     * date: 2015-1-19
+     * </pre>
+     * @author caohao
+     * @param distance 跳的高度
+     * @param duration 花费时长
+     * @param repeatCount 重复次数
+     * @return
+     */
+    public static Action createUpAndDownAction(int distance, float duration, int repeatCount) {
+        Action actionUp = Actions.moveBy(0, distance, duration);
+        Action actionDown = Actions.moveBy(0, -distance, duration);
+        return Actions.repeat(repeatCount, Actions.sequence(actionUp, actionDown));
+    }
+
+    /**
+     * 
+     * <pre>
+     * 左右晃动
+     * 
+     * date: 2015-1-19
+     * </pre>
+     * @author caohao
+     * @param distance 晃动的宽度
+     * @param duration 花费时长
+     * @param repeatCount 重复次数
+     * @return
+     */
+    public static Action createLeftAndRightAction(int distance, float duration, int repeatCount) {
+        Action actionLeft = Actions.moveBy(-distance, 0, duration);
+        Action actionRight = Actions.moveBy(distance, 0, duration);
+        return Actions.repeat(repeatCount, Actions.sequence(actionLeft, actionRight));
+    }
+
     /**
      * 
      * <pre>

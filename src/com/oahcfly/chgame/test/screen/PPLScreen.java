@@ -106,7 +106,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
     private void testParabolaAction() {
         Image image1 = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", 1));
         image1.setDebug(true);
-        image1.addAction(CHActions.createAutoTwinkleAction(1f, -1));
+        image1.addAction(CHActions.createLeftAndRightAction(10, 0.2f, -1));//CHActions.createAutoTwinkleAction(1f, -1));
         //CHActions.createAutoScaleToCenter(1.2f, 0.5f, 4));
         //CHActions.createRotateAndMoveAction(1.8f, 2,  200, -200));
         image1.setOrigin(Align.center);
