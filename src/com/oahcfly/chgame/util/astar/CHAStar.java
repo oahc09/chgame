@@ -31,7 +31,7 @@ import com.badlogic.gdx.math.Vector2;
 public class CHAStar {
     private final int COST_STRAIGHT = 10;//垂直方向或水平方向移动的路径评分
 
-    private final int COST_DIAGONAL = 14;//斜方向移动的路径评分
+    protected final int COST_DIAGONAL = 14;//斜方向移动的路径评分
 
     private Vector2 startVector2, endVector2;
 

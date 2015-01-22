@@ -3,8 +3,8 @@ package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.oahcfly.chgame.core.FontHelper;
 import com.oahcfly.chgame.core.mvc.CHGame;
-import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.FontUtil;
 
 /**
  * 让Label支持TTF,使用ttf后Label的font不会发生变化,每次修改Text的时候重新创建font
@@ -77,6 +77,6 @@ public class TTFLabel extends Label {
     //    }
 
     BitmapFont createFont(TTFLabelStyle ttfStyle, String text) {
-        return FontUtil.createFont(ttfStyle.getFontFileHandle(), text, ttfStyle.getFontSize());
+        return FontHelper.createFont(ttfStyle.getFontFileHandle(), text, ttfStyle.getFontSize());
     }
 }

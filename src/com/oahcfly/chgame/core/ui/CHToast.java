@@ -16,8 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.oahcfly.chgame.core.FontHelper;
 import com.oahcfly.chgame.core.mvc.CHGame;
-import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.FontUtil;
 
 /**
  * 
@@ -56,7 +56,7 @@ public class CHToast {
         if (ttfName == null) {
             bitmapFont = CHGame.getInstance().getInternationalGenerator().appendToFont(text);
         } else {
-            bitmapFont = FontUtil.createFont(CHGame.getInstance().getTTFMap().get(ttfName), text, fontSize);
+            bitmapFont = FontHelper.createFont(CHGame.getInstance().getTTFMap().get(ttfName), text, fontSize);
         }
 
         init(bitmapFont, text, fontColor);

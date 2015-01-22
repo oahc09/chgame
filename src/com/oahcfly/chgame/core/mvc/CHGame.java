@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -107,8 +108,11 @@ public abstract class CHGame extends Game {
 
     private CHWaiting chLoading;
 
+    private Batch batch;
+
     @Override
     public void create() {
+        batch = new SpriteBatch();
 
         Gdx.app.log(TAG, "version : " + Version.VERSION);
 
@@ -180,6 +184,9 @@ public abstract class CHGame extends Game {
     public void dispose() {
         // TODO Auto-generated method stub
         super.dispose();
+
+        batch.dispose();
+
         if (generator != null) {
             generator.dispose();
         }
@@ -219,7 +226,7 @@ public abstract class CHGame extends Game {
             // 异步任务处理
             chAsyncManager.update();
         }
-        
+
         super.render();
 
         if (openFPS) {
@@ -234,15 +241,17 @@ public abstract class CHGame extends Game {
                 // fps
             }
 
-            Batch fpsSpriteBatch = getScreen().getStage().getBatch();
-            // 初始要有begin起始
-            fpsSpriteBatch.begin();
-            // 显示文字到屏幕指定位置
-            fpsLabel.setText("FPS :" + Gdx.graphics.getFramesPerSecond() + ",M:"
-                    + (Gdx.app.getJavaHeap() / (1024 * 1024)) + ",TS:" + Texture.getNumManagedTextures());
-            fpsLabel.draw(fpsSpriteBatch, 1);
-            // 结束要有end结尾
-            fpsSpriteBatch.end();
+            if (getScreen() != null) {
+                Batch fpsSpriteBatch = getScreen().getStage().getBatch();
+                // 初始要有begin起始
+                fpsSpriteBatch.begin();
+                // 显示文字到屏幕指定位置
+                fpsLabel.setText("FPS :" + Gdx.graphics.getFramesPerSecond() + ",M:"
+                        + (Gdx.app.getJavaHeap() / (1024 * 1024)) + ",TS:" + Texture.getNumManagedTextures());
+                fpsLabel.draw(fpsSpriteBatch, 1);
+                // 结束要有end结尾
+                fpsSpriteBatch.end();
+            }
         }
     }
 
@@ -551,6 +560,10 @@ public abstract class CHGame extends Game {
 
     public CHAsyncManager getAsyncManager() {
         return chAsyncManager;
+    }
+
+    public Batch getBatch() {
+        return batch;
     }
 
 }

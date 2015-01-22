@@ -73,7 +73,7 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     private void createStage() {
         // 自动拉伸舞台
         StretchViewport viewport = new StretchViewport(stageW, stageH);
-        stage = new Stage(viewport);
+        stage = new Stage(viewport, getGame().getBatch());
         Gdx.app.debug(TAG, "screen-init-createStage");
     }
 

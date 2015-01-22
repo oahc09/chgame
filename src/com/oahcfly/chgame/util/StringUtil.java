@@ -1,5 +1,5 @@
 
-package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util;
+package com.oahcfly.chgame.util;
 
 import java.util.HashSet;
 

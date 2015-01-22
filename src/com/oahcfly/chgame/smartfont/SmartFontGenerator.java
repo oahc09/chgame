@@ -15,8 +15,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.util.StringUtil;
 import com.oahcfly.chgame.smartfont.writer.BitmapFontWriter;
+import com.oahcfly.chgame.util.StringUtil;
 
 /**
  * 

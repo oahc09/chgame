@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
  * </pre>
  * @author caohao
  */
-public class PixmapHelper {
+public class CHPixmapHelper {
 
     /**
      * 

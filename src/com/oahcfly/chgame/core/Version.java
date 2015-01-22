@@ -33,7 +33,7 @@ public class Version {
      * 0.2.7新增各种粒子特效。
      * 0.2.8封装异步任务。负责加载xml，json等耗时操作避免影响主线程。新增chsocialListenr.
      * 0.2.9对于异步任务优化，update依托于CHGame. CHActions封装跳动，晃动的action。
-     * 0.3.0
+     * 0.3.0统一Batch。CHUI过度效果。代码重构
      * 
      * 
      *  */
