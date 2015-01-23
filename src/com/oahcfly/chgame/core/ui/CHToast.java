@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.oahcfly.chgame.core.FontHelper;
+import com.oahcfly.chgame.core.helper.FontHelper;
 import com.oahcfly.chgame.core.mvc.CHGame;
 
 /**

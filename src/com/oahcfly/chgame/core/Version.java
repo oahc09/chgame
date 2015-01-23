@@ -4,6 +4,7 @@ package com.oahcfly.chgame.core;
 public class Version {
 
     /**
+     * 0.0.0
      * 0.0.1  初始版本
      * 0.0.2 增加CHUI，ColorLabel
      * 0.0.3 增加Plist解析，还需完善 [使用Sprite类完美解决旋转问题，参考TextureAtlas相关代码实现]
@@ -20,24 +21,32 @@ public class Version {
      * 0.1.4 新增toast和loading相关UI
      * 0.1.5 集成SmartFont，对中文支持不是很好。labelaltes 居中问题。
      * 0.1.6 TTFLabel优化，未设置TTF路径，则使用系统自带字体。
-     * 0.1.7  封装各种action，【倒计时，文字挨个显示，跳动《左右，上下》，缩放，旋转】
+     * 0.1.7 封装各种action，【倒计时，文字挨个显示，跳动《左右，上下》，缩放，旋转】
      * 0.1.8 CHScreen内部管理一系列CHUI。CHUI切换特效。构造函数优化。数字标签颜色处理。
      * 0.1.9 PixmapHelper封装常见图形绘制。 BmobListener移除。
-     * 0.2.0修改chgame初始加载字体方案提供加载速度，改完在createLabel时加载文字纹理。
+     * 0.2.0 修改chgame初始加载字体方案提供加载速度，改完在createLabel时加载文字纹理。
      * 0.2.1 新增CHLoadingScreen。CHActor使用缓存池。CHEvent优化。
-     * 0.2.2Action特辑：旋转+掉落并发效果，滑动回弹效果，中心缩放效果。TTFLabel新增setText方法。新增文本输入框抽象类。
-     * 0.2.3插屏广告比例控制。优化LabelAltas减少new Image的次数。
-     * 0.2.4CocoStudioUIEditor优化去除无用代码。CHUI新增两个抽象方法，规范UI刷新。目前CHUI可以自由关闭打开，通过CHScreen控制。
-     * 0.2.5修复颜色设置无效问题，优化CHLoadingScreen，labelatlas新增设置num方法。优化chtoast
-     * 0.2.6优化CHUI,优化chgame.chscreen。chloadingscreen加载速度提升，逻辑简化。
-     * 0.2.7新增各种粒子特效。
-     * 0.2.8封装异步任务。负责加载xml，json等耗时操作避免影响主线程。新增chsocialListenr.
-     * 0.2.9对于异步任务优化，update依托于CHGame. CHActions封装跳动，晃动的action。
-     * 0.3.0统一Batch。CHUI过度效果。代码重构
-     * 
+     * 0.2.2 Action特辑：旋转+掉落并发效果，滑动回弹效果，中心缩放效果。TTFLabel新增setText方法。新增文本输入框抽象类。
+     * 0.2.3 插屏广告比例控制。优化LabelAltas减少new Image的次数。
+     * 0.2.4 CocoStudioUIEditor优化去除无用代码。CHUI新增两个抽象方法，规范UI刷新。目前CHUI可以自由关闭打开，通过CHScreen控制。
+     * 0.2.5 修复颜色设置无效问题，优化CHLoadingScreen，labelatlas新增设置num方法。优化chtoast
+     * 0.2.6 优化CHUI,优化chgame.chscreen。chloadingscreen加载速度提升，逻辑简化。
+     * 0.2.7 新增各种粒子特效。
+     * 0.2.8 封装异步任务。负责加载xml，json等耗时操作避免影响主线程。新增chsocialListenr.
+     * 0.2.9 对于异步任务优化，update依托于CHGame. CHActions封装跳动，晃动的action。
+     * 0.3.0 统一Batch。代码重构
+     * 0.3.1 CHScreen新增时间调度schudule【同步】。整合sqlite。
+     * 0.3.2
+     * 0.3.3
+     * 0.3.4
+     * 0.3.5
+     * 0.3.6
+     * 0.3.7
+     * 0.3.8
+     * 0.4.0
      * 
      *  */
-    public static final String VERSION = "0.2.9";
+    public static final String VERSION = "0.3.0";
 
     //    public void a() {
     //        Action[] sAction = new Action[20];

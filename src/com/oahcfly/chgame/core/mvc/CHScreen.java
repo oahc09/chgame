@@ -1,15 +1,20 @@
 
 package com.oahcfly.chgame.core.mvc;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.oahcfly.chgame.core.actions.ScheduleAction;
 import com.oahcfly.chgame.core.async.CHAsyncTask;
 import com.oahcfly.chgame.core.ui.CHUI;
 
@@ -51,6 +56,9 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     /**当前正在展示的CHUI*/
     private CHUI topCHUI;
 
+    // 影子
+    private CHActor shadowActor;
+
     public CHScreen() {
         this(CHGame.getInstance().getGameWidth(), CHGame.getInstance().getGameHeight());
     }
@@ -74,6 +82,10 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
         // 自动拉伸舞台
         StretchViewport viewport = new StretchViewport(stageW, stageH);
         stage = new Stage(viewport, getGame().getBatch());
+
+        shadowActor = new CHActor();
+        addActor(shadowActor);
+
         Gdx.app.debug(TAG, "screen-init-createStage");
     }
 
@@ -259,6 +271,81 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
 
     public void setTopCHUI(CHUI topCHUI) {
         this.topCHUI = topCHUI;
+    }
+
+    /**
+     * 
+     * <pre>
+     * 时间调度[同步，在绘制线程中执行，方法内不能有耗时处理]
+     * 【每间隔duration时间，调用methodName的方法】
+     * date: 2015-1-22
+     * </pre>
+     * @author caohao
+     * @param methodName 方法名
+     * @param duration 间隔时间
+     */
+    public void addSyncSchedule(String methodName, float duration) {
+        try {
+            final Class<?> screenClass = this.getClass();
+            final Method method = screenClass.getDeclaredMethod(methodName);
+
+            Action runnableAction = Actions.run(new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        method.invoke(screenClass.newInstance());
+                    } catch (IllegalAccessException e) {
+                        // TODO Auto-generated catch block
+                        Gdx.app.error(TAG, e.getMessage());
+                    } catch (IllegalArgumentException e) {
+                        // TODO Auto-generated catch block
+                        Gdx.app.error(TAG, e.getMessage());
+                    } catch (InvocationTargetException e) {
+                        // TODO Auto-generated catch block
+                        Gdx.app.error(TAG, e.getMessage());
+                    } catch (InstantiationException e) {
+                        // TODO Auto-generated catch block
+                        Gdx.app.error(TAG, e.getMessage());
+                    }
+                }
+            });
+            for (Action action : shadowActor.getActions()) {
+                if (action instanceof ScheduleAction && ((ScheduleAction)action).getName().equals(methodName)) {
+                    // 发现已有action,重复利用，修改间隔时间即可
+                    ((ScheduleAction)action).setDuration(duration);
+                    action.restart();
+                    return;
+                }
+            }
+
+            shadowActor.addAction(new ScheduleAction(methodName, duration, runnableAction));
+        } catch (NoSuchMethodException e) {
+            // TODO Auto-generated catch block
+            Gdx.app.error(TAG, e.getMessage());
+        } catch (SecurityException e) {
+            // TODO Auto-generated catch block
+            Gdx.app.error(TAG, e.getMessage());
+        }
+    }
+
+    /**
+     * 
+     * <pre>
+     * 取消时间调度[同步]
+     * 
+     * date: 2015-1-22
+     * </pre>
+     * @author caohao
+     * @param methodName 方法名
+     */
+    public void unSyncSchedule(String methodName) {
+        for (Action action : shadowActor.getActions()) {
+            if (action instanceof ScheduleAction) {
+                // 直接完成
+                ((ScheduleAction)action).finish();
+            }
+        }
     }
 }
 

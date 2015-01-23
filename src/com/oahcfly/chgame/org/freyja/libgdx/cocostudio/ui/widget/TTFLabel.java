@@ -3,7 +3,7 @@ package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.oahcfly.chgame.core.FontHelper;
+import com.oahcfly.chgame.core.helper.FontHelper;
 import com.oahcfly.chgame.core.mvc.CHGame;
 
 /**

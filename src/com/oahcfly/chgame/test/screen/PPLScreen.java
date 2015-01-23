@@ -37,9 +37,17 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
     CHParticle chParticle;
 
+    public void fun(){
+        
+        System.out.println("fun调用:"+(System.currentTimeMillis()/1000));
+    }
+ 
+    
     @Override
     public void initScreen() {
-
+       
+        addSyncSchedule("fun", 1f);
+        
         chParticle = new CHParticle(ParticleType.STAR);
 
         for (int i = 0; i < 5; i++) {
@@ -203,6 +211,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         actorNameList = new HashSet<String>();
 
         chParticle.createEffect(vector2.x, vector2.y);
+        unSyncSchedule("funa");
         return false;
     }
 
