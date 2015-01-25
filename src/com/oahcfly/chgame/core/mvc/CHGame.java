@@ -30,6 +30,7 @@ import com.oahcfly.chgame.core.International;
 import com.oahcfly.chgame.core.Version;
 import com.oahcfly.chgame.core.ad.CHADListener;
 import com.oahcfly.chgame.core.async.CHAsyncManager;
+import com.oahcfly.chgame.core.listener.CHSocialListener;
 import com.oahcfly.chgame.core.listener.LocaleListener;
 import com.oahcfly.chgame.core.manager.MusicManager;
 import com.oahcfly.chgame.core.manager.SoundManager;
@@ -51,6 +52,8 @@ public abstract class CHGame extends Game {
     private HashMap<String, FileHandle> ttfMap = new HashMap<String, FileHandle>();
 
     private CHADListener chadListener;
+
+    private CHSocialListener socialListener;
 
     private boolean debug;
 
@@ -564,6 +567,30 @@ public abstract class CHGame extends Game {
 
     public Batch getBatch() {
         return batch;
+    }
+
+    public CHSocialListener getSocialListener() {
+        if (socialListener == null) {
+            socialListener = new CHSocialListener() {
+
+                @Override
+                public void showShare(String title, String subject, String text) {
+                    // do nothing
+                    Gdx.app.error(TAG, "socialListener is null,showShare");
+                }
+
+                @Override
+                public void showFeedBack() {
+                    //  do nothing
+                    Gdx.app.error(TAG, "socialListener is null,showFeedBack");
+                }
+            };
+        }
+        return socialListener;
+    }
+
+    public void setSocialListener(CHSocialListener socialListener) {
+        this.socialListener = socialListener;
     }
 
 }

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane.SplitPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -70,6 +72,9 @@ public class PPLScreen extends CHScreen implements GestureListener {
         saveLabel.setColor(Color.WHITE);
         saveLabel.setPosition(500, 100);
         addActor(saveLabel);
+        
+        Label label = new Label("adb22311", new LabelStyle(new BitmapFont(), Color.WHITE));
+        addActor(label);
 
         final CHTextInputListener chTextInputListener = new CHTextInputListener(saveLabel) {
 

@@ -4,11 +4,11 @@
  */
 /**
  * <pre>
- * 数据库
+ * TODO
  * 
- * date: 2015-1-23
+ * date: 2015-1-25
  * </pre>
  * @author caohao
  */
 
-package com.oahcfly.chgame.core.sqlite;
+package com.badlogic.gdx.sql;
