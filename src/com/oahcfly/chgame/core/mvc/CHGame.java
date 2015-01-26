@@ -593,4 +593,28 @@ public abstract class CHGame extends Game {
         this.socialListener = socialListener;
     }
 
+    /**
+     * 
+     * <pre>
+     * 退出游戏
+     * 
+     * date: 2015-1-26
+     * </pre>
+     * @author caohao
+     */
+    public void exit() {
+        savaDataBeforeExit();
+        Gdx.app.exit();
+    }
+
+    /**
+     * 
+     * <pre>
+     * 在游戏退出前保存数据
+     * 
+     * date: 2015-1-26
+     * </pre>
+     * @author caohao
+     */
+    public abstract void savaDataBeforeExit();
 }

@@ -4,7 +4,7 @@
  */
 /**
  * <pre>
- * TODO
+ * 整合自https://github.com/mrafayaleem/gdx-sqlite
  * 
  * date: 2015-1-25
  * </pre>

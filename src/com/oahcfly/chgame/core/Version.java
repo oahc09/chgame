@@ -36,7 +36,7 @@ public class Version {
      * 0.2.9 对于异步任务优化，update依托于CHGame. CHActions封装跳动，晃动的action。
      * 0.3.0 统一Batch。代码重构
      * 0.3.1 CHScreen新增时间调度schudule【同步】。整合sqlite。
-     * 0.3.2
+     * 0.3.2 CHGame新增exit方法，退出前保存数据。新增Gif解析。
      * 0.3.3
      * 0.3.4
      * 0.3.5
@@ -46,7 +46,7 @@ public class Version {
      * 0.4.0
      * 
      *  */
-    public static final String VERSION = "0.3.1";
+    public static final String VERSION = "0.3.2";
 
     //    public void a() {
     //        Action[] sAction = new Action[20];

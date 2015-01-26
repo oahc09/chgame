@@ -6,6 +6,7 @@ import java.util.HashSet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -31,6 +32,7 @@ import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.listener.CHTextInputListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
+import com.oahcfly.chgame.core.ui.CHGifDecoder;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
 import com.oahcfly.chgame.core.ui.CHParticleEffectActor;
@@ -39,17 +41,16 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
     CHParticle chParticle;
 
-    public void fun(){
-        
-        System.out.println("fun调用:"+(System.currentTimeMillis()/1000));
+    public void fun() {
+
+        System.out.println("fun调用:" + (System.currentTimeMillis() / 1000));
     }
- 
-    
+
     @Override
     public void initScreen() {
-       
+
         addSyncSchedule("fun", 1f);
-        
+
         chParticle = new CHParticle(ParticleType.STAR);
 
         for (int i = 0; i < 5; i++) {
@@ -72,7 +73,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         saveLabel.setColor(Color.WHITE);
         saveLabel.setPosition(500, 100);
         addActor(saveLabel);
-        
+
         Label label = new Label("adb22311", new LabelStyle(new BitmapFont(), Color.WHITE));
         addActor(label);
 
@@ -104,6 +105,12 @@ public class PPLScreen extends CHScreen implements GestureListener {
         CHParticleEffectActor actor = new CHParticleEffectActor(particleEffect, "snow");
         actor.setPosition(100, 400);
         addActor(actor);
+    }
+
+    private void testGif() {
+        Animation anim = CHGifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("data/zombie.gif")
+                .read());
+         
     }
 
     private void testCDAction() {

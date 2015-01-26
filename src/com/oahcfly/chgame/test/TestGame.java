@@ -18,4 +18,10 @@ public class TestGame extends CHGame {
  
         new DatabaseTest();
     }
+
+    @Override
+    public void savaDataBeforeExit() {
+        // TODO Auto-generated method stub
+        
+    }
 }
