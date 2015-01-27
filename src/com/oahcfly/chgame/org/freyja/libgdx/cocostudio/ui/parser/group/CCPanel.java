@@ -42,6 +42,7 @@ public class CCPanel extends GroupParser {
 
             table.setBackground(new TextureRegionDrawable(new TextureRegion(editor.getTexture(pixmap))));
             pixmap.dispose();
+
         } else {// 渐变色
 
         }

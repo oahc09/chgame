@@ -3,7 +3,7 @@ package com.oahcfly.chgame.core.listener;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
  * 
@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
  * </pre>
  * @author caohao
  */
-public class CHClickListener extends InputListener {
+public class CHClickListener extends ClickListener {
 
     public enum CLICKTYPE {
         SCALE, FADE
@@ -47,11 +47,12 @@ public class CHClickListener extends InputListener {
             default:
                 break;
         }
-        return true;
+        return super.touchDown(event, x, y, pointer, button);
     }
 
     @Override
     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+        super.touchUp(event, x, y, pointer, button);
         if (pointer > 0) {
             // 屏蔽2指同时点击的情况
             return;

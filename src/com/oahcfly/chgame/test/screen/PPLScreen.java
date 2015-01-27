@@ -58,7 +58,15 @@ public class PPLScreen extends CHScreen implements GestureListener {
             Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
             image.setName("xin_" + (i + 1));
             image.setPosition(300 + image.getWidth() * i, 100);
+            image.addListener(new CHClickListener(){
 
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // TODO Auto-generated method stub
+                    System.out.println("clicked");
+                }
+                
+            });
             addActor(image);
         }
 
