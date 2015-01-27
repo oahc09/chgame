@@ -3,7 +3,6 @@ package com.oahcfly.chgame.core.ad;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonValue.JsonIterator;
@@ -60,7 +59,7 @@ public class CHInterstitialAd {
         adTypes.add(InterstitialAdType.CHANGSI);
 
         if (cfgJson != null) {
-            try {  
+            try {
                 JsonReader jsonReader = new JsonReader();
                 JsonValue jsonValue = jsonReader.parse(cfgJson);
                 JsonIterator jsonIterator = jsonValue.iterator();
@@ -100,7 +99,7 @@ public class CHInterstitialAd {
                 adType = InterstitialAdType.DYD;
             }
         } catch (Exception e) {
-            Gdx.app.error("CHInterstitialAd", e.getMessage());
+            System.err.println("CHInterstitialAd " + e.getMessage());
             return InterstitialAdType.DYD;
         }
         return adType;

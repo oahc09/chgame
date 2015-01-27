@@ -32,6 +32,7 @@ import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.listener.CHTextInputListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
+import com.oahcfly.chgame.core.ui.CHAniamtionPlayer;
 import com.oahcfly.chgame.core.ui.CHGifDecoder;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
@@ -105,11 +106,18 @@ public class PPLScreen extends CHScreen implements GestureListener {
         CHParticleEffectActor actor = new CHParticleEffectActor(particleEffect, "snow");
         actor.setPosition(100, 400);
         addActor(actor);
+        
+        
+        testGif();
     }
 
     private void testGif() {
-        Animation anim = CHGifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("data/zombie.gif")
+        Animation anim = CHGifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("test.gif")
                 .read());
+        
+        CHAniamtionPlayer chAniamtionPlayer = new CHAniamtionPlayer(300, 300, anim);
+        chAniamtionPlayer.play();
+        addActor(chAniamtionPlayer);
          
     }
 

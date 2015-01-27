@@ -603,6 +603,9 @@ public abstract class CHGame extends Game {
      * @author caohao
      */
     public void exit() {
+        if (getScreen() != null) {
+            getScreen().pause();
+        }
         savaDataBeforeExit();
         Gdx.app.exit();
     }
