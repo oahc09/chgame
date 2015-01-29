@@ -46,7 +46,7 @@ public class Version {
      * 0.4.0
      * 
      *  */
-    public static final String VERSION = "0.3.2";
+    public static final String VERSION = "0.3.3";
 
     //    public void a() {
     //        Action[] sAction = new Action[20];

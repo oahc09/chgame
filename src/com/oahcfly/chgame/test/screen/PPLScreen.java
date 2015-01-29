@@ -117,6 +117,8 @@ public class PPLScreen extends CHScreen implements GestureListener {
         
         
         testGif();
+        
+        addActor(CHGame.getInstance().getImage("add3.png"));
     }
 
     private void testGif() {

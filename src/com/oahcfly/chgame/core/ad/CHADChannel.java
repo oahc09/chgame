@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.JsonValue.JsonIterator;
  * 
  * <pre>
  * 广告根据渠道配置读取开关
- * 
+ * {"qh360":false,"baidu":false,"tengxu":false,"meizu":false,"anzhi":true,"mumayi":true}
  * date: 2014-12-3
  * </pre>
  * @author caohao
