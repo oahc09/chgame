@@ -59,4 +59,10 @@ public class TestUI extends CHUI {
         
     }
 
+    @Override
+    public void resetAfterDismiss() {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

@@ -6,6 +6,7 @@ import java.util.Comparator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCOption;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCWidget;
@@ -61,7 +62,13 @@ public abstract class BaseWidgetParser {
         }
 
         // CocoStudio的编辑器ScaleX,ScaleY 会有负数情况
-        actor.setScale(option.getScaleX(), option.getScaleY());
+        if (actor instanceof Label) {
+            // Label的缩放需要设置fontScale
+            ((Label)actor).setFontScale(option.getScaleX(), option.getScaleY());
+        } else {
+            actor.setScale(option.getScaleX(), option.getScaleY());
+        }
+
 
         if (option.getRotation() != 0) {// CocoStudio 是顺时针方向旋转,转换下.
             actor.setRotation(360 - option.getRotation() % 360);

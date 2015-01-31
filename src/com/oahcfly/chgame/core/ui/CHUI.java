@@ -91,6 +91,7 @@ public abstract class CHUI {
         if (parentScreen != null) {
             parentScreen.notifyUIUnFocus(this);
         }
+        resetAfterDismiss();
     }
 
     public CocoStudioUIEditor getEditor() {
@@ -157,5 +158,16 @@ public abstract class CHUI {
      * @author caohao
      */
     public abstract void refreshUIAfterShow();
+
+    /**
+     * 
+     * <pre>
+     * 用于关闭UI后重置一些变量信息
+     * 
+     * date: 2015-1-30
+     * </pre>
+     * @author caohao
+     */
+    public abstract void resetAfterDismiss();
 
 }

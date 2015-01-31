@@ -71,4 +71,10 @@ public class CHClickListener extends ClickListener {
         }
     }
 
+    @Override
+    public void clicked(InputEvent event, float x, float y) {
+        // clicked
+
+    }
+
 }

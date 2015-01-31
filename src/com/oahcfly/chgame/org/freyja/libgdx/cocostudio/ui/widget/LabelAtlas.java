@@ -1,6 +1,7 @@
 
 package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -60,6 +61,10 @@ public class LabelAtlas extends Table {
         return text;
     }
 
+    public void setNum(int num) {
+        setText("" + num);
+    }
+
     /**
      * 设置显示文本
      * 
@@ -116,6 +121,13 @@ public class LabelAtlas extends Table {
         }
         return -1;
 
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        // TODO Auto-generated method stub
+        super.draw(batch, parentAlpha);
+ 
     }
 
 }

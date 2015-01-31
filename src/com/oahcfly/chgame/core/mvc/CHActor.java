@@ -76,6 +76,7 @@ public class CHActor extends Actor implements Poolable {
         this.setColor(new Color(1, 1, 1, 1));
         setStage(null);
         setParent(null);
+        setVisible(true);
     }
 
     public Texture getBgTexture() {

@@ -73,4 +73,10 @@ public class MainUI extends CHUI {
 
     }
 
+    @Override
+    public void resetAfterDismiss() {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

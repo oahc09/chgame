@@ -81,6 +81,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
         saveLabel.setColor(Color.WHITE);
         saveLabel.setPosition(500, 100);
+        saveLabel.setFontScale(0.4f);
         addActor(saveLabel);
 
         Label label = new Label("adb22311", new LabelStyle(new BitmapFont(), Color.WHITE));

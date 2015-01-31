@@ -38,15 +38,15 @@ public class Version {
      * 0.3.1 CHScreen新增时间调度schudule【同步】。整合sqlite。
      * 0.3.2 CHGame新增exit方法，退出前保存数据。新增Gif解析。
      * 0.3.3 CHClickListener优化。
-     * 0.3.4
-     * 0.3.5
+     * 0.3.4 LabelAtlas优化支持缩放，颜色设置。 CHUI新增resetAfterDismiss()方法。修复LabelBMFont缩放。CHActor的reset加上setVisible。
+     * 0.3.5 CHUI优化topCHUI机制。
      * 0.3.6
      * 0.3.7
      * 0.3.8
      * 0.4.0
      * 
      *  */
-    public static final String VERSION = "0.3.3";
+    public static final String VERSION = "0.3.5";
 
     //    public void a() {
     //        Action[] sAction = new Action[20];

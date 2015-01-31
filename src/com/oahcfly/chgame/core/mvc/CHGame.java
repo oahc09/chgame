@@ -188,6 +188,7 @@ public abstract class CHGame extends Game {
         // TODO Auto-generated method stub
         super.dispose();
 
+        Gdx.app.debug(TAG, "dispose");
         batch.dispose();
 
         if (generator != null) {
