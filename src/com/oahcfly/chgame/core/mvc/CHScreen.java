@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Stack;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -53,11 +54,11 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
 
     private CHModel chModel;
 
-    /**当前正在展示的CHUI*/
-    private CHUI topCHUI;
-
     // 影子
     private CHActor shadowActor;
+
+    // chui堆栈
+    private Stack<CHUI> chuiStack;
 
     public CHScreen() {
         this(CHGame.getInstance().getGameWidth(), CHGame.getInstance().getGameHeight());
@@ -66,6 +67,7 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     public CHScreen(int stageW, int stageH) {
         this.stageW = stageW;
         this.stageH = stageH;
+        chuiStack = new Stack<CHUI>();
     }
 
     @Override
@@ -73,8 +75,6 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
         Gdx.app.debug(TAG, "screen-show");
         setBackKeyPressed(false);
         createStage();
-        // 注册触摸事件
-        Gdx.input.setInputProcessor(stage);
         initScreen();
     }
 
@@ -82,6 +82,9 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
         // 自动拉伸舞台
         StretchViewport viewport = new StretchViewport(stageW, stageH);
         stage = new Stage(viewport, getGame().getBatch());
+        stage.getRoot().setName(getClass().getSimpleName());
+        // 注册触摸事件
+        Gdx.input.setInputProcessor(stage);
 
         shadowActor = new CHActor();
         addActor(shadowActor);
@@ -99,6 +102,8 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
             chuiMap.get(key).dismiss();
         }
         chuiMap.clear();
+
+        chuiStack.clear();
 
         endScreen();
 
@@ -225,20 +230,18 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     }
 
     public void dispose() {
-
     }
 
     @Override
     public void notifyUIUnFocus(CHUI chui) {
-        if (topCHUI == chui) {
-            topCHUI = null;
-        }
+        // chui关闭了。从栈里面移除。
+        chuiStack.remove(chui);
     }
 
     @Override
     public void notifyUIFocus(CHUI chui) {
-        topCHUI = chui;
-
+        // chui显示。加入栈内，处在顶部
+        chuiStack.push(chui);
     }
 
     /**
@@ -252,7 +255,9 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
      * @return
      */
     public CHUI getTopCHUI() {
-        return topCHUI;
+        if (chuiStack.isEmpty())
+            return null;
+        return chuiStack.peek();
     }
 
     /**
@@ -267,10 +272,6 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
      */
     public void addAsyncTask(CHAsyncTask asyncTask) {
         CHGame.getInstance().getAsyncManager().loadTask(asyncTask);
-    }
-
-    public void setTopCHUI(CHUI topCHUI) {
-        this.topCHUI = topCHUI;
     }
 
     /**

@@ -7,7 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
@@ -15,12 +14,10 @@ import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane.SplitPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -28,8 +25,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.oahcfly.chgame.core.actions.CHActions;
 import com.oahcfly.chgame.core.actions.CountDownAction;
-import com.oahcfly.chgame.core.listener.CHClickListener;
-import com.oahcfly.chgame.core.listener.CHTextInputListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHAniamtionPlayer;
@@ -37,6 +32,7 @@ import com.oahcfly.chgame.core.ui.CHGifDecoder;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
 import com.oahcfly.chgame.core.ui.CHParticleEffectActor;
+import com.oahcfly.chgame.test.TestGame;
 
 public class PPLScreen extends CHScreen implements GestureListener {
 
@@ -50,64 +46,66 @@ public class PPLScreen extends CHScreen implements GestureListener {
     @Override
     public void initScreen() {
 
-        addSyncSchedule("fun", 1f);
+        //addSyncSchedule("fun", 1f);
 
         chParticle = new CHParticle(ParticleType.STAR);
 
-        for (int i = 0; i < 5; i++) {
-            Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
-            image.setName("xin_" + (i + 1));
-            image.setPosition(300 + image.getWidth() * i, 100);
-            image.addListener(new CHClickListener(){
+        //        for (int i = 0; i < 5; i++) {
+        //            Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
+        //            image.setName("xin_" + (i + 1));
+        //            image.setPosition(300 + image.getWidth() * i, 100);
+        //            image.addListener(new CHClickListener() {
+        //
+        //                @Override
+        //                public void clicked(InputEvent event, float x, float y) {
+        //                    // TODO Auto-generated method stub
+        //                    System.out.println("clicked");
+        //                }
+        //
+        //            });
+        //            addActor(image);
+        //        }
 
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    // TODO Auto-generated method stub
-                    System.out.println("clicked");
-                }
-                
-            });
-            addActor(image);
-        }
+        // testSplitPane();
+
+        //        String saveString = CHGame.getInstance().getInternational().get("list");
+        //        final Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
+        //        CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
+        //        saveLabel.setColor(Color.WHITE);
+        //        saveLabel.setPosition(500, 100);
+        //        saveLabel.setFontScale(0.4f);
+        //        addActor(saveLabel);
+
+        //        final CHTextInputListener chTextInputListener = new CHTextInputListener(saveLabel) {
+        //
+        //            @Override
+        //            public void getInput(String input) {
+        //
+        //            }
+        //        };
+        //        saveLabel.addListener(new CHClickListener() {
+        //
+        //            @Override
+        //            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+        //                // TODO Auto-generated method stub
+        //                super.touchUp(event, x, y, pointer, button);
+        //
+        //                chTextInputListener.show("测试");
+        //            }
+        //
+        //        });
+
+        //        testGif();
+
+        // addActor(CHGame.getInstance().getImage("add3.png"));
 
         // 监听器
         InputMultiplexer inputMultiplexer = new InputMultiplexer(getStage(), new GestureDetector(this));
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-        // testSplitPane();
+    }
 
-        String saveString = CHGame.getInstance().getInternational().get("list");
-        final Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
-        CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
-        saveLabel.setColor(Color.WHITE);
-        saveLabel.setPosition(500, 100);
-        saveLabel.setFontScale(0.4f);
-        addActor(saveLabel);
-
-        Label label = new Label("adb22311", new LabelStyle(new BitmapFont(), Color.WHITE));
-        addActor(label);
-
-        final CHTextInputListener chTextInputListener = new CHTextInputListener(saveLabel) {
-
-            @Override
-            public void getInput(String input) {
-
-            }
-        };
-        saveLabel.addListener(new CHClickListener() {
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                // TODO Auto-generated method stub
-                super.touchUp(event, x, y, pointer, button);
-
-                chTextInputListener.show("测试");
-            }
-
-        });
-
-        testParabolaAction();
-
+    private void snowParticleEffect() {
         // 粒子
         ParticleEffect particleEffect = new ParticleEffect();
         particleEffect.load(Gdx.files.classpath("com/oahcfly/chgame/particle/snow.p"),
@@ -115,21 +113,15 @@ public class PPLScreen extends CHScreen implements GestureListener {
         CHParticleEffectActor actor = new CHParticleEffectActor(particleEffect, "snow");
         actor.setPosition(100, 400);
         addActor(actor);
-        
-        
-        testGif();
-        
-        addActor(CHGame.getInstance().getImage("add3.png"));
     }
 
     private void testGif() {
-        Animation anim = CHGifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("test.gif")
-                .read());
-        
+        Animation anim = CHGifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("test.gif").read());
+
         CHAniamtionPlayer chAniamtionPlayer = new CHAniamtionPlayer(300, 300, anim);
         chAniamtionPlayer.play();
         addActor(chAniamtionPlayer);
-         
+
     }
 
     private void testCDAction() {
@@ -234,6 +226,8 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
     HashSet<String> actorNameList;
 
+    Label testLabel;
+
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
         System.out.println("touchDown");
@@ -243,6 +237,20 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
         chParticle.createEffect(vector2.x, vector2.y);
         unSyncSchedule("funa");
+
+        // 创建字体
+        if (testLabel == null) {
+            testLabel = CHGame.getInstance().getInternationalGenerator().createLabel("测试" + TestGame.getRandomHan());
+            testLabel.setColor(Color.WHITE);
+            testLabel.setPosition(300, 100);
+            testLabel.setFontScale(0.4f);
+            addActor(testLabel);
+        } else {
+            String newString = TestGame.getRandomHan() + TestGame.getRandomHan() + TestGame.getRandomHan();
+            CHGame.getInstance().getInternationalGenerator().appendToFont("测试" + newString);
+            testLabel.setText("测试" + newString);
+        }
+
         return false;
     }
 

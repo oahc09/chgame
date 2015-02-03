@@ -92,6 +92,10 @@ public abstract class CHLoadingScreen extends CHScreen {
 
         addProgressLabel();
         Gdx.app.debug(getTAG(), "loading step -02 :" + (System.currentTimeMillis() - startime));
+
+        // 加载界面禁止点击
+        //Gdx.input.setInputProcessor(null);
+        // touchUp事件传递到第二个Screen里面了
     }
 
     /**
@@ -135,7 +139,6 @@ public abstract class CHLoadingScreen extends CHScreen {
         //            }
         //        }
 
-
         if (loadAssetFileAsyncTask.isDone()) {
             // 文件加载完毕，才进行load，update操作
             chAssets.update();
@@ -146,7 +149,7 @@ public abstract class CHLoadingScreen extends CHScreen {
         // Interpolate the percentage to make it more smooth
         percent = Interpolation.linear.apply(percent, progress, 0.1f);
         loadingPrgressBg.setSize(20 + 420 * percent, loadingPrgressBg.getHeight());
-
+        progressLabel.setTouchable(Touchable.disabled);
         progressLabel.setText("Loading..." + (int)(percent * 100) + "%");
         //System.out.println("Loading:" + (int)(percent * 100) + "% , " + System.currentTimeMillis());
 

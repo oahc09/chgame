@@ -19,7 +19,7 @@ import com.oahcfly.chgame.util.StringUtil;
  * 
  * <pre>
  * 字体工具类
- * 
+ * 注：每次createFont，一定要把上次create的字体dispose。
  * date: 2014-5-11
  * </pre>
  * @author caohao
@@ -79,7 +79,6 @@ public class FontHelper {
         parameter.characters = newText;
         BitmapFont font = generator.generateFont(parameter);
         font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        generator.dispose();
         return font;
     }
 
@@ -106,8 +105,6 @@ public class FontHelper {
         return bitmapFont;
     }
 
-    private static FreeTypeFontGenerator generator;
-
     private static Map<FileHandle, FreeTypeFontGenerator> generators = new HashMap<FileHandle, FreeTypeFontGenerator>();
 
     public static BitmapFont createFont(FileHandle fontHandle, String text, int fontSize) {
@@ -117,7 +114,7 @@ public class FontHelper {
 
         BitmapFont font = null;
         try {
-            generator = (FreeTypeFontGenerator)generators.get(fontHandle);
+            FreeTypeFontGenerator generator = (FreeTypeFontGenerator)generators.get(fontHandle);
             if (generator == null) {
                 generator = new FreeTypeFontGenerator(fontHandle);
                 generators.put(fontHandle, generator);
@@ -140,5 +137,21 @@ public class FontHelper {
         }
 
         return font;
+    }
+
+    public void dispose() {
+        for (FreeTypeFontGenerator generator : generatorMap.values()) {
+            if (generator != null) {
+                generator.dispose();
+            }
+        }
+        for (FreeTypeFontGenerator generator : generators.values()) {
+            if (generator != null) {
+                generator.dispose();
+            }
+        }
+        this.generatorMap.clear();
+        generators.clear();
+
     }
 }

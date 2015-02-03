@@ -71,6 +71,16 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
  *         have to be disposed as usual.
  * 
  * 
+ *  by caohao 修改于2015-02-02
+ *  
+ *  每次appendToFont会释放上次存留的Texture。Texture释放时，不去清理对应的Pixmap。
+ *  如果Page超过19，把前面的全部释放掉。
+ * 
+ *  个人分析：
+ *   -> PixmapPacker管理Page
+ *   -> Page里面存有Pixmap.
+ *   -> BitmapFont由Pixmap生成Texture进行绘制。
+ *   
  */
 public class FreeTypeFontGeneratorExt implements Disposable {
     public static final String DEFAULT_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890\"!`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*";
@@ -320,7 +330,6 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         FreeTypeBitmapFontData data = generateData(size, "", flip, null);
         font = new BitmapFont(data, data.getTextureRegions(), false);
         font.setOwnsTexture(true);
-        //appendToFont(DEFAULT_CHARS);
         font = appendToFont(DEFAULT_CHARS);
     }
 
@@ -382,8 +391,9 @@ public class FreeTypeFontGeneratorExt implements Disposable {
                 return font;
             }
         }
-        //
+
         data = appendData();
+
         font = new BitmapFont(data, data.getTextureRegions(), false);
         if (ofont != null) {
             font.setColor(ofont.getColor());
@@ -757,6 +767,17 @@ public class FreeTypeFontGeneratorExt implements Disposable {
 
         String packPrefix = ownsAtlas ? "" : (filePath + '_' + parameter.size + (parameter.flip ? "_flip_" : '_'));
 
+        Gdx.app.debug("FreeType", "[Packer Info]:  page_size =" + packer.getPages().size + ", page_1_size :"
+                + packer.getPages().get(0).getRects().size);
+        if (packer.getPages().size > 19) {
+            // 页数超过19，释放前面的18页文字。
+            for (int i = 0; i < packer.getPages().size - 1; i++) {
+                Page page = packer.getPages().get(i);
+                page.getPixmap().dispose();
+                packer.getPages().removeIndex(i);
+            }
+        }
+
         for (int i = 0; i < parameter.characters.length(); i++) {
             char c = parameter.characters.charAt(i);
             String name = packPrefix + c;
@@ -848,16 +869,21 @@ public class FreeTypeFontGeneratorExt implements Disposable {
             for (int i = 0; i < pages.size; i++) {
                 Page p = pages.get(i);
                 // this.pxmap =p.getPixmap();
-                Texture tex = new Texture(new PixmapTextureData(p.getPixmap(), p.getPixmap().getFormat(),
-                        parameter.genMipMaps, false, true)) {
+                PixmapTextureData pixmapTextureData = new PixmapTextureData(p.getPixmap(), p.getPixmap().getFormat(),
+                        parameter.genMipMaps, false, true);
+                Texture tex = new Texture(pixmapTextureData) {
                     @Override
                     public void dispose() {
                         super.dispose();
-                        getTextureData().consumePixmap().dispose();
+                        // 纹理释放，pixmap不需要释放。参见Line760
+                        // getTextureData().consumePixmap().dispose();
                     }
                 };
 
                 tex.setFilter(parameter.minFilter, parameter.magFilter);
+                if (t != null) {
+                    t.dispose();
+                }
                 t = tex;
                 data.regions[i] = new TextureRegion(tex);
             }

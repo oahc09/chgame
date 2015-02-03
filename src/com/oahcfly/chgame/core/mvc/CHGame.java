@@ -30,6 +30,7 @@ import com.oahcfly.chgame.core.International;
 import com.oahcfly.chgame.core.Version;
 import com.oahcfly.chgame.core.ad.CHADListener;
 import com.oahcfly.chgame.core.async.CHAsyncManager;
+import com.oahcfly.chgame.core.helper.FontHelper;
 import com.oahcfly.chgame.core.listener.CHSocialListener;
 import com.oahcfly.chgame.core.listener.LocaleListener;
 import com.oahcfly.chgame.core.manager.MusicManager;
@@ -206,6 +207,8 @@ public abstract class CHGame extends Game {
             bitmapFont.dispose();
         }
         chAsyncManager.dispose();
+
+        FontHelper.getInstance().dispose();
     }
 
     @Override
@@ -321,14 +324,21 @@ public abstract class CHGame extends Game {
         Texture texture = null;
 
         if (!assetManager.isLoaded(fileName)) {
-            assetManager.load(fileName, Texture.class);
-            assetManager.finishLoading();
-            texture = assetManager.get(fileName, Texture.class);
+            try {
+                assetManager.load(fileName, Texture.class);
+                assetManager.finishLoading();
+                texture = assetManager.get(fileName, Texture.class);
+            } catch (Exception e) {
+                // 加载出错，直接读取
+                Gdx.app.error(TAG, e.getMessage());
+                texture = new Texture(Gdx.files.internal(fileName));
+            }
         } else {
             // 此处不知为何报错，特殊处理一下
             try {
                 texture = assetManager.get(fileName, Texture.class);
             } catch (Exception e) {
+                // 加载出错，直接读取
                 Gdx.app.error(TAG, e.getMessage());
                 texture = new Texture(Gdx.files.internal(fileName));
             }

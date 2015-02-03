@@ -39,15 +39,25 @@ public class Version {
      * 0.3.2 CHGame新增exit方法，退出前保存数据。新增Gif解析。
      * 0.3.3 CHClickListener优化。
      * 0.3.4 LabelAtlas优化支持缩放，颜色设置。 CHUI新增resetAfterDismiss()方法。修复LabelBMFont缩放。CHActor的reset加上setVisible。
-     * 0.3.5 CHUI优化topCHUI机制。
-     * 0.3.6
-     * 0.3.7
+     * 0.3.5 CHUI优化topCHUI机制。字体纹理释放问题。
+     * 0.3.6 CHScreen切换触摸事件监听问题(PC版有问题，android没问题。)。
+     * 0.3.7 封装CHLine线条绘制
      * 0.3.8
      * 0.4.0
      * 
      *  */
-    public static final String VERSION = "0.3.5";
-
+    public static final String VERSION = "0.3.6";
+    
+    /**
+     * 小贴士：
+     *  
+     *  1.使用Application.postRunnable()将其他线程的数据传递到渲染线程。在ApplicationListener.render()调用之前，会在渲染线程的Runnable中运行代码。
+     * 
+     * 
+     */
+    
+    
+    //  第一个Screen处理down事件->切换screen，screen注册了事件接收器，进行绘制处理->此时已经是第二个Screen在显示，就会处理up事件了。
     //    public void a() {
     //        Action[] sAction = new Action[20];
     //        // 使用action实现定时器
