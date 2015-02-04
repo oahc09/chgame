@@ -8,6 +8,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.mvc.CHModel;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
@@ -170,4 +172,22 @@ public abstract class CHUI {
      */
     public abstract void resetAfterDismiss();
 
+    /**
+     * 
+     * <pre>
+     * 注册监听器
+     * 
+     * date: 2015-2-4
+     * </pre>
+     * @author caohao
+     * @param actorName 组件名称
+     * @param chClickListener 监听器
+     */
+    public void registerClickListener(String actorName, CHClickListener chClickListener) {
+        Actor actor = findActor(actorName);
+        if (actor == null) {
+            throw new GdxRuntimeException("cannot find actor :" + actorName);
+        }
+        actor.addListener(chClickListener);
+    }
 }

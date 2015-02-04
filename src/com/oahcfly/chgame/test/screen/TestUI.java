@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHUI;
@@ -26,7 +26,7 @@ public class TestUI extends CHUI {
 
     public void initUI() {
         Button button = getGroup().findActor("btn_resume");
-        button.addListener(new ClickListener() {
+        button.addListener(new CHClickListener() {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -34,7 +34,6 @@ public class TestUI extends CHUI {
                 new MainUI(getParentStage()).show();
                 super.clicked(event, x, y);
             }
-
         });
 
         LabelAtlas labelAtlas = new LabelAtlas(new TextureRegion(CHGame.getInstance().getTexture(
@@ -50,19 +49,19 @@ public class TestUI extends CHUI {
     @Override
     public void refreshUIAfterShow() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void initUIBeforeShow() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void resetAfterDismiss() {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

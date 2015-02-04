@@ -2,6 +2,7 @@
 package com.oahcfly.chgame.core.listener;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -22,6 +23,8 @@ public class CHClickListener extends ClickListener {
 
     private CLICKTYPE clickType = CLICKTYPE.SCALE;
 
+    private Actor listenerActor;
+
     public CHClickListener() {
     }
 
@@ -31,6 +34,7 @@ public class CHClickListener extends ClickListener {
 
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        listenerActor = event.getListenerActor();
         if (pointer > 0) {
             // 屏蔽2指同时点击的情况
             return false;
@@ -77,4 +81,21 @@ public class CHClickListener extends ClickListener {
 
     }
 
+    public CLICKTYPE getClickType() {
+        return clickType;
+    }
+
+    /**
+     * 
+     * <pre>
+     *  获取当前接收监听器事件的演员
+     * 
+     * date: 2015-2-4
+     * </pre>
+     * @author caohao
+     * @return
+     */
+    public Actor getListenerActor() {
+        return listenerActor;
+    }
 }
