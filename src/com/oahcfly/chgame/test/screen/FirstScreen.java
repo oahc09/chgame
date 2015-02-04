@@ -41,36 +41,7 @@ public class FirstScreen extends CHScreen {
 
         Gdx.app.log(getTAG(), "init screen : first" + Texture.getManagedStatus());
 
-        //        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("testAtlas.txt"));
-        //        Image autumnImage = new Image(textureAtlas.findRegion("title_summer"));
-        //        addActor(autumnImage);
-        //
-        //        sprite = textureAtlas.createSprite("title_autumn");
-        //        sprite.setX(57);
-
         new MainUI(this).show();
-
-        TTFLabelStyle labelStyle = new TTFLabelStyle(new LabelStyle(CHGame.getInstance().getInternationalGenerator()
-                .getBitmapFont(), null), null, 30);
-        final TTFLabel label = new TTFLabel("abcdxyz123s撒啊啊啊啊啊啊啊啊测试", labelStyle);
-        label.setAlignment(8, 2);
-        label.setDebug(true);
-        label.setOrigin(Align.center);
-        label.setSize(100, 30);
-        label.setPosition(200, 200);
-        label.setText("TTFLabel", true);
-        label.addListener(new CHClickListener() {
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                // TODO Auto-generated method stub
-                super.touchUp(event, x, y, pointer, button);
-                label.setText("重新测试文本", true);
-            }
-
-        });
-
-        addActor(label);
 
         addLabelAtlas(12345, 200, 160);
 

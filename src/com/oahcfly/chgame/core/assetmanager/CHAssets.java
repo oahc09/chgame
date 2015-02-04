@@ -28,7 +28,7 @@ import com.oahcfly.chgame.core.mvc.CHGame;
  * "bigstar" : [
  *    {   
  *        "type" : "com.badlogic.gdx.graphics.Texture",
- *         "path" : "screen/big_star.png"
+ *        "path" : "screen/big_star.png"
  *     }
  * ] 
  *  

@@ -43,7 +43,15 @@ public class Version {
      * 0.3.6 CHScreen切换触摸事件监听问题(PC版有问题，android没问题。)。
      * 0.3.7 封装CHLine线条绘制。添加接口CHAndroidViewListener。CHUI，CHClickListener优化。
      * 0.3.8 CHUI使用注解来获取JsonPath。
+     * 0.3.9
      * 0.4.0
+     * 0.4.1
+     * 0.4.2
+     * 0.4.3
+     * 0.4.4
+     * 0.4.5
+     * 0.4.6
+     * 0.4.7
      * 
      *  */
     public static final String VERSION = "0.3.7";

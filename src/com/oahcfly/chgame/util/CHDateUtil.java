@@ -2,12 +2,20 @@
 package com.oahcfly.chgame.util;
 
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * 
+ * <pre>
+ * 日期工具类
+ * 
+ * date: 2015-2-4
+ * </pre>
+ * @author caohao
+ */
 public class CHDateUtil {
 
     /** 格式化字符串格式 */
@@ -39,8 +47,6 @@ public class CHDateUtil {
      * @return
      */
     public static String millisToTimeFormat(int times) {
-        // GregorianCalendar gc = new GregorianCalendar();
-        // gc.setTimeInMillis(times * 1000);
         long ms = times * 1000L;
         SimpleDateFormat format = new SimpleDateFormat(FORMAT_HMS);
         return format.format(ms);
@@ -214,40 +220,6 @@ public class CHDateUtil {
     public static long getTimestamp() {
         long time = Calendar.getInstance().getTimeInMillis();
         return time;
-    }
-
-    /**
-     * 将Unix时间戳转换成指定格式日期
-     * 
-     * @param timestampString
-     * @param formats
-     * @return
-     */
-    public static String TimeStampDate(String timestampString, String formats) {
-        Long timestamp = Long.parseLong(timestampString) * 1000;
-        String date = new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestamp));
-        return date;
-    }
-
-    /**
-     * 将Unix时间戳转换成指定格式日期
-     * 
-     * @param timestampString
-     * @param formats
-     * @return
-     */
-    public static String stampTime(String timestampString, String formats) {
-        String date = new java.text.SimpleDateFormat(formats).format(new java.util.Date(Long.valueOf(timestampString)));
-        return date;
-    }
-
-    public static int getIntTime(String time) {
-        Double longTime = Double.valueOf(time);
-        Double.parseDouble(time.toString());
-        DecimalFormat df = new DecimalFormat("#");
-        int updradeTime = Integer.valueOf(df.format(longTime));
-        return updradeTime;
-
     }
 
     /**
@@ -542,139 +514,6 @@ public class CHDateUtil {
     }
 
     /**
-     * 按给定日期样式判断给定字符串是否为合法日期数据
-     * 
-     * @param strDate 要判断的日期
-     * @param pattern 日期样式
-     * @return true 如果是，否则返回false
-     */
-    public static boolean isDate(String strDate, String pattern) {
-        try {
-            parse(strDate, pattern);
-            return true;
-        } catch (ParseException pe) {
-            return false;
-        }
-    }
-
-    /**
-     * 判断给定字符串是否为特定格式日期（包括：年月日yyyy-MM-dd）数据
-     * 
-     * @param strDate 要判断的日期
-     * @return true 如果是，否则返回false
-     */
-    // public static boolean isDate(String strDate) {
-    // try {
-    // parse(strDate, YYYY_MM_DD);
-    // return true;
-    // }
-    // catch (ParseException pe) {
-    // return false;
-    // }
-    // }
-
-    /**
-     * 判断给定字符串是否为特定格式年份（格式：yyyy）数据
-     * 
-     * @param strDate 要判断的日期
-     * @return true 如果是，否则返回false
-     */
-    public static boolean isYYYY(String strDate) {
-        try {
-            parse(strDate, YYYY);
-            return true;
-        } catch (ParseException pe) {
-            return false;
-        }
-    }
-
-    public static boolean isYYYY_MM(String strDate) {
-        try {
-            parse(strDate, YYYY_MM);
-            return true;
-        } catch (ParseException pe) {
-            return false;
-        }
-    }
-
-    /**
-     * 判断给定字符串是否为特定格式的年月日（格式：yyyy-MM-dd）数据
-     * 
-     * @param strDate 要判断的日期
-     * @return true 如果是，否则返回false
-     */
-    public static boolean isYYYY_MM_DD(String strDate) {
-        try {
-            parse(strDate, YYYY_MM_DD);
-            return true;
-        } catch (ParseException pe) {
-            return false;
-        }
-    }
-
-    /**
-     * 判断给定字符串是否为特定格式年月日时分秒（格式：yyyy-MM-dd HH:mm:ss）数据
-     * 
-     * @param strDate 要判断的日期
-     * @return true 如果是，否则返回false
-     */
-    public static boolean isYYYY_MM_DD_HH_MM_SS(String strDate) {
-        try {
-            parse(strDate, YYYY_MM_DD_HH_MM_SS);
-            return true;
-        } catch (ParseException pe) {
-            return false;
-        }
-    }
-
-    /**
-     * 判断给定字符串是否为特定格式时分秒（格式：HH:mm:ss）数据
-     * 
-     * @param strDate 要判断的日期
-     * @return true 如果是，否则返回false
-     */
-    public static boolean isHH_MM_SS(String strDate) {
-        try {
-            parse(strDate, HH_MM_SS);
-            return true;
-        } catch (ParseException pe) {
-            return false;
-        }
-    }
-
-    /**
-     * 判断给定字符串是否为特定格式时间（包括：时分秒hh:mm:ss）数据
-     * 
-     * @param strTime 要判断的时间
-     * @return true 如果是，否则返回false
-     */
-    // public static boolean isTime(String strTime) {
-    // try {
-    // parse(strTime, HH_MM_SS);
-    // return true;
-    // }
-    // catch (ParseException pe) {
-    // return false;
-    // }
-    // }
-
-    /**
-     * 判断给定字符串是否为特定格式日期时间（包括：年月日时分秒 yyyy-MM-dd hh:mm:ss）数据
-     * 
-     * @param strDateTime 要判断的日期时间
-     * @return true 如果是，否则返回false
-     */
-    // public static boolean isDateTime(String strDateTime) {
-    // try {
-    // parse(strDateTime, YYYY_MM_DD_HH_MM_SS);
-    // return true;
-    // }
-    // catch (ParseException pe) {
-    // return false;
-    // }
-    // }
-
-    /**
      * 获取一个简单的日期格式化对象
      * 
      * @return 一个简单的日期格式化对象
@@ -817,8 +656,6 @@ public class CHDateUtil {
     }
 
     public static String dateTimeToString(Date datetime) {
-        // dateTime=dateTime.substring(0,4)+dateTime.substring(5,7)+dateTime.substring(8,10)+dateTime.substring(11,13)+dateTime.substring(14,16)+dateTime.substring(17,19);
-        // return dateTime;
 
         java.util.GregorianCalendar calendar = new java.util.GregorianCalendar();
         calendar.setTime(datetime);
