@@ -103,7 +103,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
 
     public static Pixmap pxmap = null;
 
-    public static Texture t = null;
+    public static Array<Texture> textureArr = null;
 
     /**
      * The maximum texture size allowed by generateData, when storing in a
@@ -253,6 +253,8 @@ public class FreeTypeFontGeneratorExt implements Disposable {
     // }
 
     public FreeTypeFontGeneratorExt(int size, boolean flip) {
+        textureArr = new Array<Texture>();
+
         readSysTtfConfig();
         library = FreeType.initFreeType();
         if (library == null)
@@ -367,6 +369,9 @@ public class FreeTypeFontGeneratorExt implements Disposable {
      * @author hx 20140529
      */
     public synchronized BitmapFont appendToFont(String chars) {
+        chars = chars.trim();
+        // 去除字符串中的空格、回车、换行符、制表符
+        chars = chars.replaceAll("\\s", "");
         chars = chars.replaceAll("(?s)(.)(?=.*\\1)", "");// 去掉重复字符
         return appendToFont(chars, null);
     }
@@ -817,7 +822,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
             }
 
             if (index == 0) {
-                Gdx.app.log("freetype", "char '" + name + "' not loaded!");
+                Gdx.app.log("freetype", "char 【" + name + "】 not loaded!");
                 break;
             }
 
@@ -866,6 +871,16 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         if (ownsAtlas) {
             Array<Page> pages = packer.getPages();
             // data.regions = new TextureRegion[pages.size];
+
+            // 清理旧的纹理
+            if (textureArr.size > 0) {
+                for (Texture oldTexture : textureArr) {
+                    if (oldTexture != null) {
+                        oldTexture.dispose();
+                    }
+                }
+                textureArr.clear();
+            }
             for (int i = 0; i < pages.size; i++) {
                 Page p = pages.get(i);
                 // this.pxmap =p.getPixmap();
@@ -881,10 +896,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
                 };
 
                 tex.setFilter(parameter.minFilter, parameter.magFilter);
-                if (t != null) {
-                    t.dispose();
-                }
-                t = tex;
+                textureArr.add(tex);
                 data.regions[i] = new TextureRegion(tex);
             }
         }

@@ -1,22 +1,6 @@
 
 package com.oahcfly.chgame.core;
 
-/*******************************************************************************
- * Copyright 2011 See AUTHORS file.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,58 +14,13 @@ import java.util.MissingResourceException;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.PropertiesUtils;
 import com.badlogic.gdx.utils.StreamUtils;
 
 /**
- * A {@code I18NBundle} provides {@code Locale}-specific resources loaded from
- * property files. A bundle contains a number of named resources, whose names
- * and values are {@code Strings}. A bundle may have a parent bundle, and when a
- * resource is not found in a bundle, the parent bundle is searched for the
- * resource. If the fallback mechanism reaches the base bundle and still can't
- * find the resource it throws a {@code MissingResourceException}.
- * 
- * <ul>
- * <li>All bundles for the same group of resources share a common base bundle.
- * This base bundle acts as the root and is the last fallback in case none of
- * its children was able to respond to a request.</li>
- * <li>The first level contains changes between different languages. Only the
- * differences between a language and the language of the base bundle need to be
- * handled by a language-specific {@code I18NBundle}.</li>
- * <li>The second level contains changes between different countries that use
- * the same language. Only the differences between a country and the country of
- * the language bundle need to be handled by a country-specific
- * {@code I18NBundle}.</li>
- * <li>The third level contains changes that don't have a geographic reason
- * (e.g. changes that where made at some point in time like {@code PREEURO}
- * where the currency of come countries changed. The country bundle would return
- * the current currency (Euro) and the {@code PREEURO} variant bundle would
- * return the old currency (e.g. DM for Germany).</li>
- * </ul>
- * 
- * <strong>Examples</strong>
- * <ul>
- * <li>BaseName (base bundle)
- * <li>BaseName_de (german language bundle)
- * <li>BaseName_fr (french language bundle)
- * <li>BaseName_de_DE (bundle with Germany specific resources in german)
- * <li>BaseName_de_CH (bundle with Switzerland specific resources in german)
- * <li>BaseName_fr_CH (bundle with Switzerland specific resources in french)
- * <li>BaseName_de_DE_PREEURO (bundle with Germany specific resources in german
- * of the time before the Euro)
- * <li>BaseName_fr_FR_PREEURO (bundle with France specific resources in french
- * of the time before the Euro)
- * </ul>
- * 
- * It's also possible to create variants for languages or countries. This can be
- * done by just skipping the country or language abbreviation:
- * BaseName_us__POSIX or BaseName__DE_PREEURO. But it's not allowed to
- * circumvent both language and country: BaseName___VARIANT is illegal.
- * 
- * @see PropertiesUtils
- * 
- * @author davebaol
+ * @see I18NBundle
  */
 
 public class International {
