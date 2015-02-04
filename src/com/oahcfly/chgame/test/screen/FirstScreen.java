@@ -48,7 +48,7 @@ public class FirstScreen extends CHScreen {
         //        sprite = textureAtlas.createSprite("title_autumn");
         //        sprite.setX(57);
 
-        new MainUI(getStage()).show();
+        new MainUI(this).show();
 
         TTFLabelStyle labelStyle = new TTFLabelStyle(new LabelStyle(CHGame.getInstance().getInternationalGenerator()
                 .getBitmapFont(), null), null, 30);

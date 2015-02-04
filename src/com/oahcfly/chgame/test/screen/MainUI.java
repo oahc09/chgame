@@ -5,8 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.oahcfly.chgame.core.annotations.CHUIAnnotation;
 import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.listener.CHClickListener.CLICKTYPE;
 import com.oahcfly.chgame.core.mvc.CHGame;
@@ -14,17 +14,22 @@ import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHToast;
 import com.oahcfly.chgame.core.ui.CHUI;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget.LabelAtlas;
-
+@CHUIAnnotation(jsonPath="screen/MainScreen_1.json")
 public class MainUI extends CHUI {
 
-    public MainUI(CHScreen chScreen) {
-        super(chScreen, null, "screen/MainScreen_1.json");
-        initUI();
-    }
+//    public MainUI(CHScreen chScreen) {
+//        super(chScreen, null, "screen/MainScreen_1.json");
+//        initUI();
+//    }
+//
+//    public MainUI(Stage stage) {
+//        super(stage, null, "screen/MainScreen_1.json");
+//        initUI();
+//    }
 
-    public MainUI(Stage stage) {
-        super(stage, null, "screen/MainScreen_1.json");
-        initUI();
+    public MainUI(CHScreen screen) {
+        super(screen);
+        // TODO Auto-generated constructor stub
     }
 
     public void initUI() {

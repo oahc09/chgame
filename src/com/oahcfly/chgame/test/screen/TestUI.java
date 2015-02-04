@@ -31,7 +31,7 @@ public class TestUI extends CHUI {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dismiss();
-                new MainUI(getParentStage()).show();
+                new MainUI(getParentScreen()).show();
                 super.clicked(event, x, y);
             }
         });

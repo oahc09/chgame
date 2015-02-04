@@ -103,6 +103,8 @@ public class PPLScreen extends CHScreen implements GestureListener {
         InputMultiplexer inputMultiplexer = new InputMultiplexer(getStage(), new GestureDetector(this));
         Gdx.input.setInputProcessor(inputMultiplexer);
 
+        
+        new TestUI(this).show();
     }
 
     private void snowParticleEffect() {

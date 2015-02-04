@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.oahcfly.chgame.core.annotations.CHUIAnnotation;
 import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.mvc.CHModel;
 import com.oahcfly.chgame.core.mvc.CHScreen;
@@ -36,7 +37,39 @@ public abstract class CHUI {
 
     private CHScreen parentScreen;
 
+    /**
+     * 获取注解
+     */
+    public CHUIAnnotation getAnnotation() {
+        if (this.getClass().isAnnotationPresent(CHUIAnnotation.class)) {
+            //若存在就获取注解
+            CHUIAnnotation annotation = (CHUIAnnotation)this.getClass().getAnnotation(CHUIAnnotation.class);
+            return annotation;
+        } else {
+            return null;
+        }
+    }
+
+    public CHUI(CHScreen screen) {
+        CHUIAnnotation chAnnotation = getAnnotation();
+        String jsonPath = null;
+        if (chAnnotation != null) {
+            jsonPath = chAnnotation.jsonPath();
+        } else {
+            throw new GdxRuntimeException("cannot find CHUIAnnotation in class!!!");
+        }
+        this.parentScreen = screen;
+        this.stage = parentScreen.getStage();
+        editor = new CocoStudioUIEditor(Gdx.files.internal(jsonPath), null, null, null, null);
+        group = editor.createGroup();
+        initUIBeforeShow();
+    }
+
     public CHUI(CHScreen screen, String jsonPath) {
+        CHUIAnnotation chAnnotation = getAnnotation();
+        if (chAnnotation != null) {
+            jsonPath = chAnnotation.jsonPath();
+        }
         this.parentScreen = screen;
         this.stage = parentScreen.getStage();
         editor = new CocoStudioUIEditor(Gdx.files.internal(jsonPath), null, null, null, null);
@@ -45,6 +78,10 @@ public abstract class CHUI {
     }
 
     public CHUI(Stage stage, Map<String, FileHandle> ttfs, String jsonPath) {
+        CHUIAnnotation chAnnotation = getAnnotation();
+        if (chAnnotation != null) {
+            jsonPath = chAnnotation.jsonPath();
+        }
         this.stage = stage;
         editor = new CocoStudioUIEditor(Gdx.files.internal(jsonPath), ttfs, null, null, null);
         group = editor.createGroup();
@@ -52,6 +89,10 @@ public abstract class CHUI {
     }
 
     public CHUI(CHScreen screen, Map<String, FileHandle> ttfs, String jsonPath) {
+        CHUIAnnotation chAnnotation = getAnnotation();
+        if (chAnnotation != null) {
+            jsonPath = chAnnotation.jsonPath();
+        }
         this.parentScreen = screen;
         this.stage = parentScreen.getStage();
         editor = new CocoStudioUIEditor(Gdx.files.internal(jsonPath), ttfs, null, null, null);
