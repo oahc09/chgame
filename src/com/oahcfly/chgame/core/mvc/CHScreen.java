@@ -60,6 +60,8 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     // chui堆栈
     private Stack<CHUI> chuiStack;
 
+    private boolean backKey = false;
+
     public CHScreen() {
         this(CHGame.getInstance().getGameWidth(), CHGame.getInstance().getGameHeight());
     }
@@ -119,13 +121,18 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
         Gdx.app.debug(TAG, "screen-pause");
     }
 
-    private boolean backKey = false;
-
     @Override
     public void render(float delta) {
         draw();
         act(delta);
-        if (getGame().isCatchBackKey() && Gdx.input.isKeyPressed(Input.Keys.BACK) && !backKey) {
+
+        // 点击了返回键
+        boolean pressBackKey = Gdx.input.isKeyPressed(Input.Keys.BACK);
+        if (backKey && !pressBackKey) {
+            // 已经通知过返回事件了，并且事件已经被处理完了，重置标志，继续监测
+            backKey = false;
+        }
+        if (getGame().isCatchBackKey() && pressBackKey && !backKey) {
             // 监听返回键
             backKey = true;
             clickBackKey();

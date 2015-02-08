@@ -611,7 +611,7 @@ public abstract class CHGame extends Game {
     /**
      * 
      * <pre>
-     * 退出游戏
+     * 退出游戏：自动调用退出广告
      * 
      * date: 2015-1-26
      * </pre>
@@ -622,7 +622,11 @@ public abstract class CHGame extends Game {
             getScreen().pause();
         }
         savaDataBeforeExit();
-        Gdx.app.exit();
+        if (chadListener != null) {
+            chadListener.showQuitPopAd();
+        } else {
+            Gdx.app.exit();
+        }
     }
 
     /**
