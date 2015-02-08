@@ -33,8 +33,7 @@ public interface CHADListener {
      * @author caohao
      */
     public void closeSpotAds();
-    
-    
+
     /**
      * 
      * <pre>
@@ -45,7 +44,7 @@ public interface CHADListener {
      * @author caohao
      */
     public void showBannerAds();
-    
+
     /**
      * 
      * <pre>
@@ -68,4 +67,15 @@ public interface CHADListener {
      * @author caohao
      */
     public void closeBannerAds();
+
+    /**
+     * 
+     * <pre>
+     * 退出广告
+     * 
+     * date: 2015-2-8
+     * </pre>
+     * @author caohao
+     */
+    public void showQuitPopAd();
 }

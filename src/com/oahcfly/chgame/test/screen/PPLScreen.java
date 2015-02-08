@@ -46,7 +46,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
     @Override
     public void initScreen() {
 
-        //addSyncSchedule("fun", 1f);
+        addSyncSchedule("fun", 1f);
 
         chParticle = new CHParticle(ParticleType.STAR);
 

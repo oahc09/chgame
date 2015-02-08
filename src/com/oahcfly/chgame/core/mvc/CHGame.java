@@ -114,6 +114,9 @@ public abstract class CHGame extends Game {
 
     private Batch batch;
 
+    // Gdx是否处理back键
+    private boolean catchBackKey = true;
+
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -127,6 +130,7 @@ public abstract class CHGame extends Game {
 
         chAsyncManager = new CHAsyncManager();
 
+        // 代表返回，菜单事件，会被Gdx拦截掉，不会下发到Android处理了。
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setCatchMenuKey(true);
 
@@ -631,4 +635,22 @@ public abstract class CHGame extends Game {
      * @author caohao
      */
     public abstract void savaDataBeforeExit();
+
+    /**
+     * 
+     * <pre>
+     * Gdx里面是否处理返回按键【默认：true】
+     * 
+     * date: 2015-2-8
+     * </pre>
+     * @author caohao
+     * @return
+     */
+    public boolean isCatchBackKey() {
+        return catchBackKey;
+    }
+
+    public void setCatchBackKey(boolean catchBackKey) {
+        this.catchBackKey = catchBackKey;
+    }
 }

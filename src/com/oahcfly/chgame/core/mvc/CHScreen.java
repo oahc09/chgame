@@ -125,7 +125,7 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     public void render(float delta) {
         draw();
         act(delta);
-        if (Gdx.input.isKeyPressed(Input.Keys.BACK) && !backKey) {
+        if (getGame().isCatchBackKey() && Gdx.input.isKeyPressed(Input.Keys.BACK) && !backKey) {
             // 监听返回键
             backKey = true;
             clickBackKey();
@@ -295,19 +295,16 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
                 @Override
                 public void run() {
                     try {
-                        method.invoke(screenClass.newInstance());
+                        method.invoke(CHScreen.this);
                     } catch (IllegalAccessException e) {
                         // TODO Auto-generated catch block
-                        Gdx.app.error(TAG, e.getMessage());
+                        Gdx.app.error(TAG, "addSyncSchedule :" + e.getMessage());
                     } catch (IllegalArgumentException e) {
                         // TODO Auto-generated catch block
-                        Gdx.app.error(TAG, e.getMessage());
+                        Gdx.app.error(TAG, "addSyncSchedule :" + e.getMessage());
                     } catch (InvocationTargetException e) {
                         // TODO Auto-generated catch block
-                        Gdx.app.error(TAG, e.getMessage());
-                    } catch (InstantiationException e) {
-                        // TODO Auto-generated catch block
-                        Gdx.app.error(TAG, e.getMessage());
+                        Gdx.app.error(TAG, "addSyncSchedule :" + e.getMessage());
                     }
                 }
             });
@@ -323,10 +320,10 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
             shadowActor.addAction(new ScheduleAction(methodName, duration, runnableAction));
         } catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
-            Gdx.app.error(TAG, e.getMessage());
+            Gdx.app.error(TAG, "addSyncSchedule :" + e.getMessage());
         } catch (SecurityException e) {
             // TODO Auto-generated catch block
-            Gdx.app.error(TAG, e.getMessage());
+            Gdx.app.error(TAG, "addSyncSchedule :" + e.getMessage());
         }
     }
 

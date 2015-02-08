@@ -4,9 +4,9 @@ package com.oahcfly.chgame.test;
 import java.util.Random;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.test.screen.MyLoadingScreen;
 
@@ -22,10 +22,9 @@ public class TestGame extends CHGame {
 
         //new DatabaseTest();
 
-        if (Gdx.app.getType() == ApplicationType.Desktop) {
-            Application application = Gdx.app;
-            System.out.println("");
-        }
+ 
+        
+        ShaderProgram shaderProgram ;
     }
 
     private static Random ran = new Random();
