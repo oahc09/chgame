@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SplitPane.SplitPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.oahcfly.chgame.core.FreeTypeFontGeneratorExt.FreeTypeFontParameter;
 import com.oahcfly.chgame.core.actions.CHActions;
 import com.oahcfly.chgame.core.actions.CountDownAction;
 import com.oahcfly.chgame.core.mvc.CHGame;
@@ -50,6 +51,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
         chParticle = new CHParticle(ParticleType.STAR);
 
+        addActor(CHGame.getInstance().getImage("screen/loading_bg.png"));
         //        for (int i = 0; i < 5; i++) {
         //            Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
         //            image.setName("xin_" + (i + 1));
@@ -68,13 +70,18 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
         // testSplitPane();
 
-        //        String saveString = CHGame.getInstance().getInternational().get("list");
-        //        final Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
-        //        CHGame.getInstance().getInternationalGenerator().createLabel(saveString);
-        //        saveLabel.setColor(Color.WHITE);
-        //        saveLabel.setPosition(500, 100);
-        //        saveLabel.setFontScale(0.4f);
-        //        addActor(saveLabel);
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.colorGradientBottom = null;
+        parameter.dropShadowSize = 2;// 描边宽度
+        parameter.dropShadowColor = Color.WHITE;// 颜色
+        parameter.dropShadowOpacity = 1f;// 描边透明度
+        parameter.dropShadowOffsetX = 2;// 偏移量
+        parameter.dropShadowOffsetY = 2;
+        CHGame.getInstance().getInternationalGenerator().setFontDropShadowParameter(parameter);
+        final Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel("测试文字描边ABCDabcd1234!！");
+        saveLabel.setColor(Color.BLACK);
+        saveLabel.setPosition(300, 100);
+        addActor(saveLabel);
 
         //        final CHTextInputListener chTextInputListener = new CHTextInputListener(saveLabel) {
         //
@@ -103,8 +110,6 @@ public class PPLScreen extends CHScreen implements GestureListener {
         InputMultiplexer inputMultiplexer = new InputMultiplexer(getStage(), new GestureDetector(this));
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-        
-        new TestUI(this).show();
     }
 
     private void snowParticleEffect() {

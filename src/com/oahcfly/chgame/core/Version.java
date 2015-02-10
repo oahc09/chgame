@@ -44,7 +44,7 @@ public class Version {
      * 0.3.7 封装CHLine线条绘制。添加接口CHAndroidViewListener。CHUI，CHClickListener优化。
      * 0.3.8 CHUI使用注解来获取JsonPath。
      * 0.3.9 back键处理优化.新增退出广告显示接口。
-     * 0.4.0
+     * 0.4.0 新增文字描边和底部渐变效果。
      * 0.4.1
      * 0.4.2
      * 0.4.3

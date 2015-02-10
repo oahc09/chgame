@@ -352,6 +352,10 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
             }
         }
     }
+
+    public boolean isBackKey() {
+        return backKey;
+    }
 }
 
 interface CHUIFocusListener {

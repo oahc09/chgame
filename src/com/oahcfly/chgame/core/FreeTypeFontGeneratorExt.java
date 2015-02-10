@@ -540,6 +540,34 @@ public class FreeTypeFontGeneratorExt implements Disposable {
     }
 
     /**
+     * 
+     * <pre>
+     * 【设置文字描边效果】
+     * 在appendToFont(..)调用之前设置才会生效
+     *        颜色渐变
+     *        parameter.colorGradientBottom = Color.BLACK;
+     *        描边效果
+     *        parameter.dropShadowSize = 2;// 描边宽度
+     *        parameter.dropShadowColor=Color.RED;// 颜色
+     *        parameter.dropShadowOpacity=1f;// 描边透明度
+     *        parameter.dropShadowOffsetX=-1;// 偏移量
+     *        parameter.dropShadowOffsetY=-1;
+     * 
+     * date: 2015-2-10
+     * </pre>
+     * @author caohao
+     * @param fontParameter
+     */
+    public void setFontDropShadowParameter(FreeTypeFontParameter fontParameter) {
+        this.par.colorGradientBottom = fontParameter.colorGradientBottom;
+        this.par.dropShadowSize = fontParameter.dropShadowSize;
+        this.par.dropShadowColor = fontParameter.dropShadowColor;
+        this.par.dropShadowOffsetX = fontParameter.dropShadowOffsetX;
+        this.par.dropShadowOffsetY = fontParameter.dropShadowOffsetY;
+        this.par.dropShadowOpacity = fontParameter.dropShadowOpacity;
+    }
+
+    /**
      * Generates a new {@link BitmapFontData} instance, expert usage only.
      * Throws a GdxRuntimeException in case something went wrong.
      * 
@@ -853,6 +881,8 @@ public class FreeTypeFontGeneratorExt implements Disposable {
 
             }
 
+            pixmap = augmentGlyph(data, parameter, glyph, pixmap);
+
             Rectangle rect = packer.pack(name, pixmap);
 
             // determine which page it was packed into
@@ -937,6 +967,129 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         return font;
     }
 
+    private Pixmap augmentGlyph(FreeTypeBitmapFontData data, FreeTypeFontParameter parameter, Glyph glyph, Pixmap pixmap) {
+        if (parameter.colorGradientBottom != null) {
+            Color colorGradientTop = (parameter.color != null) ? parameter.color : Color.WHITE;
+            if (data.flipped) {
+                tintPixmapGradient(data.lineHeight, glyph.yoffset, pixmap, parameter.colorGradientBottom,
+                        colorGradientTop);
+            } else {
+                tintPixmapGradient(data.lineHeight, -(glyph.height + glyph.yoffset), pixmap, colorGradientTop,
+                        parameter.colorGradientBottom);
+            }
+        } else if (parameter.color != null) {
+            tintPixmap(pixmap, Color.rgba8888(parameter.color));
+        }
+        if (parameter.dropShadowSize != null) {
+            int shadowSize = parameter.dropShadowSize;
+            Color color = (parameter.dropShadowColor != null) ? parameter.dropShadowColor : Color.BLACK;
+            float opacity = (parameter.dropShadowOpacity != null) ? parameter.dropShadowOpacity : 0.5f;
+            int offsetX = (parameter.dropShadowOffsetX != null) ? parameter.dropShadowOffsetX : 0;
+            int offsetY = (parameter.dropShadowOffsetY != null) ? parameter.dropShadowOffsetY : 0;
+            int shadowColor = Color.rgba8888(color) & 0xffffff00;
+            Pixmap shadow = generateShadow(pixmap, shadowSize, shadowColor, opacity);
+            pixmap = combineGlyphWithShadow(pixmap, shadow, shadowSize, offsetX, offsetY);
+            glyph.width = pixmap.getWidth();
+            glyph.height = pixmap.getHeight();
+            glyph.yoffset += parameter.flip ? shadowSize * 2 : -shadowSize * 2;
+            glyph.xadvance += shadowSize;
+        }
+        return pixmap;
+    }
+
+    private void tintPixmapGradient(float lineHeight, int imageTopY, Pixmap pixmap, Color topColor, Color bottomColor) {
+        float deltaRed = (bottomColor.r - topColor.r) / lineHeight;
+        float deltaGreen = (bottomColor.g - topColor.g) / lineHeight;
+        float deltaBlue = (bottomColor.b - topColor.b) / lineHeight;
+        for (int h = 0; h < pixmap.getHeight(); h++) {
+            float y = imageTopY + h;
+            int tint = Color.rgba8888(topColor.r + deltaRed * y, topColor.g + deltaGreen * y, topColor.b + deltaBlue
+                    * y, 0f);
+            for (int w = 0; w < pixmap.getWidth(); w++) {
+                int pixel = pixmap.getPixel(w, h);
+                pixel = tint | (pixel & 0xff);
+                pixmap.drawPixel(w, h, pixel);
+            }
+        }
+    }
+
+    private void tintPixmap(Pixmap pixmap, int tint) {
+        for (int h = 0; h < pixmap.getHeight(); h++) {
+            for (int w = 0; w < pixmap.getWidth(); w++) {
+                int pixel = pixmap.getPixel(w, h);
+                pixel = (tint & 0xffffff00) | (pixel & 0xff);
+                pixmap.drawPixel(w, h, pixel);
+            }
+        }
+    }
+
+    private Pixmap generateShadow(Pixmap pixmap, int shadowSize, int shadowColor, float opacity) {
+        char[] alphaBuffer = new char[(shadowSize * 2 + 1) * (shadowSize * 2 + 1)];
+        float alphaDivider = opacity / alphaBuffer.length;
+        Pixmap shadow = new Pixmap(pixmap.getWidth() + shadowSize * 2, pixmap.getHeight() + shadowSize * 2,
+                Format.RGBA8888);
+        shadow.setColor(Color.CLEAR);
+        shadow.fill();
+        for (int y = 0; y < shadow.getHeight(); ++y) {
+            for (int bufferIndex = 0; bufferIndex < alphaBuffer.length; ++bufferIndex) {
+                alphaBuffer[bufferIndex] = 0;
+            }
+            int bufferIndex = 0, alphaSum = 0;
+            for (int x = 0; x < shadow.getWidth(); ++x) {
+                int alpha;
+                for (int squareY = y - shadowSize * 2; squareY <= y; ++squareY) {
+                    alphaSum -= alphaBuffer[bufferIndex];
+                    if (x < pixmap.getWidth() && squareY >= 0 && squareY < pixmap.getHeight()) {
+                        alpha = pixmap.getPixel(x, squareY) & 0xff;
+                    } else {
+                        alpha = 0;
+                    }
+                    alphaBuffer[bufferIndex++] = (char)alpha;
+                    alphaSum += alpha;
+                }
+                if (bufferIndex >= alphaBuffer.length) {
+                    bufferIndex = 0;
+                }
+                int shadowAlpha = Math.min(255, (int)(alphaSum * alphaDivider + 0.5));
+                shadow.drawPixel(x, y, shadowColor | shadowAlpha);
+            }
+        }
+        return shadow;
+    }
+
+    private Pixmap combineGlyphWithShadow(Pixmap glyph, Pixmap shadow, int shadowSize, int offsetX, int offsetY) {
+        int x = shadowSize - offsetX;
+        int y = shadowSize - offsetY;
+        if (x < 0 || y < 0 || x > 2 * shadowSize || y > 2 * shadowSize) {
+            int shadowX = 0, shadowY = 0;
+            int width = shadow.getWidth();
+            int height = shadow.getHeight();
+            if (x < 0) {
+                width -= x;
+                shadowX = -x;
+                x = 0;
+            } else if (x > 2 * shadowSize) {
+                width += x - 2 * shadowSize;
+            }
+            if (y < 0) {
+                height -= y;
+                shadowY = -y;
+                y = 0;
+            } else if (y > 2 * shadowSize) {
+                height += y - 2 * shadowSize;
+            }
+            Pixmap largerShadow = new Pixmap(width, height, Format.RGBA8888);
+            largerShadow.setColor(Color.CLEAR);
+            largerShadow.fill();
+            largerShadow.drawPixmap(shadow, shadowX, shadowY);
+            shadow.dispose();
+            shadow = largerShadow;
+        }
+        shadow.drawPixmap(glyph, x, y);
+        glyph.dispose();
+        return shadow;
+    }
+
     /**
      * {@link BitmapFontData} used for fonts generated via the
      * {@link FreeTypeFontGenerator}. The texture storing the glyphs is held in
@@ -980,6 +1133,45 @@ public class FreeTypeFontGeneratorExt implements Disposable {
      * @author siondream
      */
     public static class FreeTypeFontParameter {
+        /** (optional, defaults to white if omitted)
+         * The color to tint the font with, or the color of the top of the glyphs if colorGradientBottom is specified.
+         */
+        public Color color;
+
+        /** (optional)
+         * The color of the bottom of the glyphs.  If omitted, the glyphs will be a single color.
+         */
+        public Color colorGradientBottom;
+
+        /** (optional)
+         * The number of pixels around the generated glyphs to spread drop shadows.
+         * If omitted, the glyphs will have no drop shadow, and the other drop shadow parameters will be ignored.
+         */
+        public Integer dropShadowSize;
+
+        /** (optional, defaults to 0.5 if omitted)
+         * The opacity of the drop shadows.  Values above 1.0 are valid, and will cause more of the drop shadows to be
+         * opaque.
+         */
+        public Float dropShadowOpacity;
+
+        /** (optional, defaults to black if omitted)
+         * The color of the drop shadows.
+         */
+        public Color dropShadowColor;
+
+        /** (optional, defaults to 0 if omitted)
+         * The number of pixels to offset the drop shadows horizontally.  Can be positive or negative (although note that
+         * large negative values in fonts rendered left-to-right can cause the shadows to be drawn on top of characters
+         * to the left).
+         */
+        public Integer dropShadowOffsetX;
+
+        /** (optional, defaults to 0 if omitted)
+         * The number of pixels to offset the drop shadows vertically.  Can be positive or negative.
+         */
+        public Integer dropShadowOffsetY;
+
         /** The size in pixels */
         public int size = 30;
 
