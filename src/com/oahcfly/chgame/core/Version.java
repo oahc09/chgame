@@ -44,8 +44,8 @@ public class Version {
      * 0.3.7 封装CHLine线条绘制。添加接口CHAndroidViewListener。CHUI，CHClickListener优化。
      * 0.3.8 CHUI使用注解来获取JsonPath。
      * 0.3.9 back键处理优化.新增退出广告显示接口。
-     * 0.4.0 新增文字描边和底部渐变效果。
-     * 0.4.1
+     * 0.4.0 新增文字描边和底部渐变效果。切换screen优化back键的处理。
+     * 0.4.1 异步任务异常捕获，onPause自动保存数据，新增CHGameInfoListener接口。
      * 0.4.2
      * 0.4.3
      * 0.4.4
@@ -54,7 +54,7 @@ public class Version {
      * 0.4.7
      * 
      *  */
-    public static final String VERSION = "0.3.9";
+    public static final String VERSION = "0.4.1";
 
     /**
      * 小贴士：

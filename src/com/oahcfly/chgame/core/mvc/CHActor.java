@@ -77,6 +77,7 @@ public class CHActor extends Actor implements Poolable {
         setStage(null);
         setParent(null);
         setVisible(true);
+        setName(null);
     }
 
     public Texture getBgTexture() {

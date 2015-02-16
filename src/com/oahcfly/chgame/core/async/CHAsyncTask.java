@@ -1,6 +1,7 @@
 
 package com.oahcfly.chgame.core.async;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.async.AsyncResult;
 import com.badlogic.gdx.utils.async.AsyncTask;
@@ -32,7 +33,13 @@ public abstract class CHAsyncTask implements AsyncTask<String> {
 
     @Override
     public String call() throws Exception {
-        String result = doInBackground();
+        String result = "null";
+        try {
+            result = doInBackground();
+        } catch (Exception e) {
+            Gdx.app.error("CHAsyncTask", "call:" + e.getMessage());
+        }
+
         asyncDone = true;
         return result;
     }

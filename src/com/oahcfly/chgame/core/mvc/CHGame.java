@@ -223,7 +223,7 @@ public abstract class CHGame extends Game {
 
     @Override
     public void pause() {
-        // TODO Auto-generated method stub
+       savaDataBeforeExit();
         super.pause();
     }
 

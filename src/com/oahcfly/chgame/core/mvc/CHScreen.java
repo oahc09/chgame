@@ -160,7 +160,7 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
         Gdx.app.debug(getClass().getName(), "screen-resume");
     }
 
-    public CHGame getGame() {
+    public <T extends CHGame> T getGame() {
         return CHGame.getInstance();
     }
 
