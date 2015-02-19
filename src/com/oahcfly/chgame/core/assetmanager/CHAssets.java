@@ -176,7 +176,7 @@ public class CHAssets implements Disposable, AssetErrorListener {
      * 
      * <pre>
      * assetFile 资源文件路径asset.ch
-     * 
+     * [后续调用loadAllGroup方法]
      * date: 2014-12-20
      * </pre>
      * @author caohao

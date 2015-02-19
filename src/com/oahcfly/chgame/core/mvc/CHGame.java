@@ -31,6 +31,7 @@ import com.oahcfly.chgame.core.Version;
 import com.oahcfly.chgame.core.ad.CHADListener;
 import com.oahcfly.chgame.core.async.CHAsyncManager;
 import com.oahcfly.chgame.core.helper.FontHelper;
+import com.oahcfly.chgame.core.listener.CHGameInfoListener;
 import com.oahcfly.chgame.core.listener.CHSocialListener;
 import com.oahcfly.chgame.core.listener.LocaleListener;
 import com.oahcfly.chgame.core.manager.MusicManager;
@@ -55,6 +56,8 @@ public abstract class CHGame extends Game {
     private CHADListener chadListener;
 
     private CHSocialListener socialListener;
+
+    private CHGameInfoListener gameInfoListener;
 
     private boolean debug;
 
@@ -85,7 +88,6 @@ public abstract class CHGame extends Game {
     }
 
     public CHGame() {
-
     }
 
     public CHGame(CHADListener adListener) {
@@ -97,8 +99,10 @@ public abstract class CHGame extends Game {
         this.localeListener = localeListener;
     }
 
+    /**音乐管理*/
     private MusicManager musicManager;
 
+    /**音效管理*/
     private SoundManager soundManager;
 
     private Array<TextureRegion> loadingKeyFrames = new Array<TextureRegion>();
@@ -223,13 +227,14 @@ public abstract class CHGame extends Game {
 
     @Override
     public void pause() {
-       savaDataBeforeExit();
+        savaDataBeforeExit();
         super.pause();
     }
 
     @Override
     public void render() {
 
+        // 清屏
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -238,6 +243,7 @@ public abstract class CHGame extends Game {
             chAsyncManager.update();
         }
 
+        // 绘制
         super.render();
 
         if (openFPS) {
@@ -572,7 +578,7 @@ public abstract class CHGame extends Game {
         return bitmapFont;
     }
 
-    public void setChADListener(CHADListener chadListener) {
+    public void setADListener(CHADListener chadListener) {
         this.chadListener = chadListener;
     }
 
@@ -660,5 +666,13 @@ public abstract class CHGame extends Game {
 
     public void setCatchBackKey(boolean catchBackKey) {
         this.catchBackKey = catchBackKey;
+    }
+
+    public CHGameInfoListener getGameInfoListener() {
+        return gameInfoListener;
+    }
+
+    public void setGameInfoListener(CHGameInfoListener gameInfoListener) {
+        this.gameInfoListener = gameInfoListener;
     }
 }

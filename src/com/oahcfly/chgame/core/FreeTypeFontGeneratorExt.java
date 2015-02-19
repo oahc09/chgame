@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -36,6 +37,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeType.GlyphMetrics;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeType.GlyphSlot;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeType.Library;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeType.SizeMetrics;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType.Stroker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
 import com.badlogic.gdx.math.Rectangle;
@@ -80,7 +82,9 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
  *   -> PixmapPacker管理Page
  *   -> Page里面存有Pixmap.
  *   -> BitmapFont由Pixmap生成Texture进行绘制。
+ *  
  *   
+ *   02-19 更新到官方版本1.5.4。涉及大量的重构。
  */
 public class FreeTypeFontGeneratorExt implements Disposable {
     public static final String DEFAULT_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890\"!`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*";
@@ -266,7 +270,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
             FileHandle font = it.next();
             filePath = ttfs.getTtf().get(0).pathWithoutExtension();
             try {
-                face = FreeType.newFace(library, font, 0);
+                face = library.newFace(font, 0);
             } catch (GdxRuntimeException e) {
                 continue;
             }
@@ -276,7 +280,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
             if (checkForBitmapFont()) {
                 continue;
             }
-            if (!FreeType.setPixelSizes(face, 0, this.size)) {
+            if (!face.setPixelSizes(0, this.size)) {
                 continue;
             }
             break;
@@ -287,7 +291,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
     private boolean checkForBitmapFont() {
         if (((face.getFaceFlags() & FreeType.FT_FACE_FLAG_FIXED_SIZES) == FreeType.FT_FACE_FLAG_FIXED_SIZES)
                 && ((face.getFaceFlags() & FreeType.FT_FACE_FLAG_HORIZONTAL) == FreeType.FT_FACE_FLAG_HORIZONTAL)) {
-            if (FreeType.loadChar(face, 32, FreeType.FT_LOAD_DEFAULT)) {
+            if (face.loadChar(32, FreeType.FT_LOAD_DEFAULT)) {
                 GlyphSlot slot = face.getGlyph();
                 if (slot.getFormat() == 1651078259) {
                     bitmapped = true;
@@ -409,18 +413,38 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         return font;
     }
 
-    /**
-     * Uses ascender and descender of font to calculate real height that makes
-     * all glyphs to fit in given pixel size. Source:
-     * http://nothings.org/stb/stb_truetype.h / stbtt_ScaleForPixelHeight
-     */
-    public int scaleForPixelHeight(int size) {
-        if (!bitmapped && !FreeType.setPixelSizes(face, 0, size))
+    /** Uses max advance, ascender and descender of font to calculate real height that makes any n glyphs to fit in given pixel width. 
+     * @param width the max width to fit (in pixels)
+     * @param numChars max number of characters that to fill width */
+    public int scaleForPixelWidth(int width, int numChars) {
+        SizeMetrics fontMetrics = face.getSize().getMetrics();
+        int advance = FreeType.toInt(fontMetrics.getMaxAdvance());
+        int ascent = FreeType.toInt(fontMetrics.getAscender());
+        int descent = FreeType.toInt(fontMetrics.getDescender());
+        int unscaledHeight = ascent - descent;
+        int height = unscaledHeight * width / (advance * numChars);
+        if (!bitmapped && !face.setPixelSizes(0, height))
+            throw new GdxRuntimeException("Couldn't set size for font");
+        return height;
+    }
+
+    /** Uses max advance, ascender and descender of font to calculate real height that makes any n glyphs to fit in given pixel width and height. 
+     * @param width the max width to fit (in pixels)
+     * @param height the max height to fit (in pixels)
+     * @param numChars max number of characters that to fill width */
+    public int scaleToFitSquare(int width, int height, int numChars) {
+        return Math.min(scaleForPixelHeight(height), scaleForPixelWidth(width, numChars));
+    }
+
+    /** Uses ascender and descender of font to calculate real height that makes all glyphs to fit in given pixel size. Source:
+     * http://nothings.org/stb/stb_truetype.h / stbtt_ScaleForPixelHeight */
+    public int scaleForPixelHeight(int height) {
+        if (!bitmapped && !face.setPixelSizes(0, height))
             throw new GdxRuntimeException("Couldn't set size for font");
         SizeMetrics fontMetrics = face.getSize().getMetrics();
         int ascent = FreeType.toInt(fontMetrics.getAscender());
         int descent = FreeType.toInt(fontMetrics.getDescender());
-        return size * size / (ascent - descent);
+        return height * height / (ascent - descent);
     }
 
     public class GlyphAndBitmap {
@@ -434,7 +458,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
      * example with various space characters, then bitmap is null.
      */
     public GlyphAndBitmap generateGlyphAndBitmap(int c, int size, boolean flip) {
-        if (!bitmapped && !FreeType.setPixelSizes(face, 0, size))
+        if (!bitmapped && !face.setPixelSizes(0, size))
             throw new GdxRuntimeException("Couldn't set size for font");
 
         SizeMetrics fontMetrics = face.getSize().getMetrics();
@@ -442,12 +466,12 @@ public class FreeTypeFontGeneratorExt implements Disposable {
 
         // Check if character exists in this font.
         // 0 means 'undefined character code'
-        if (FreeType.getCharIndex(face, c) == 0) {
+        if (face.getCharIndex(c) == 0) {
             return null;
         }
 
         // Try to load character
-        if (!FreeType.loadChar(face, c, FreeType.FT_LOAD_DEFAULT)) {
+        if (!face.loadChar(c, FreeType.FT_LOAD_DEFAULT)) {
             throw new GdxRuntimeException("Unable to load character!");
         }
 
@@ -457,7 +481,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         Bitmap bitmap;
         if (bitmapped) {
             bitmap = slot.getBitmap();
-        } else if (!FreeType.renderGlyph(slot, FreeType.FT_RENDER_MODE_LIGHT)) {
+        } else if (!slot.renderGlyph(FreeType.FT_RENDER_MODE_LIGHT)) {
             bitmap = null;
         } else {
             bitmap = slot.getBitmap();
@@ -540,34 +564,6 @@ public class FreeTypeFontGeneratorExt implements Disposable {
     }
 
     /**
-     * 
-     * <pre>
-     * 【设置文字描边效果】
-     * 在appendToFont(..)调用之前设置才会生效
-     *        颜色渐变
-     *        parameter.colorGradientBottom = Color.BLACK;
-     *        描边效果
-     *        parameter.dropShadowSize = 2;// 描边宽度
-     *        parameter.dropShadowColor=Color.RED;// 颜色
-     *        parameter.dropShadowOpacity=1f;// 描边透明度
-     *        parameter.dropShadowOffsetX=-1;// 偏移量
-     *        parameter.dropShadowOffsetY=-1;
-     * 
-     * date: 2015-2-10
-     * </pre>
-     * @author caohao
-     * @param fontParameter
-     */
-    public void setFontDropShadowParameter(FreeTypeFontParameter fontParameter) {
-        this.par.colorGradientBottom = fontParameter.colorGradientBottom;
-        this.par.dropShadowSize = fontParameter.dropShadowSize;
-        this.par.dropShadowColor = fontParameter.dropShadowColor;
-        this.par.dropShadowOffsetX = fontParameter.dropShadowOffsetX;
-        this.par.dropShadowOffsetY = fontParameter.dropShadowOffsetY;
-        this.par.dropShadowOpacity = fontParameter.dropShadowOpacity;
-    }
-
-    /**
      * Generates a new {@link BitmapFontData} instance, expert usage only.
      * Throws a GdxRuntimeException in case something went wrong.
      * 
@@ -578,7 +574,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         parameter = parameter == null ? new FreeTypeFontParameter() : parameter;
 
         FreeTypeBitmapFontData data = new FreeTypeBitmapFontData();
-        if (!bitmapped && !FreeType.setPixelSizes(face, 0, parameter.size))
+        if (!bitmapped && !face.setPixelSizes(0, parameter.size))
             throw new GdxRuntimeException("Couldn't set size for font");
 
         // set general font data
@@ -592,7 +588,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         // if bitmapped
         if (bitmapped && (data.lineHeight == 0)) {
             for (int c = 32; c < (32 + face.getNumGlyphs()); c++) {
-                if (FreeType.loadChar(face, c, FreeType.FT_LOAD_DEFAULT)) {
+                if (face.loadChar(c, FreeType.FT_LOAD_DEFAULT)) {
                     int lh = FreeType.toInt(face.getGlyph().getMetrics().getHeight());
                     data.lineHeight = (lh > data.lineHeight) ? lh : data.lineHeight;
                 }
@@ -600,7 +596,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         }
 
         // determine space width and set glyph
-        if (FreeType.loadChar(face, ' ', FreeType.FT_LOAD_DEFAULT)) {
+        if (face.loadChar(' ', FreeType.FT_LOAD_DEFAULT)) {
             data.spaceWidth = FreeType.toInt(face.getGlyph().getMetrics().getHoriAdvance());
         } else {
             data.spaceWidth = face.getMaxAdvanceWidth(); // FIXME possibly very
@@ -613,7 +609,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
 
         // determine x-height
         for (char xChar : BitmapFont.xChars) {
-            if (!FreeType.loadChar(face, xChar, FreeType.FT_LOAD_DEFAULT))
+            if (!face.loadChar(xChar, FreeType.FT_LOAD_DEFAULT))
                 continue;
             data.xHeight = FreeType.toInt(face.getGlyph().getMetrics().getHeight());
             break;
@@ -621,7 +617,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         // if (data.xHeight == 0)
         // throw new GdxRuntimeException("No x-height character found in font");
         for (char capChar : BitmapFont.capChars) {
-            if (!FreeType.loadChar(face, capChar, FreeType.FT_LOAD_DEFAULT))
+            if (!face.loadChar(capChar, FreeType.FT_LOAD_DEFAULT))
                 continue;
             data.capHeight = FreeType.toInt(face.getGlyph().getMetrics().getHeight());
             break;
@@ -660,45 +656,101 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         // pathWithoutExtension_size[_flip]_glyph
         String packPrefix = ownsAtlas ? "" : (filePath + '_' + parameter.size + (parameter.flip ? "_flip_" : '_'));
 
+        Stroker stroker = null;
+        if (parameter.borderWidth > 0) {
+            stroker = library.createStroker();
+            stroker.set((int)(parameter.borderWidth * 64f), parameter.borderStraight ? FreeType.FT_STROKER_LINECAP_BUTT
+                    : FreeType.FT_STROKER_LINECAP_ROUND,
+                    parameter.borderStraight ? FreeType.FT_STROKER_LINEJOIN_MITER_FIXED
+                            : FreeType.FT_STROKER_LINEJOIN_ROUND, 0);
+        }
         for (int i = 0; i < parameter.characters.length(); i++) {
             char c = parameter.characters.charAt(i);
-            if (!FreeType.loadChar(face, c, FreeType.FT_LOAD_DEFAULT)) {
+            if (!face.loadChar(c, FreeType.FT_LOAD_DEFAULT)) {
                 Gdx.app.log("FreeTypeFontGenerator", "Couldn't load char '" + c + "'");
                 continue;
             }
-            if (!FreeType.renderGlyph(face.getGlyph(), FreeType.FT_RENDER_MODE_NORMAL)) {
+            GlyphSlot slot = face.getGlyph();
+            com.badlogic.gdx.graphics.g2d.freetype.FreeType.Glyph mainGlyph = slot.getGlyph();
+            try {
+                mainGlyph.toBitmap(FreeType.FT_RENDER_MODE_NORMAL);
+            } catch (GdxRuntimeException e) {
+                mainGlyph.dispose();
                 Gdx.app.log("FreeTypeFontGenerator", "Couldn't render char '" + c + "'");
                 continue;
             }
-            GlyphSlot slot = face.getGlyph();
+
+            Bitmap mainBitmap = mainGlyph.getBitmap();
+            Pixmap mainPixmap = mainBitmap.getPixmap(Format.RGBA8888, parameter.color);
+
+            if (parameter.borderWidth > 0 || parameter.shadowOffsetX != 0 || parameter.shadowOffsetY != 0) {
+                com.badlogic.gdx.graphics.g2d.freetype.FreeType.Glyph borderGlyph = mainGlyph;
+                Bitmap borderBitmap = mainBitmap;
+
+                if (parameter.borderWidth > 0) {
+                    //execute stroker; this generates a glyph "extended" along the outline
+                    borderGlyph = slot.getGlyph();
+                    borderGlyph.strokeBorder(stroker, false);
+                    borderGlyph.toBitmap(FreeType.FT_RENDER_MODE_NORMAL);
+                    borderBitmap = borderGlyph.getBitmap();
+
+                    //render border (pixmap is bigger than main)
+                    Pixmap borderPixmap = borderBitmap.getPixmap(Format.RGBA8888, parameter.borderColor);
+                    //draw main glyph on top of border
+                    borderPixmap.drawPixmap(mainPixmap, mainGlyph.getLeft() - borderGlyph.getLeft(),
+                            -(mainGlyph.getTop() - borderGlyph.getTop()));
+                    mainPixmap.dispose();
+                    mainGlyph.dispose();
+                    mainPixmap = borderPixmap;
+                    mainGlyph = borderGlyph;
+                }
+                if (parameter.shadowOffsetX != 0 || parameter.shadowOffsetY != 0) {
+                    //render the shadow
+                    Pixmap shadowPixmapSrc = borderBitmap.getPixmap(Format.RGBA8888, parameter.shadowColor);
+                    //create a new bigger Pixmap with shadowOffset applied, and draw shadow glyph
+                    Pixmap shadowPixmap = new Pixmap(shadowPixmapSrc.getWidth() + Math.abs(parameter.shadowOffsetX),
+                            shadowPixmapSrc.getHeight() + Math.abs(parameter.shadowOffsetY), Format.RGBA8888);
+                    Blending blending = Pixmap.getBlending();
+                    Pixmap.setBlending(Blending.None);
+                    shadowPixmap.drawPixmap(shadowPixmapSrc, Math.max(parameter.shadowOffsetX, 0),
+                            Math.max(parameter.shadowOffsetY, 0));
+                    Pixmap.setBlending(blending);
+                    //draw main glyph (with border) on top of shadow
+                    shadowPixmap.drawPixmap(mainPixmap, Math.max(-parameter.shadowOffsetX, 0),
+                            Math.max(-parameter.shadowOffsetY, 0));
+                    mainPixmap.dispose();
+                    mainPixmap = shadowPixmap;
+                }
+            }
+
             GlyphMetrics metrics = slot.getMetrics();
-            Bitmap bitmap = slot.getBitmap();
-            Pixmap pixmap = bitmap.getPixmap(Format.RGBA8888);
             Glyph glyph = new Glyph();
-            glyph.id = (int)c;
-            glyph.width = pixmap.getWidth();
-            glyph.height = pixmap.getHeight();
-            glyph.xoffset = slot.getBitmapLeft();
-            glyph.yoffset = parameter.flip ? -slot.getBitmapTop() + (int)baseLine : -(glyph.height - slot
-                    .getBitmapTop()) - (int)baseLine;
-            glyph.xadvance = FreeType.toInt(metrics.getHoriAdvance());
+            glyph.id = c;
+            glyph.width = mainPixmap.getWidth();
+            glyph.height = mainPixmap.getHeight();
+            glyph.xoffset = mainGlyph.getLeft();
+            glyph.yoffset = parameter.flip ? -mainGlyph.getTop() + (int)baseLine : -(glyph.height - mainGlyph.getTop())
+                    - (int)baseLine;
+            glyph.xadvance = FreeType.toInt(metrics.getHoriAdvance()) + (int)parameter.borderWidth;
 
             if (bitmapped) {
-                pixmap.setColor(Color.CLEAR);
-                pixmap.fill();
-                ByteBuffer buf = bitmap.getBuffer();
+                mainPixmap.setColor(Color.CLEAR);
+                mainPixmap.fill();
+                ByteBuffer buf = mainBitmap.getBuffer();
+                int whiteIntBits = Color.WHITE.toIntBits();
+                int clearIntBits = Color.CLEAR.toIntBits();
                 for (int h = 0; h < glyph.height; h++) {
-                    int idx = h * bitmap.getPitch();
+                    int idx = h * mainBitmap.getPitch();
                     for (int w = 0; w < (glyph.width + glyph.xoffset); w++) {
                         int bit = (buf.get(idx + (w / 8)) >>> (7 - (w % 8))) & 1;
-                        pixmap.drawPixel(w, h, ((bit == 1) ? Color.WHITE.toIntBits() : Color.CLEAR.toIntBits()));
+                        mainPixmap.drawPixel(w, h, ((bit == 1) ? whiteIntBits : clearIntBits));
                     }
                 }
 
             }
 
             String name = packPrefix + c;
-            Rectangle rect = packer.pack(name, pixmap);
+            Rectangle rect = packer.pack(name, mainPixmap);
 
             // determine which page it was packed into
             int pIndex = packer.getPageIndex(name);
@@ -710,25 +762,33 @@ public class FreeTypeFontGeneratorExt implements Disposable {
             glyph.srcY = (int)rect.y;
 
             data.setGlyph(c, glyph);
-            pixmap.dispose();
+            mainPixmap.dispose();
+            mainGlyph.dispose();
         }
 
-        // generate kerning
-        // for (int i = 0; i < parameter.characters.length(); i++) {
-        // for (int j = 0; j < parameter.characters.length(); j++) {
-        // char firstChar = parameter.characters.charAt(i);
-        // Glyph first = data.getGlyph(firstChar);
-        // if (first == null) continue;
-        // char secondChar = parameter.characters.charAt(j);
-        // Glyph second = data.getGlyph(secondChar);
-        // if (second == null) continue;
-        // int kerning = FreeType.getKerning(face, FreeType.getCharIndex(face,
-        // firstChar),
-        // FreeType.getCharIndex(face, secondChar), 0);
-        // if (kerning == 0) continue;
-        // first.setKerning(secondChar, FreeType.toInt(kerning));
-        // }
-        // }
+        if (stroker != null) {
+            stroker.dispose();
+        }
+
+        // generate kerning  add
+        if (parameter.kerning) {
+            for (int i = 0; i < parameter.characters.length(); i++) {
+                for (int j = 0; j < parameter.characters.length(); j++) {
+                    char firstChar = parameter.characters.charAt(i);
+                    Glyph first = data.getGlyph(firstChar);
+                    if (first == null)
+                        continue;
+                    char secondChar = parameter.characters.charAt(j);
+                    Glyph second = data.getGlyph(secondChar);
+                    if (second == null)
+                        continue;
+                    int kerning = face.getKerning(face.getCharIndex(firstChar), face.getCharIndex(secondChar), 0);
+                    if (kerning == 0)
+                        continue;
+                    first.setKerning(secondChar, FreeType.toInt(kerning));
+                }
+            }
+        }
 
         if (ownsAtlas) {
             Array<Page> pages = packer.getPages();
@@ -811,6 +871,15 @@ public class FreeTypeFontGeneratorExt implements Disposable {
             }
         }
 
+        Stroker stroker = null;
+        if (parameter.borderWidth > 0) {
+            stroker = library.createStroker();
+            stroker.set((int)(parameter.borderWidth * 64f), parameter.borderStraight ? FreeType.FT_STROKER_LINECAP_BUTT
+                    : FreeType.FT_STROKER_LINECAP_ROUND,
+                    parameter.borderStraight ? FreeType.FT_STROKER_LINEJOIN_MITER_FIXED
+                            : FreeType.FT_STROKER_LINEJOIN_ROUND, 0);
+        }
+
         for (int i = 0; i < parameter.characters.length(); i++) {
             char c = parameter.characters.charAt(i);
             String name = packPrefix + c;
@@ -823,15 +892,15 @@ public class FreeTypeFontGeneratorExt implements Disposable {
                 // System.out.println("fp===" + x + filePath);
                 // 先用默认font进行匹配
                 boolean flag = true;
-                index = FreeType.getCharIndex(face, c);
+                index = face.getCharIndex(c);
                 if (index == 0) {
                     flag = false;
                 }
 
-                if (!FreeType.loadChar(face, c, FreeType.FT_LOAD_DEFAULT)) {
+                if (!face.loadChar(c, FreeType.FT_LOAD_DEFAULT)) {
                     flag = false;
                 }
-                if (!FreeType.renderGlyph(face.getGlyph(), FreeType.FT_RENDER_MODE_NORMAL)) {
+                if (!face.getGlyph().renderGlyph(FreeType.FT_RENDER_MODE_NORMAL)) {
                     flag = false;
                 }
                 if (!flag) {// 如果默认字体匹配失败，则尝试用其他字体
@@ -839,11 +908,11 @@ public class FreeTypeFontGeneratorExt implements Disposable {
                     filePath = font.pathWithoutExtension();
                     try {
                         // 解决部分手机的ttf一旦读取就会报错的问题
-                        face = FreeType.newFace(library, font, 0);
+                        face = library.newFace(font, 0);
                     } catch (GdxRuntimeException e) {
                         continue;
                     }
-                    FreeType.setPixelSizes(face, 0, this.size);
+                    face.setPixelSizes(0, this.size);
                 } else {
                     break;
                 }
@@ -855,35 +924,84 @@ public class FreeTypeFontGeneratorExt implements Disposable {
             }
 
             GlyphSlot slot = face.getGlyph();
+            com.badlogic.gdx.graphics.g2d.freetype.FreeType.Glyph mainGlyph = slot.getGlyph();
+            try {
+                mainGlyph.toBitmap(FreeType.FT_RENDER_MODE_NORMAL);
+            } catch (GdxRuntimeException e) {
+                mainGlyph.dispose();
+                Gdx.app.log("FreeTypeFontGenerator", "Couldn't render char '" + c + "'");
+                continue;
+            }
+            Bitmap mainBitmap = mainGlyph.getBitmap();
+            Pixmap mainPixmap = mainBitmap.getPixmap(Format.RGBA8888, parameter.color);
+
+            if (parameter.borderWidth > 0 || parameter.shadowOffsetX != 0 || parameter.shadowOffsetY != 0) {
+                com.badlogic.gdx.graphics.g2d.freetype.FreeType.Glyph borderGlyph = mainGlyph;
+                Bitmap borderBitmap = mainBitmap;
+
+                if (parameter.borderWidth > 0) {
+                    //execute stroker; this generates a glyph "extended" along the outline
+                    borderGlyph = slot.getGlyph();
+                    borderGlyph.strokeBorder(stroker, false);
+                    borderGlyph.toBitmap(FreeType.FT_RENDER_MODE_NORMAL);
+                    borderBitmap = borderGlyph.getBitmap();
+
+                    //render border (pixmap is bigger than main)
+                    Pixmap borderPixmap = borderBitmap.getPixmap(Format.RGBA8888, parameter.borderColor);
+                    //draw main glyph on top of border
+                    borderPixmap.drawPixmap(mainPixmap, mainGlyph.getLeft() - borderGlyph.getLeft(),
+                            -(mainGlyph.getTop() - borderGlyph.getTop()));
+                    mainPixmap.dispose();
+                    mainGlyph.dispose();
+                    mainPixmap = borderPixmap;
+                    mainGlyph = borderGlyph;
+                }
+                if (parameter.shadowOffsetX != 0 || parameter.shadowOffsetY != 0) {
+                    //render the shadow
+                    Pixmap shadowPixmapSrc = borderBitmap.getPixmap(Format.RGBA8888, parameter.shadowColor);
+                    //create a new bigger Pixmap with shadowOffset applied, and draw shadow glyph
+                    Pixmap shadowPixmap = new Pixmap(shadowPixmapSrc.getWidth() + Math.abs(parameter.shadowOffsetX),
+                            shadowPixmapSrc.getHeight() + Math.abs(parameter.shadowOffsetY), Format.RGBA8888);
+                    Blending blending = Pixmap.getBlending();
+                    Pixmap.setBlending(Blending.None);
+                    shadowPixmap.drawPixmap(shadowPixmapSrc, Math.max(parameter.shadowOffsetX, 0),
+                            Math.max(parameter.shadowOffsetY, 0));
+                    Pixmap.setBlending(blending);
+                    //draw main glyph (with border) on top of shadow
+                    shadowPixmap.drawPixmap(mainPixmap, Math.max(-parameter.shadowOffsetX, 0),
+                            Math.max(-parameter.shadowOffsetY, 0));
+                    mainPixmap.dispose();
+                    mainPixmap = shadowPixmap;
+                }
+            }
+
             GlyphMetrics metrics = slot.getMetrics();
-            Bitmap bitmap = slot.getBitmap();
-            Pixmap pixmap = bitmap.getPixmap(Format.RGBA8888);
             Glyph glyph = new Glyph();
-            glyph.id = (int)c;
-            glyph.width = pixmap.getWidth();
-            glyph.height = pixmap.getHeight();
-            glyph.xoffset = slot.getBitmapLeft();
-            glyph.yoffset = parameter.flip ? -slot.getBitmapTop() + (int)baseLine : -(glyph.height - slot
-                    .getBitmapTop()) - (int)baseLine;
-            glyph.xadvance = FreeType.toInt(metrics.getHoriAdvance());
+            glyph.id = c;
+            glyph.width = mainPixmap.getWidth();
+            glyph.height = mainPixmap.getHeight();
+            glyph.xoffset = mainGlyph.getLeft();
+            glyph.yoffset = parameter.flip ? -mainGlyph.getTop() + (int)baseLine : -(glyph.height - mainGlyph.getTop())
+                    - (int)baseLine;
+            glyph.xadvance = FreeType.toInt(metrics.getHoriAdvance()) + (int)parameter.borderWidth;
 
             if (bitmapped) {
-                pixmap.setColor(Color.CLEAR);
-                pixmap.fill();
-                ByteBuffer buf = bitmap.getBuffer();
+                mainPixmap.setColor(Color.CLEAR);
+                mainPixmap.fill();
+                ByteBuffer buf = mainBitmap.getBuffer();
+                int whiteIntBits = Color.WHITE.toIntBits();
+                int clearIntBits = Color.CLEAR.toIntBits();
                 for (int h = 0; h < glyph.height; h++) {
-                    int idx = h * bitmap.getPitch();
+                    int idx = h * mainBitmap.getPitch();
                     for (int w = 0; w < (glyph.width + glyph.xoffset); w++) {
                         int bit = (buf.get(idx + (w / 8)) >>> (7 - (w % 8))) & 1;
-                        pixmap.drawPixel(w, h, ((bit == 1) ? Color.WHITE.toIntBits() : Color.CLEAR.toIntBits()));
+                        mainPixmap.drawPixel(w, h, ((bit == 1) ? whiteIntBits : clearIntBits));
                     }
                 }
 
             }
 
-            pixmap = augmentGlyph(data, parameter, glyph, pixmap);
-
-            Rectangle rect = packer.pack(name, pixmap);
+            Rectangle rect = packer.pack(name, mainPixmap);
 
             // determine which page it was packed into
             int pIndex = packer.getPageIndex(name);
@@ -895,7 +1013,12 @@ public class FreeTypeFontGeneratorExt implements Disposable {
             glyph.srcY = (int)rect.y;
 
             data.setGlyph(c, glyph);
-            pixmap.dispose();
+            mainPixmap.dispose();
+            mainGlyph.dispose();
+        }
+
+        if (stroker != null) {
+            stroker.dispose();
         }
 
         if (ownsAtlas) {
@@ -939,8 +1062,8 @@ public class FreeTypeFontGeneratorExt implements Disposable {
      */
     @Override
     public void dispose() {
-        FreeType.doneFace(face);
-        FreeType.doneFreeType(library);
+        face.dispose();
+        library.dispose();
     }
 
     /**
@@ -951,6 +1074,42 @@ public class FreeTypeFontGeneratorExt implements Disposable {
     public Label createLabel(String text) {
         appendToFont(text);
         return new Label(text, new LabelStyle(font, Color.WHITE));
+    }
+
+    /**
+     * 创建文本
+     * @param text
+     * @return
+     */
+    public Label createLabel(String text, FreeTypeFontParameter fontParameter) {
+        setFontBorderAndShadowParameter(fontParameter);
+        appendToFont(text);
+        return new Label(text, new LabelStyle(font, Color.WHITE));
+    }
+
+    /**
+     * 
+     * <pre>
+     * 设置字体边界和阴影效果
+     * 
+     * 边界颜色
+     * 边界格式：直线，圆角
+     * 边界宽度
+     * 
+     * 阴影颜色
+     * 阴影偏移量
+     * date: 2015-2-19
+     * </pre>
+     * @author caohao
+     * @param fontParameter
+     */
+    public void setFontBorderAndShadowParameter(FreeTypeFontParameter fontParameter) {
+        this.par.borderColor = fontParameter.borderColor;
+        this.par.borderStraight = fontParameter.borderStraight;
+        this.par.borderWidth = fontParameter.borderWidth;
+        this.par.shadowColor = fontParameter.shadowColor;
+        this.par.shadowOffsetX = fontParameter.shadowOffsetX;
+        this.par.shadowOffsetY = fontParameter.shadowOffsetY;
     }
 
     /**
@@ -965,129 +1124,6 @@ public class FreeTypeFontGeneratorExt implements Disposable {
      */
     public BitmapFont getBitmapFont() {
         return font;
-    }
-
-    private Pixmap augmentGlyph(FreeTypeBitmapFontData data, FreeTypeFontParameter parameter, Glyph glyph, Pixmap pixmap) {
-        if (parameter.colorGradientBottom != null) {
-            Color colorGradientTop = (parameter.color != null) ? parameter.color : Color.WHITE;
-            if (data.flipped) {
-                tintPixmapGradient(data.lineHeight, glyph.yoffset, pixmap, parameter.colorGradientBottom,
-                        colorGradientTop);
-            } else {
-                tintPixmapGradient(data.lineHeight, -(glyph.height + glyph.yoffset), pixmap, colorGradientTop,
-                        parameter.colorGradientBottom);
-            }
-        } else if (parameter.color != null) {
-            tintPixmap(pixmap, Color.rgba8888(parameter.color));
-        }
-        if (parameter.dropShadowSize != null) {
-            int shadowSize = parameter.dropShadowSize;
-            Color color = (parameter.dropShadowColor != null) ? parameter.dropShadowColor : Color.BLACK;
-            float opacity = (parameter.dropShadowOpacity != null) ? parameter.dropShadowOpacity : 0.5f;
-            int offsetX = (parameter.dropShadowOffsetX != null) ? parameter.dropShadowOffsetX : 0;
-            int offsetY = (parameter.dropShadowOffsetY != null) ? parameter.dropShadowOffsetY : 0;
-            int shadowColor = Color.rgba8888(color) & 0xffffff00;
-            Pixmap shadow = generateShadow(pixmap, shadowSize, shadowColor, opacity);
-            pixmap = combineGlyphWithShadow(pixmap, shadow, shadowSize, offsetX, offsetY);
-            glyph.width = pixmap.getWidth();
-            glyph.height = pixmap.getHeight();
-            glyph.yoffset += parameter.flip ? shadowSize * 2 : -shadowSize * 2;
-            glyph.xadvance += shadowSize;
-        }
-        return pixmap;
-    }
-
-    private void tintPixmapGradient(float lineHeight, int imageTopY, Pixmap pixmap, Color topColor, Color bottomColor) {
-        float deltaRed = (bottomColor.r - topColor.r) / lineHeight;
-        float deltaGreen = (bottomColor.g - topColor.g) / lineHeight;
-        float deltaBlue = (bottomColor.b - topColor.b) / lineHeight;
-        for (int h = 0; h < pixmap.getHeight(); h++) {
-            float y = imageTopY + h;
-            int tint = Color.rgba8888(topColor.r + deltaRed * y, topColor.g + deltaGreen * y, topColor.b + deltaBlue
-                    * y, 0f);
-            for (int w = 0; w < pixmap.getWidth(); w++) {
-                int pixel = pixmap.getPixel(w, h);
-                pixel = tint | (pixel & 0xff);
-                pixmap.drawPixel(w, h, pixel);
-            }
-        }
-    }
-
-    private void tintPixmap(Pixmap pixmap, int tint) {
-        for (int h = 0; h < pixmap.getHeight(); h++) {
-            for (int w = 0; w < pixmap.getWidth(); w++) {
-                int pixel = pixmap.getPixel(w, h);
-                pixel = (tint & 0xffffff00) | (pixel & 0xff);
-                pixmap.drawPixel(w, h, pixel);
-            }
-        }
-    }
-
-    private Pixmap generateShadow(Pixmap pixmap, int shadowSize, int shadowColor, float opacity) {
-        char[] alphaBuffer = new char[(shadowSize * 2 + 1) * (shadowSize * 2 + 1)];
-        float alphaDivider = opacity / alphaBuffer.length;
-        Pixmap shadow = new Pixmap(pixmap.getWidth() + shadowSize * 2, pixmap.getHeight() + shadowSize * 2,
-                Format.RGBA8888);
-        shadow.setColor(Color.CLEAR);
-        shadow.fill();
-        for (int y = 0; y < shadow.getHeight(); ++y) {
-            for (int bufferIndex = 0; bufferIndex < alphaBuffer.length; ++bufferIndex) {
-                alphaBuffer[bufferIndex] = 0;
-            }
-            int bufferIndex = 0, alphaSum = 0;
-            for (int x = 0; x < shadow.getWidth(); ++x) {
-                int alpha;
-                for (int squareY = y - shadowSize * 2; squareY <= y; ++squareY) {
-                    alphaSum -= alphaBuffer[bufferIndex];
-                    if (x < pixmap.getWidth() && squareY >= 0 && squareY < pixmap.getHeight()) {
-                        alpha = pixmap.getPixel(x, squareY) & 0xff;
-                    } else {
-                        alpha = 0;
-                    }
-                    alphaBuffer[bufferIndex++] = (char)alpha;
-                    alphaSum += alpha;
-                }
-                if (bufferIndex >= alphaBuffer.length) {
-                    bufferIndex = 0;
-                }
-                int shadowAlpha = Math.min(255, (int)(alphaSum * alphaDivider + 0.5));
-                shadow.drawPixel(x, y, shadowColor | shadowAlpha);
-            }
-        }
-        return shadow;
-    }
-
-    private Pixmap combineGlyphWithShadow(Pixmap glyph, Pixmap shadow, int shadowSize, int offsetX, int offsetY) {
-        int x = shadowSize - offsetX;
-        int y = shadowSize - offsetY;
-        if (x < 0 || y < 0 || x > 2 * shadowSize || y > 2 * shadowSize) {
-            int shadowX = 0, shadowY = 0;
-            int width = shadow.getWidth();
-            int height = shadow.getHeight();
-            if (x < 0) {
-                width -= x;
-                shadowX = -x;
-                x = 0;
-            } else if (x > 2 * shadowSize) {
-                width += x - 2 * shadowSize;
-            }
-            if (y < 0) {
-                height -= y;
-                shadowY = -y;
-                y = 0;
-            } else if (y > 2 * shadowSize) {
-                height += y - 2 * shadowSize;
-            }
-            Pixmap largerShadow = new Pixmap(width, height, Format.RGBA8888);
-            largerShadow.setColor(Color.CLEAR);
-            largerShadow.fill();
-            largerShadow.drawPixmap(shadow, shadowX, shadowY);
-            shadow.dispose();
-            shadow = largerShadow;
-        }
-        shadow.drawPixmap(glyph, x, y);
-        glyph.dispose();
-        return shadow;
     }
 
     /**
@@ -1133,65 +1169,50 @@ public class FreeTypeFontGeneratorExt implements Disposable {
      * @author siondream
      */
     public static class FreeTypeFontParameter {
-        /** (optional, defaults to white if omitted)
-         * The color to tint the font with, or the color of the top of the glyphs if colorGradientBottom is specified.
-         */
-        public Color color;
-
-        /** (optional)
-         * The color of the bottom of the glyphs.  If omitted, the glyphs will be a single color.
-         */
-        public Color colorGradientBottom;
-
-        /** (optional)
-         * The number of pixels around the generated glyphs to spread drop shadows.
-         * If omitted, the glyphs will have no drop shadow, and the other drop shadow parameters will be ignored.
-         */
-        public Integer dropShadowSize;
-
-        /** (optional, defaults to 0.5 if omitted)
-         * The opacity of the drop shadows.  Values above 1.0 are valid, and will cause more of the drop shadows to be
-         * opaque.
-         */
-        public Float dropShadowOpacity;
-
-        /** (optional, defaults to black if omitted)
-         * The color of the drop shadows.
-         */
-        public Color dropShadowColor;
-
-        /** (optional, defaults to 0 if omitted)
-         * The number of pixels to offset the drop shadows horizontally.  Can be positive or negative (although note that
-         * large negative values in fonts rendered left-to-right can cause the shadows to be drawn on top of characters
-         * to the left).
-         */
-        public Integer dropShadowOffsetX;
-
-        /** (optional, defaults to 0 if omitted)
-         * The number of pixels to offset the drop shadows vertically.  Can be positive or negative.
-         */
-        public Integer dropShadowOffsetY;
-
         /** The size in pixels */
-        public int size = 30;
+        public int size = 16;
+
+        /** Foreground color (required for non-black borders) */
+        public Color color = Color.WHITE;
+
+        /** Border width in pixels, 0 to disable */
+        public float borderWidth = 0;
+
+        /** Border color; only used if borderWidth > 0 */
+        public Color borderColor = Color.BLACK;
+
+        /** true for straight (mitered), false for rounded borders */
+        public boolean borderStraight = false;
+
+        /** Offset of text shadow on X axis in pixels, 0 to disable */
+        public int shadowOffsetX = 0;
+
+        /** Offset of text shadow on Y axis in pixels, 0 to disable */
+        public int shadowOffsetY = 0;
+
+        /** Shadow color; only used if shadowOffset > 0 */
+        public Color shadowColor = new Color(0, 0, 0, 0.75f);
 
         /** The characters the font should contain */
         public String characters = DEFAULT_CHARS;
 
+        /** Whether the font should include kerning */
+        public boolean kerning = true;
+
         /** The optional PixmapPacker to use */
         public PixmapPacker packer = null;
 
-        /** Whether to flip the font horizontally */
+        /** Whether to flip the font vertically */
         public boolean flip = false;
 
         /** Whether or not to generate mip maps for the resulting texture */
         public boolean genMipMaps = false;
 
         /** Minification filter */
-        public TextureFilter minFilter = TextureFilter.Linear;
+        public TextureFilter minFilter = TextureFilter.Nearest;
 
         /** Magnification filter */
-        public TextureFilter magFilter = TextureFilter.Linear;
+        public TextureFilter magFilter = TextureFilter.Nearest;
     }
 
     public class PullTtfPaser {

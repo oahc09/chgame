@@ -1,6 +1,17 @@
 
 package com.oahcfly.chgame.core;
 
+/**
+ * 
+ * <pre>
+ * 【CHGame 规则设定】
+ *  1.类名：CH打头
+ *  
+ * 
+ * date: 2015-2-18
+ * </pre>
+ * @author caohao
+ */
 public class Version {
 
     /**
@@ -46,7 +57,7 @@ public class Version {
      * 0.3.9 back键处理优化.新增退出广告显示接口。
      * 0.4.0 新增文字描边和底部渐变效果。切换screen优化back键的处理。
      * 0.4.1 异步任务异常捕获，onPause自动保存数据，新增CHGameInfoListener接口。
-     * 0.4.2
+     * 0.4.2 代码优化.升级libgdx到1.5.4.同步重构FreeTypeFontGeneratorExt使用官方的字体文字描边和底部渐变效果。
      * 0.4.3
      * 0.4.4
      * 0.4.5
@@ -54,7 +65,7 @@ public class Version {
      * 0.4.7
      * 
      *  */
-    public static final String VERSION = "0.4.1";
+    public static final String VERSION = "0.4.2";
 
     /**
      * 小贴士：

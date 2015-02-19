@@ -22,8 +22,7 @@ public class TestGame extends CHGame {
 
         //new DatabaseTest();
 
- 
-        
+  
         ShaderProgram shaderProgram ;
     }
 

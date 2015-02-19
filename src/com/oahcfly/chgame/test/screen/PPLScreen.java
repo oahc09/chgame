@@ -71,15 +71,11 @@ public class PPLScreen extends CHScreen implements GestureListener {
         // testSplitPane();
 
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.colorGradientBottom = null;
-        parameter.dropShadowSize = 2;// 描边宽度
-        parameter.dropShadowColor = Color.WHITE;// 颜色
-        parameter.dropShadowOpacity = 1f;// 描边透明度
-        parameter.dropShadowOffsetX = 2;// 偏移量
-        parameter.dropShadowOffsetY = 2;
-        CHGame.getInstance().getInternationalGenerator().setFontDropShadowParameter(parameter);
-        final Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel("测试文字描边ABCDabcd1234!！");
-        saveLabel.setColor(Color.BLACK);
+        parameter.shadowColor=Color.BLUE;
+        parameter.shadowOffsetX=-2;
+        parameter.shadowOffsetY=-2;
+        final Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel("测试文字描边ABCDabcd1234!！",parameter);
+        saveLabel.setColor(Color.WHITE);
         saveLabel.setPosition(300, 100);
         addActor(saveLabel);
 

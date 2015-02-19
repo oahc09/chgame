@@ -12,7 +12,7 @@ import com.oahcfly.chgame.util.CHRandomHelper;
  * 
  * <pre>
  * 插屏广告比例配置
- * {"waps":20,"dyd":60,"changsi":20}
+ * {"waps":20,"dyd":60}
  * date: 2015-1-8
  * </pre>
  * @author caohao
@@ -29,7 +29,7 @@ public class CHInterstitialAd {
      * @author caohao
      */
     public enum InterstitialAdType {
-        WAPS("waps"), DYD("dyd"), CHANGSI("changsi");
+        WAPS("waps"), DYD("dyd");
         private String value;
 
         private InterstitialAdType(String value) {
@@ -51,12 +51,11 @@ public class CHInterstitialAd {
 
     /**
      * 
-     * @param cfgJson  {"waps":10,"dyd":20,"changsi":70}
+     * @param cfgJson  {"waps":10,"dyd":20}
      */
     public CHInterstitialAd(String cfgJson) {
         adTypes.add(InterstitialAdType.WAPS);
         adTypes.add(InterstitialAdType.DYD);
-        adTypes.add(InterstitialAdType.CHANGSI);
 
         if (cfgJson != null) {
             try {
