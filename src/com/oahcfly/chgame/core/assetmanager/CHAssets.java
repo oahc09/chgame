@@ -169,7 +169,7 @@ public class CHAssets implements Disposable, AssetErrorListener {
     @Override
     public void error(@SuppressWarnings("rawtypes")
     AssetDescriptor asset, Throwable throwable) {
-        Gdx.app.log(TAG, "error loading " + asset.fileName + " message: " + throwable.getMessage());
+        throw new RuntimeException("error loading " + asset.fileName + " message: " + throwable.getMessage());
     }
 
     /**

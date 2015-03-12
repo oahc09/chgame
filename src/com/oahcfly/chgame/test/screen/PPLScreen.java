@@ -33,6 +33,7 @@ import com.oahcfly.chgame.core.ui.CHGifDecoder;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
 import com.oahcfly.chgame.core.ui.CHParticleEffectActor;
+import com.oahcfly.chgame.test.AnswerActor;
 import com.oahcfly.chgame.test.TestGame;
 
 public class PPLScreen extends CHScreen implements GestureListener {
@@ -51,7 +52,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
         chParticle = new CHParticle(ParticleType.STAR);
 
-        addActor(CHGame.getInstance().getImage("screen/loading_bg.png"));
+        addActor(CHGame.getInstance().getImage("first_bg.png"));
         //        for (int i = 0; i < 5; i++) {
         //            Image image = CHGame.getInstance().getImage(String.format("xinxin/x%d.png", i + 1));
         //            image.setName("xin_" + (i + 1));
@@ -71,13 +72,18 @@ public class PPLScreen extends CHScreen implements GestureListener {
         // testSplitPane();
 
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.shadowColor=Color.BLUE;
-        parameter.shadowOffsetX=-2;
-        parameter.shadowOffsetY=-2;
-        final Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel("测试文字描边ABCDabcd1234!！",parameter);
+        parameter.shadowColor = Color.BLUE;
+        parameter.shadowOffsetX = -2;
+        parameter.shadowOffsetY = -2;
+        final Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel("测试\r\n文字描边ABCDabcd1234!！");
         saveLabel.setColor(Color.WHITE);
         saveLabel.setPosition(300, 100);
         addActor(saveLabel);
+
+        AnswerActor answerActor = new AnswerActor();
+        answerActor.setText("\nkkjk很快就会进空间没得sas但是看到计算机考试阶段你只是多少这世道赶时间的事得分撒科技经费\r\nsdsjks速度快说说");
+        answerActor.setPosition(200, 400);
+        addActor(answerActor);
 
         //        final CHTextInputListener chTextInputListener = new CHTextInputListener(saveLabel) {
         //

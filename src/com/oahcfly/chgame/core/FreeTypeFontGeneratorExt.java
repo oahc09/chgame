@@ -48,7 +48,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
- * @author 此项目类由libgdx1群 群友 馒头虫 创建，Var3D在馒头虫的工作基础上仅解决了文本错位等问题
+ * @author 此项目类由libgdx1群 群友 馒头虫 创建，Var3D在馒头虫的工作基础上仅解决了文本错位等问题 
  * 
  *         hx 修改至libgdx-freetype项目
  * 
@@ -596,7 +596,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         }
 
         // determine space width and set glyph
-        if (face.loadChar(' ', FreeType.FT_LOAD_DEFAULT)) {
+        if (face.loadChar(32, FreeType.FT_LOAD_DEFAULT)) {
             data.spaceWidth = FreeType.toInt(face.getGlyph().getMetrics().getHoriAdvance());
         } else {
             data.spaceWidth = face.getMaxAdvanceWidth(); // FIXME possibly very
@@ -604,8 +604,8 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         }
         Glyph spaceGlyph = new Glyph();
         spaceGlyph.xadvance = (int)data.spaceWidth;
-        spaceGlyph.id = (int)' ';
-        data.setGlyph(' ', spaceGlyph);
+        spaceGlyph.id = 32;
+        data.setGlyph(32, spaceGlyph);
 
         // determine x-height
         for (char xChar : BitmapFont.xChars) {
@@ -771,24 +771,24 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         }
 
         // generate kerning  add
-        if (parameter.kerning) {
-            for (int i = 0; i < parameter.characters.length(); i++) {
-                for (int j = 0; j < parameter.characters.length(); j++) {
-                    char firstChar = parameter.characters.charAt(i);
-                    Glyph first = data.getGlyph(firstChar);
-                    if (first == null)
-                        continue;
-                    char secondChar = parameter.characters.charAt(j);
-                    Glyph second = data.getGlyph(secondChar);
-                    if (second == null)
-                        continue;
-                    int kerning = face.getKerning(face.getCharIndex(firstChar), face.getCharIndex(secondChar), 0);
-                    if (kerning == 0)
-                        continue;
-                    first.setKerning(secondChar, FreeType.toInt(kerning));
-                }
-            }
-        }
+        //        if (parameter.kerning) {
+        //            for (int i = 0; i < parameter.characters.length(); i++) {
+        //                for (int j = 0; j < parameter.characters.length(); j++) {
+        //                    char firstChar = parameter.characters.charAt(i);
+        //                    Glyph first = data.getGlyph(firstChar);
+        //                    if (first == null)
+        //                        continue;
+        //                    char secondChar = parameter.characters.charAt(j);
+        //                    Glyph second = data.getGlyph(secondChar);
+        //                    if (second == null)
+        //                        continue;
+        //                    int kerning = face.getKerning(face.getCharIndex(firstChar), face.getCharIndex(secondChar), 0);
+        //                    if (kerning == 0)
+        //                        continue;
+        //                    first.setKerning(secondChar, FreeType.toInt(kerning));
+        //                }
+        //            }
+        //        }
 
         if (ownsAtlas) {
             Array<Page> pages = packer.getPages();
@@ -1170,7 +1170,7 @@ public class FreeTypeFontGeneratorExt implements Disposable {
      */
     public static class FreeTypeFontParameter {
         /** The size in pixels */
-        public int size = 16;
+        public int size = 30;
 
         /** Foreground color (required for non-black borders) */
         public Color color = Color.WHITE;
@@ -1193,9 +1193,6 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         /** Shadow color; only used if shadowOffset > 0 */
         public Color shadowColor = new Color(0, 0, 0, 0.75f);
 
-        /** The characters the font should contain */
-        public String characters = DEFAULT_CHARS;
-
         /** Whether the font should include kerning */
         public boolean kerning = true;
 
@@ -1209,10 +1206,12 @@ public class FreeTypeFontGeneratorExt implements Disposable {
         public boolean genMipMaps = false;
 
         /** Minification filter */
-        public TextureFilter minFilter = TextureFilter.Nearest;
+        public TextureFilter minFilter = TextureFilter.Linear;
 
         /** Magnification filter */
-        public TextureFilter magFilter = TextureFilter.Nearest;
+        public TextureFilter magFilter = TextureFilter.Linear;
+
+        public String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890\"!`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*";
     }
 
     public class PullTtfPaser {

@@ -189,7 +189,7 @@ public abstract class CHGame extends Game {
      * @author caohao
      */
     private void loadSystemTTF() {
-        generator = new FreeTypeFontGeneratorExt(30, false);
+        generator = new FreeTypeFontGeneratorExt(28, false);
     }
 
     @Override
