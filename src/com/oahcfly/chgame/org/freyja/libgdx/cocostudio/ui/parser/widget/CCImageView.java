@@ -4,6 +4,7 @@ package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.parser.widget;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.oahcfly.chgame.core.mvc.CHActor;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCOption;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCWidget;
@@ -25,9 +26,10 @@ public class CCImageView extends WidgetParser {
         if (texture == null) {
             return new Image();
         }
-        Image image = new Image(texture);
-
-        return image;
+        //Image image = new Image(texture);
+        CHActor chActor = CHActor.obtain(CHActor.class);
+        chActor.setBgTexture(texture);
+        return chActor;
     }
 
 }

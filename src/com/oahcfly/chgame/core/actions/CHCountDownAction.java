@@ -22,7 +22,7 @@ import com.oahcfly.chgame.core.mvc.CHGame;
  * </pre>
  * @author caohao
  */
-public class CountDownAction extends TemporalAction {
+public class CHCountDownAction extends TemporalAction {
 
     private int curPosition;
 
@@ -30,18 +30,18 @@ public class CountDownAction extends TemporalAction {
 
     private Array<TextureRegion> textureRegions;
 
-    public CountDownAction() {
+    public CHCountDownAction() {
     }
 
     /**
      * 
      * @param duration 总时长
      */
-    public CountDownAction(float duration) {
+    public CHCountDownAction(float duration) {
         super(duration);
     }
 
-    public CountDownAction(float duration, Array<Texture> textureArray) {
+    public CHCountDownAction(float duration, Array<Texture> textureArray) {
         super(duration);
         textureRegions = new Array<TextureRegion>();
         for (Texture texture : textureArray) {
@@ -49,7 +49,7 @@ public class CountDownAction extends TemporalAction {
         }
     }
 
-    public CountDownAction(float duration, TextureRegion[] textureRegionArray) {
+    public CHCountDownAction(float duration, TextureRegion[] textureRegionArray) {
         super(duration);
         textureRegions = new Array<TextureRegion>();
         for (TextureRegion textureRegion : textureRegionArray) {
@@ -111,9 +111,9 @@ public class CountDownAction extends TemporalAction {
      * @param textureArray
      * @return
      */
-    public static CountDownAction obtain(float duration, Array<Texture> textureArray) {
-        Pool<CountDownAction> pool = Pools.get(CountDownAction.class);
-        CountDownAction t = pool.obtain();
+    public static CHCountDownAction obtain(float duration, Array<Texture> textureArray) {
+        Pool<CHCountDownAction> pool = Pools.get(CHCountDownAction.class);
+        CHCountDownAction t = pool.obtain();
         t.setPool(pool);
         t.setDuration(duration);
         Array<TextureRegion> textureRegions = new Array<TextureRegion>();
@@ -124,9 +124,9 @@ public class CountDownAction extends TemporalAction {
         return t;
     }
 
-    public static CountDownAction obtain(float duration, TextureRegion[] textureRegionArray) {
-        Pool<CountDownAction> pool = Pools.get(CountDownAction.class);
-        CountDownAction t = pool.obtain();
+    public static CHCountDownAction obtain(float duration, TextureRegion[] textureRegionArray) {
+        Pool<CHCountDownAction> pool = Pools.get(CHCountDownAction.class);
+        CHCountDownAction t = pool.obtain();
         t.setPool(pool);
         t.setDuration(duration);
         Array<TextureRegion> textureRegions = new Array<TextureRegion>();

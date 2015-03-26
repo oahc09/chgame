@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Pools;
  * </pre>
  * @author caohao
  */
-public class LabelTickerAction extends TemporalAction {
+public class CHLabelTickerAction extends TemporalAction {
 
     private CharSequence completeText;
 
@@ -27,18 +27,18 @@ public class LabelTickerAction extends TemporalAction {
 
     private int currentPos;
 
-    public LabelTickerAction() {
+    public CHLabelTickerAction() {
     }
 
-    public LabelTickerAction(float duration) {
+    public CHLabelTickerAction(float duration) {
         super(duration);
     }
 
-    public LabelTickerAction(float duration, CharSequence text) {
+    public CHLabelTickerAction(float duration, CharSequence text) {
         this(duration, text, null);
     }
 
-    public LabelTickerAction(float duration, CharSequence text, Interpolation interpolation) {
+    public CHLabelTickerAction(float duration, CharSequence text, Interpolation interpolation) {
         super(duration, interpolation);
         completeText = text;
         currentDisplay.setLength(text.length());
@@ -103,8 +103,8 @@ public class LabelTickerAction extends TemporalAction {
      * @param text
      * @return
      */
-    public static LabelTickerAction obtain(CharSequence text) {
-        return LabelTickerAction.obtain(text, 2f);
+    public static CHLabelTickerAction obtain(CharSequence text) {
+        return CHLabelTickerAction.obtain(text, 2f);
     }
 
     /**
@@ -113,9 +113,9 @@ public class LabelTickerAction extends TemporalAction {
      * @param duration
      * @return
      */
-    public static LabelTickerAction obtain(CharSequence text, float duration) {
-        Pool<LabelTickerAction> pool = Pools.get(LabelTickerAction.class);
-        LabelTickerAction t = pool.obtain();
+    public static CHLabelTickerAction obtain(CharSequence text, float duration) {
+        Pool<CHLabelTickerAction> pool = Pools.get(CHLabelTickerAction.class);
+        CHLabelTickerAction t = pool.obtain();
         t.setPool(pool);
         t.setDuration(duration);
         t.completeText = text;

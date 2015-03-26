@@ -14,7 +14,9 @@ import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AddAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -23,9 +25,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.SplitPane.SplitPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.oahcfly.chgame.core.FreeTypeFontGeneratorExt.FreeTypeFontParameter;
 import com.oahcfly.chgame.core.actions.CHActions;
-import com.oahcfly.chgame.core.actions.CountDownAction;
+import com.oahcfly.chgame.core.actions.CHCountDownAction;
+import com.oahcfly.chgame.core.helper.CHAutoParticle;
+import com.oahcfly.chgame.core.mvc.CHActor;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
 import com.oahcfly.chgame.core.ui.CHAniamtionPlayer;
@@ -33,7 +38,6 @@ import com.oahcfly.chgame.core.ui.CHGifDecoder;
 import com.oahcfly.chgame.core.ui.CHParticle;
 import com.oahcfly.chgame.core.ui.CHParticle.ParticleType;
 import com.oahcfly.chgame.core.ui.CHParticleEffectActor;
-import com.oahcfly.chgame.test.AnswerActor;
 import com.oahcfly.chgame.test.TestGame;
 
 public class PPLScreen extends CHScreen implements GestureListener {
@@ -45,9 +49,13 @@ public class PPLScreen extends CHScreen implements GestureListener {
         System.out.println("fun调用:" + (System.currentTimeMillis() / 1000));
     }
 
+    CHAutoParticle chAutoParticle;
+
     @Override
     public void initScreen() {
 
+        chAutoParticle = new CHAutoParticle("xinxin/x1.png");
+        System.out.println("fun调用开始:" + (System.currentTimeMillis() / 1000));
         addSyncSchedule("fun", 1f);
 
         chParticle = new CHParticle(ParticleType.STAR);
@@ -75,15 +83,11 @@ public class PPLScreen extends CHScreen implements GestureListener {
         parameter.shadowColor = Color.BLUE;
         parameter.shadowOffsetX = -2;
         parameter.shadowOffsetY = -2;
-        final Label saveLabel = CHGame.getInstance().getInternationalGenerator().createLabel("测试\r\n文字描边ABCDabcd1234!！");
+        final Label saveLabel = CHGame.getInstance().getInternationalGenerator()
+                .createLabel("测试\r\n文字描边ABCDabcd1234!！");
         saveLabel.setColor(Color.WHITE);
         saveLabel.setPosition(300, 100);
         addActor(saveLabel);
-
-        AnswerActor answerActor = new AnswerActor();
-        answerActor.setText("\nkkjk很快就会进空间没得sas但是看到计算机考试阶段你只是多少这世道赶时间的事得分撒科技经费\r\nsdsjks速度快说说");
-        answerActor.setPosition(200, 400);
-        addActor(answerActor);
 
         //        final CHTextInputListener chTextInputListener = new CHTextInputListener(saveLabel) {
         //
@@ -112,6 +116,41 @@ public class PPLScreen extends CHScreen implements GestureListener {
         InputMultiplexer inputMultiplexer = new InputMultiplexer(getStage(), new GestureDetector(this));
         Gdx.input.setInputProcessor(inputMultiplexer);
 
+        createStars();
+    }
+
+    private void createStars() {
+
+        Array<StarActor> actorArray = new Array<StarActor>();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                int id = j + i * 6;
+                System.out.println("id=" + id);
+                StarActor starActor = CHActor.obtain(StarActor.class);
+                starActor.setBgTexture(CHGame.getInstance().getTexture("xinxin/x2.png"));
+                starActor.setPosition(j * starActor.getWidth(), i * starActor.getHeight());
+                getStage().addActor(starActor);
+                actorArray.add(starActor);
+            }
+        }
+
+        SequenceAction sequenceAction = new SequenceAction();
+        for (int i = 1, size = actorArray.size; i < size; i++) {
+            StarActor starActor = actorArray.get(i);
+
+            //Actions.moveTo(starActor.getX(), starActor.getY(), 0.2f)
+            float amountX = starActor.getX() - 200;
+            float amountY = starActor.getY() - 300;
+            float duration = 0.1f;
+            AddAction addAction = Actions.addAction(Actions.moveBy(amountX, amountY, duration), actorArray.get(i));
+
+            sequenceAction.addAction(Actions.delay(0.1f * i));
+            sequenceAction.addAction(addAction);
+            starActor.setPosition(200, 300);
+        }
+        actorArray.get(0).addAction(sequenceAction);
+
+        // 1达到目标，2开始运动，
     }
 
     private void snowParticleEffect() {
@@ -139,7 +178,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         // 倒计时
         TextureRegion textureRegion = new TextureRegion(CHGame.getInstance().getTexture("screen/score_numlist.png"));
         TextureRegion[][] textureRegions = textureRegion.split(23, 27);
-        CountDownAction countDownAction = CountDownAction.obtain(10f, textureRegions[0]);
+        CHCountDownAction countDownAction = CHCountDownAction.obtain(10f, textureRegions[0]);
         image.addAction(countDownAction);
     }
 
@@ -244,9 +283,11 @@ public class PPLScreen extends CHScreen implements GestureListener {
         System.out.println("touchDown : x=" + vector2.x + ",y=" + vector2.y);
         actorNameList = new HashSet<String>();
 
+        chAutoParticle.playCircleParticle(getStage(), vector2.x, vector2.y);
         chParticle.createEffect(vector2.x, vector2.y);
-        unSyncSchedule("funa");
+        unSyncSchedule("fun");
 
+        addSyncSchedule("fun", 2);
         // 创建字体
         if (testLabel == null) {
             testLabel = CHGame.getInstance().getInternationalGenerator().createLabel("测试" + TestGame.getRandomHan());
@@ -260,8 +301,20 @@ public class PPLScreen extends CHScreen implements GestureListener {
             testLabel.setText("测试" + newString);
         }
 
+        if (mainUI == null) {
+            mainUI = new MainUI(this);
+        }
+
+        if(mainUI.isShowing()){
+            mainUI.dismiss();
+        }else{
+            mainUI.show();
+            mainUI.getGroup().setTouchable(Touchable.disabled);
+        }
         return false;
     }
+
+    MainUI mainUI;
 
     @Override
     public boolean tap(float x, float y, int count, int button) {

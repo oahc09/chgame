@@ -58,7 +58,11 @@ public class Version {
      * 0.4.0 新增文字描边和底部渐变效果。切换screen优化back键的处理。
      * 0.4.1 异步任务异常捕获，onPause自动保存数据，新增CHGameInfoListener接口。
      * 0.4.2 代码优化.升级libgdx到1.5.4.同步重构FreeTypeFontGeneratorExt使用官方的字体文字描边和底部渐变效果。
-     * 0.4.3
+     * 0.4.3 (a)CHGame新增TextureAtlas处理。
+     *           (b)优化ScheduleAction：执行次数repeateCount，初次延迟时间initDelaySeconds，每次重复的间隔时间intervalSeconds
+     *           (c)重构类名，全部加上CH打头。
+     *           (d)新增CHAutoParticle粒子效果类。
+     *           (e)CHUI中创建Image全部使用CHActor代替。
      * 0.4.4
      * 0.4.5
      * 0.4.6

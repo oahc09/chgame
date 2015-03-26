@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.oahcfly.chgame.core.actions.ScheduleAction;
+import com.oahcfly.chgame.core.actions.CHScheduleAction;
 import com.oahcfly.chgame.core.async.CHAsyncTask;
 import com.oahcfly.chgame.core.ui.CHUI;
 
@@ -317,15 +317,15 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
                 }
             });
             for (Action action : shadowActor.getActions()) {
-                if (action instanceof ScheduleAction && ((ScheduleAction)action).getName().equals(methodName)) {
+                if (action instanceof CHScheduleAction && ((CHScheduleAction)action).getName().equals(methodName)) {
                     // 发现已有action,重复利用，修改间隔时间即可
-                    ((ScheduleAction)action).setDuration(duration);
+                    ((CHScheduleAction)action).setDuration(duration);
                     action.restart();
                     return;
                 }
             }
 
-            shadowActor.addAction(new ScheduleAction(methodName, duration, runnableAction));
+            shadowActor.addAction(new CHScheduleAction(methodName, duration, -1, runnableAction));
         } catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
             Gdx.app.error(TAG, "addSyncSchedule :" + e.getMessage());
@@ -347,9 +347,9 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
      */
     public void unSyncSchedule(String methodName) {
         for (Action action : shadowActor.getActions()) {
-            if (action instanceof ScheduleAction) {
+            if (action instanceof CHScheduleAction) {
                 // 直接完成
-                ((ScheduleAction)action).finish();
+                ((CHScheduleAction)action).finish();
             }
         }
     }

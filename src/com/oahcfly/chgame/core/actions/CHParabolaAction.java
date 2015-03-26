@@ -13,17 +13,17 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
  * </pre>
  * @author caohao
  */
-public class ParabolaAction extends TemporalAction {
+public class CHParabolaAction extends TemporalAction {
     private float amountX, amountY;
 
     private float startX, startY;
 
     float a;
 
-    public ParabolaAction() {
+    public CHParabolaAction() {
     }
 
-    public ParabolaAction(float duration, float moveXAmount, float moveYAmount) {
+    public CHParabolaAction(float duration, float moveXAmount, float moveYAmount) {
         setDuration(duration);
         setAmount(moveXAmount, moveYAmount);
     }

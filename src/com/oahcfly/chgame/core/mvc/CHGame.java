@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -60,6 +61,8 @@ public abstract class CHGame extends Game {
     private CHGameInfoListener gameInfoListener;
 
     private boolean debug;
+    
+    private TextureAtlas textureAtlas;
 
     /**资源加载管理器*/
     private AssetManager assetManager;
@@ -671,4 +674,14 @@ public abstract class CHGame extends Game {
     public void setGameInfoListener(CHGameInfoListener gameInfoListener) {
         this.gameInfoListener = gameInfoListener;
     }
+
+    public TextureAtlas getTextureAtlas() {
+        return textureAtlas;
+    }
+
+    public void setTextureAtlas(TextureAtlas textureAtlas) {
+        this.textureAtlas = textureAtlas;
+    }
+    
+    
 }

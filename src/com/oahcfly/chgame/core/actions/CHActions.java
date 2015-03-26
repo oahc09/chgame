@@ -70,7 +70,7 @@ public class CHActions {
      */
     public static Action createRotateAndMoveAction(float duration, int rotateAmount, int moveXAmount, int moveYAmount) {
         Action rotateAction = Actions.rotateTo(360 * rotateAmount, duration);
-        ParabolaAction parabolaAction = new ParabolaAction();
+        CHParabolaAction parabolaAction = new CHParabolaAction();
         parabolaAction.setAmount(moveXAmount, moveYAmount);
         parabolaAction.setDuration(duration);
         ParallelAction parallelAction = new ParallelAction(rotateAction, parabolaAction);
