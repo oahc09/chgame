@@ -120,4 +120,13 @@ public class CHAniamtionPlayer extends Actor {
 
         }
     }
+
+    public void setEndRunnable(Runnable endRunnable) {
+        this.endRunnable = endRunnable;
+    }
+
+    public void setEndRemove(boolean endRemove) {
+        this.endRemove = endRemove;
+    }
+
 }

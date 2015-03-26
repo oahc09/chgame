@@ -292,10 +292,6 @@ public abstract class CHGame extends Game {
         }
         Gdx.input.setInputProcessor(null);
         super.setScreen(screen);
-        if (getScreen() != null && getScreen().isBackKey()) {
-            // 通过back键切换screen。防止第二个screen再次接收到back处理
-            ((CHScreen)screen).setBackKeyPressed(true);
-        }
     }
 
     /**

@@ -60,7 +60,8 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     // chui堆栈
     private Stack<CHUI> chuiStack;
 
-    private boolean backKey = false;
+    // 是否已经处理了back键点击
+    private boolean doBackClick = false;
 
     public CHScreen() {
         this(CHGame.getInstance().getGameWidth(), CHGame.getInstance().getGameHeight());
@@ -128,13 +129,13 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
 
         // 点击了返回键
         boolean pressBackKey = Gdx.input.isKeyPressed(Input.Keys.BACK);
-        if (backKey && !pressBackKey) {
+        if (doBackClick && !pressBackKey) {
             // 已经通知过返回事件了，并且事件已经被处理完了，重置标志，继续监测
-            backKey = false;
+            doBackClick = false;
         }
-        if (getGame().isCatchBackKey() && pressBackKey && !backKey) {
-            // 监听返回键
-            backKey = true;
+        if (getGame().isCatchBackKey() && pressBackKey && !doBackClick) {
+            // 监听返回键【未处理back键事件，且当前点击了】
+            doBackClick = true;
             clickBackKey();
         }
 
@@ -176,8 +177,8 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
         return TAG;
     }
 
-    public void setBackKeyPressed(boolean backKey) {
-        this.backKey = backKey;
+    private void setBackKeyPressed(boolean backKey) {
+        this.doBackClick = backKey;
     }
 
     @SuppressWarnings("unchecked")
@@ -354,7 +355,7 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     }
 
     public boolean isBackKey() {
-        return backKey;
+        return doBackClick;
     }
 }
 
