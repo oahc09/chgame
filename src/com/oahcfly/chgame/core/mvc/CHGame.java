@@ -61,8 +61,6 @@ public abstract class CHGame extends Game {
     private CHGameInfoListener gameInfoListener;
 
     private boolean debug;
-    
-    private TextureAtlas textureAtlas;
 
     /**资源加载管理器*/
     private AssetManager assetManager;
@@ -675,13 +673,29 @@ public abstract class CHGame extends Game {
         this.gameInfoListener = gameInfoListener;
     }
 
-    public TextureAtlas getTextureAtlas() {
+    public TextureAtlas getTextureAtlas(String packFileName) {
+        TextureAtlas textureAtlas;
+        if (!assetManager.isLoaded(packFileName)) {
+            try {
+                assetManager.load(packFileName, TextureAtlas.class);
+                assetManager.finishLoading();
+                textureAtlas = assetManager.get(packFileName, TextureAtlas.class);
+            } catch (Exception e) {
+                // 加载出错，直接读取
+                Gdx.app.error(TAG, e.getMessage());
+                textureAtlas = new TextureAtlas(Gdx.files.internal(packFileName));
+            }
+        } else {
+            // 此处不知为何报错，特殊处理一下
+            try {
+                textureAtlas = assetManager.get(packFileName, TextureAtlas.class);
+            } catch (Exception e) {
+                // 加载出错，直接读取
+                Gdx.app.error(TAG, e.getMessage());
+                textureAtlas = new TextureAtlas(Gdx.files.internal(packFileName));
+            }
+        }
         return textureAtlas;
     }
 
-    public void setTextureAtlas(TextureAtlas textureAtlas) {
-        this.textureAtlas = textureAtlas;
-    }
-    
-    
 }

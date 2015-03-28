@@ -69,7 +69,7 @@ public class Version {
      * 0.4.7
      * 
      *  */
-    public static final String VERSION = "0.4.2";
+    public static final String VERSION = "0.4.3";
 
     /**
      * 小贴士：
