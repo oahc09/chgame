@@ -6,6 +6,7 @@ import java.util.HashSet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -29,6 +30,8 @@ import com.badlogic.gdx.utils.Array;
 import com.oahcfly.chgame.core.FreeTypeFontGeneratorExt.FreeTypeFontParameter;
 import com.oahcfly.chgame.core.actions.CHActions;
 import com.oahcfly.chgame.core.actions.CHCountDownAction;
+import com.oahcfly.chgame.core.actions.CHLabelTickerAction;
+import com.oahcfly.chgame.core.actions.CHScheduleAction;
 import com.oahcfly.chgame.core.helper.CHAutoParticle;
 import com.oahcfly.chgame.core.mvc.CHActor;
 import com.oahcfly.chgame.core.mvc.CHGame;
@@ -55,8 +58,8 @@ public class PPLScreen extends CHScreen implements GestureListener {
     public void initScreen() {
 
         chAutoParticle = new CHAutoParticle("xinxin/x1.png");
-        System.out.println("fun调用开始:" + (System.currentTimeMillis() / 1000));
-        addSyncSchedule("fun", 1f);
+        //System.out.println("fun调用开始:" + (System.currentTimeMillis() / 1000));
+        // addSyncSchedule("fun", 1f);
 
         chParticle = new CHParticle(ParticleType.STAR);
 
@@ -117,6 +120,43 @@ public class PPLScreen extends CHScreen implements GestureListener {
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         createStars();
+
+        testLabelTickerAction();
+    }
+
+    private void testLabelTickerAction() {
+        CHLabelTickerAction chLabelTickerAction = new CHLabelTickerAction(2f, "你好啊。欢迎进入CHGAME游戏框架！！！");
+        chLabelTickerAction.setCallbackRunnable(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("显示结束");
+            }
+        });
+        Label label = CHGame.getInstance().getInternationalGenerator().createLabel("你好啊。欢迎进入CHGAME游戏框架！！！");
+        label.setColor(Color.RED);
+        label.setPosition(100, 100);
+        label.addAction(chLabelTickerAction);
+        addActor(label);
+    }
+
+    private void testScheduleAction() {
+        CHScheduleAction scheduleAction = new CHScheduleAction("test", 1f, 5, Actions.run(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("testScheduleAction-运行时间（秒）：" + (System.currentTimeMillis() / 1000));
+            }
+        }));
+        scheduleAction.setCallbackRunnable(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("testScheduleAction-运行结束");
+            }
+        });
+        getStage().addAction(scheduleAction);
+        System.out.println("testScheduleAction-开始时间（秒）：" + (System.currentTimeMillis() / 1000));
     }
 
     private void createStars() {
@@ -174,12 +214,25 @@ public class PPLScreen extends CHScreen implements GestureListener {
 
     private void testCDAction() {
         Image image = CHGame.getInstance().getImage("screen/big_star.png");
+        image.setPosition(200, 200);
         addActor(image);
         // 倒计时
-        TextureRegion textureRegion = new TextureRegion(CHGame.getInstance().getTexture("screen/score_numlist.png"));
-        TextureRegion[][] textureRegions = textureRegion.split(23, 27);
-        CHCountDownAction countDownAction = CHCountDownAction.obtain(10f, textureRegions[0]);
+        //        TextureRegion textureRegion = new TextureRegion(CHGame.getInstance().getTexture("screen/score_numlist.png"));
+        //        TextureRegion[][] textureRegions = textureRegion.split(23, 27);
+
+        Array<Texture> teArray = new Array<Texture>();
+        teArray.add(CHGame.getInstance().getTexture("ready.png"));
+        teArray.add(CHGame.getInstance().getTexture("go.png"));
+        CHCountDownAction countDownAction = CHCountDownAction.obtain(2f, teArray);
+        countDownAction.setCallBackRunnable(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("倒计时结束:" + System.currentTimeMillis());
+            }
+        });
         image.addAction(countDownAction);
+        System.out.println("倒计时开始:" + System.currentTimeMillis());
     }
 
     private void testParabolaAction() {
@@ -305,9 +358,9 @@ public class PPLScreen extends CHScreen implements GestureListener {
             mainUI = new MainUI(this);
         }
 
-        if(mainUI.isShowing()){
+        if (mainUI.isShowing()) {
             mainUI.dismiss();
-        }else{
+        } else {
             mainUI.show();
             mainUI.getGroup().setTouchable(Touchable.disabled);
         }

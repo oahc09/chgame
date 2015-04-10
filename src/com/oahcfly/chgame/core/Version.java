@@ -63,7 +63,11 @@ public class Version {
      *           (c)重构类名，全部加上CH打头。
      *           (d)新增CHAutoParticle粒子效果类。
      *           (e)CHUI中创建Image全部使用CHActor代替。
-     * 0.4.4
+     * 0.4.4 
+     *           (a)倒计时action添加结束回调，优化了图片显示大小问题。
+     *           (b)CHScheduleAction,CHLabelTickerAction新增结束回调接口。
+     *           (c)
+     *           (d)
      * 0.4.5
      * 0.4.6
      * 0.4.7

@@ -27,6 +27,8 @@ public class CHLabelTickerAction extends TemporalAction {
 
     private int currentPos;
 
+    private Runnable callbackRunnable;
+
     public CHLabelTickerAction() {
     }
 
@@ -96,6 +98,11 @@ public class CHLabelTickerAction extends TemporalAction {
         }
 
         label.setText(currentDisplay);
+
+        if (percent >= 1 && callbackRunnable != null) {
+            callbackRunnable.run();
+            getActor().remove();
+        }
     }
 
     /**
@@ -121,5 +128,13 @@ public class CHLabelTickerAction extends TemporalAction {
         t.completeText = text;
         t.currentDisplay.setLength(text.length());
         return t;
+    }
+
+    public Runnable getCallbackRunnable() {
+        return callbackRunnable;
+    }
+
+    public void setCallbackRunnable(Runnable callbackRunnable) {
+        this.callbackRunnable = callbackRunnable;
     }
 }

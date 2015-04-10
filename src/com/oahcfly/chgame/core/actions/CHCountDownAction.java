@@ -18,6 +18,7 @@ import com.oahcfly.chgame.core.mvc.CHGame;
  * <pre>
  *  倒计时action。10->9->8.....
  *  如，Ready->Go、一系列图片按倒计时显示
+ *  
  * date: 2014-12-29
  * </pre>
  * @author caohao
@@ -29,6 +30,8 @@ public class CHCountDownAction extends TemporalAction {
     private TextureRegion curTextureRegion;
 
     private Array<TextureRegion> textureRegions;
+
+    private Runnable callBackRunnable;
 
     public CHCountDownAction() {
     }
@@ -61,8 +64,18 @@ public class CHCountDownAction extends TemporalAction {
 
     @Override
     protected void update(float percent) {
-        curPosition = (int)(percent * (textureRegions.size - 1));
+        curPosition = (int)(percent * textureRegions.size);
 
+        if (percent >= 1 && callBackRunnable != null) {
+            callBackRunnable.run();
+            if (stageImage != null) {
+                stageImage.remove();
+            }
+            if (actor != null) {
+                actor.remove();
+            }
+            return;
+        }
         curTextureRegion = textureRegions.get(curPosition);
         if (actor instanceof Group) {
             if (stageImage == null) {
@@ -71,11 +84,14 @@ public class CHCountDownAction extends TemporalAction {
                         Align.center);
                 ((Group)actor).addActor(stageImage);
             } else {
+                stageImage.setSize(curTextureRegion.getRegionWidth(), curTextureRegion.getRegionHeight());
                 stageImage.setDrawable(new TextureRegionDrawable(curTextureRegion));
             }
         } else if (actor instanceof Image) {
+            actor.setSize(curTextureRegion.getRegionWidth(), curTextureRegion.getRegionHeight());
             ((Image)actor).setDrawable(new TextureRegionDrawable(curTextureRegion));
         }
+
     }
 
     @Override
@@ -135,5 +151,13 @@ public class CHCountDownAction extends TemporalAction {
         }
         t.setTextureRegions(textureRegions);
         return t;
+    }
+
+    public Runnable getCallBackRunnable() {
+        return callBackRunnable;
+    }
+
+    public void setCallBackRunnable(Runnable callBackRunnable) {
+        this.callBackRunnable = callBackRunnable;
     }
 }
