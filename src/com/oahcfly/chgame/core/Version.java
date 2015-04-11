@@ -67,13 +67,13 @@ public class Version {
      *           (a)倒计时action添加结束回调，优化了图片显示大小问题。
      *           (b)CHScheduleAction,CHLabelTickerAction新增结束回调接口。
      *           (c)CHAutoParticle烟花效果新增结束回调接口。
-     *           (d)
+     *           (d)代码重构
      * 0.4.5
      * 0.4.6
      * 0.4.7
      * 
      *  */
-    public static final String VERSION = "0.4.3";
+    public static final String VERSION = "0.4.4";
 
     /**
      * 小贴士：

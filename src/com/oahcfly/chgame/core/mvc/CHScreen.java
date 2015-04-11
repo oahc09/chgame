@@ -48,7 +48,7 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     private int stageW = 0, stageH = 0;
 
     // CHUI的缓存
-    private HashMap<String, CHUI> chuiMap = new HashMap<String, CHUI>();
+    private HashMap<String, CHUI> chuiMap;
 
     private Stage stage;
 
@@ -71,6 +71,7 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
         this.stageW = stageW;
         this.stageH = stageH;
         chuiStack = new Stack<CHUI>();
+        chuiMap = new HashMap<String, CHUI>();
     }
 
     @Override
@@ -203,19 +204,14 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
     /**
      * 
      * <pre>
-     * 切换UI
+     *  chui会关闭显示
      * 
-     * date: 2015-1-12
+     * date: 2015-4-11
      * </pre>
      * @author caohao
-     * @param oldUIName
+     * @param chui
      * @param newUIName
      */
-    public void changeUI(String oldUIName, String newUIName) {
-        getUI(oldUIName).dismiss();
-        getUI(newUIName).show();
-    }
-
     public void changeUI(CHUI chui, String newUIName) {
         chui.dismiss();
         getUI(newUIName).show();

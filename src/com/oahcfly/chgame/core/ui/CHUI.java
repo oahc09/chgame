@@ -26,9 +26,6 @@ import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
  */
 public abstract class CHUI {
 
-    // 是否在显示
-    private boolean isShowing;
-
     private CocoStudioUIEditor editor;
 
     private Group group;
@@ -110,7 +107,6 @@ public abstract class CHUI {
      * @author caohao
      */
     public void show() {
-        isShowing = true;
         stage.addActor(group);
         refreshUIAfterShow();
         if (parentScreen != null) {
@@ -128,7 +124,6 @@ public abstract class CHUI {
      * @author caohao
      */
     public void dismiss() {
-        isShowing = false;
         group.remove();
         editor.clear();
         if (parentScreen != null) {
@@ -177,7 +172,7 @@ public abstract class CHUI {
      * @return
      */
     public boolean isShowing() {
-        return isShowing;
+        return getParentScreen().getTopCHUI().getGroup().getName().equals(group.getName());
     }
 
     /**
