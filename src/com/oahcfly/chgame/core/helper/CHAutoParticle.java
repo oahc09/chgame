@@ -106,12 +106,24 @@ public class CHAutoParticle {
      * @author caohao
      * @param stage
      * @param rangeRectangle 烟花范围
-     * @param repeatCount 重复次数
      */
-    public void playFireWorks(final Stage stage, final Rectangle rangeRectangle, int repeatCount) {
+    public void playFireWorks(final Stage stage, final Rectangle rangeRectangle, final int playCount,
+            final Runnable callbackRunnable) {
         Action runnableAction = Actions.run(new Runnable() {
+
+            int count;
+
             @Override
             public void run() {
+                count++;
+                if (count > playCount) {
+                    for (Action action : stage.getRoot().getActions()) {
+                        if (action instanceof CHScheduleAction) {
+                            ((CHScheduleAction)action).finish();
+                        }
+                    }
+                    return;
+                }
                 for (int i = 0; i < 10; i++) {
                     int x = (int)(random.nextInt((int)rangeRectangle.width) + rangeRectangle.x);
                     int y = (int)(random.nextInt((int)rangeRectangle.height) + rangeRectangle.y);
@@ -119,7 +131,8 @@ public class CHAutoParticle {
                 }
             }
         });
-        CHScheduleAction scheduleAction = new CHScheduleAction(0.5f, repeatCount, runnableAction);
+        CHScheduleAction scheduleAction = new CHScheduleAction(0.5f, playCount, runnableAction);
+        scheduleAction.setCallbackRunnable(callbackRunnable);
         stage.addAction(scheduleAction);
     }
 }

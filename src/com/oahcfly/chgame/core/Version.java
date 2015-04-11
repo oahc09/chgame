@@ -66,7 +66,7 @@ public class Version {
      * 0.4.4 
      *           (a)倒计时action添加结束回调，优化了图片显示大小问题。
      *           (b)CHScheduleAction,CHLabelTickerAction新增结束回调接口。
-     *           (c)
+     *           (c)CHAutoParticle烟花效果新增结束回调接口。
      *           (d)
      * 0.4.5
      * 0.4.6

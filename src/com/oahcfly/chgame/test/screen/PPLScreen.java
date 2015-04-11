@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -402,6 +403,14 @@ public class PPLScreen extends CHScreen implements GestureListener {
     public boolean panStop(float x, float y, int pointer, int button) {
         Vector2 vector2 = getStage().screenToStageCoordinates(new Vector2(x, y));
         System.out.println("panStop : actorNameList=" + actorNameList.toString());
+
+        chAutoParticle.playFireWorks(getStage(), new Rectangle(0, 0, 400, 400), 3, new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("烟花结束");
+            }
+        });
         return false;
     }
 
