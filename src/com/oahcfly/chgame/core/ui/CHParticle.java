@@ -109,6 +109,30 @@ public class CHParticle {
         }
     }
 
+    public void render(Batch batch, boolean needBeginEnd) {
+        // Particle effects
+        int numParticles = _effects.size;
+        for (int i = 0; i < numParticles; ++i) {
+            _effects.get(i).update(Gdx.graphics.getDeltaTime());
+        }
+
+        if (needBeginEnd) {
+            batch.begin();
+        }
+        
+        // Draw particle systems
+        for (int i = 0; i < numParticles; ++i) {
+            _effects.get(i).draw(batch);
+        }
+
+        if (needBeginEnd) {
+            batch.end();
+        }
+
+        // Remove the ended particle systems
+        removeEndedParticles();
+    }
+
     /**
      * 
      * <pre>
@@ -120,22 +144,7 @@ public class CHParticle {
      * @param batch
      */
     public void render(Batch batch) {
-        // Particle effects
-        int numParticles = _effects.size;
-        for (int i = 0; i < numParticles; ++i) {
-            _effects.get(i).update(Gdx.graphics.getDeltaTime());
-        }
-
-        batch.begin();
-        // Draw particle systems
-        for (int i = 0; i < numParticles; ++i) {
-            _effects.get(i).draw(batch);
-        }
-
-        batch.end();
-        
-        // Remove the ended particle systems
-        removeEndedParticles();
+        render(batch, true);
     }
 
 }

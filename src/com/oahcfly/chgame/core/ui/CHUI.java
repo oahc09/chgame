@@ -172,6 +172,8 @@ public abstract class CHUI {
      * @return
      */
     public boolean isShowing() {
+        if (getParentScreen().getTopCHUI() == null)
+            return false;
         return getParentScreen().getTopCHUI().getGroup().getName().equals(group.getName());
     }
 
