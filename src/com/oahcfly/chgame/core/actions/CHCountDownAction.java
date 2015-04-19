@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -81,7 +80,7 @@ public class CHCountDownAction extends TemporalAction {
             if (stageImage == null) {
                 stageImage = new Image(new TextureRegionDrawable(curTextureRegion));
                 stageImage.setPosition(CHGame.getInstance().gameWidth / 2, CHGame.getInstance().gameHeight / 2,
-                        Align.center);
+                        com.badlogic.gdx.utils.Align.center);
                 ((Group)actor).addActor(stageImage);
             } else {
                 stageImage.setSize(curTextureRegion.getRegionWidth(), curTextureRegion.getRegionHeight());

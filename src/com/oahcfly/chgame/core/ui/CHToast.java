@@ -6,6 +6,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -14,9 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.oahcfly.chgame.core.helper.FontHelper;
+import com.oahcfly.chgame.core.helper.CHFontHelper;
 import com.oahcfly.chgame.core.mvc.CHGame;
 
 /**
@@ -40,7 +40,7 @@ public class CHToast {
      * @param fontColor 颜色
      */
     public CHToast(String text, Color fontColor) {
-        BitmapFont bitmapFont = CHGame.getInstance().getInternationalGenerator().appendToFont(text);
+        BitmapFont bitmapFont = CHFontHelper.getInstance().loadSysFont(28, text);
         init(bitmapFont, text, fontColor);
     }
 
@@ -54,27 +54,29 @@ public class CHToast {
     public CHToast(String ttfName, String text, Color fontColor, int fontSize) {
         BitmapFont bitmapFont;
         if (ttfName == null) {
-            bitmapFont = CHGame.getInstance().getInternationalGenerator().appendToFont(text);
+            bitmapFont = CHFontHelper.getInstance().loadSysFont(28, text);
         } else {
-            bitmapFont = FontHelper.createFont(CHGame.getInstance().getTTFMap().get(ttfName), text, fontSize);
+            bitmapFont = CHFontHelper.getInstance().loadTtfFont(CHGame.getInstance().getTTFMap().get(ttfName),
+                    fontSize, text);
         }
 
         init(bitmapFont, text, fontColor);
     }
 
     private void init(BitmapFont bitmapFont, String text, Color color) {
+        GlyphLayout glyphLayout = new GlyphLayout(bitmapFont, text);
         LabelStyle style = new LabelStyle(bitmapFont, color);
         FileHandle imgFileHandle = Gdx.files.classpath("com/oahcfly/chgame/res/tip_bg.png");
         style.background = new TextureRegionDrawable(new TextureRegion(new Texture(imgFileHandle)));
         label = new Label(" " + text + " ", style);
         label.setWrap(true);
         label.setWidth(400);
-        label.setHeight(style.background.getMinHeight() + label.getTextBounds().height);
+        label.setHeight(style.background.getMinHeight() + glyphLayout.width);
 
-        label.setAlignment(Align.center);
+        label.setAlignment(com.badlogic.gdx.utils.Align.center);
 
-        textWidth = bitmapFont.getBounds(text).width;
-        textHeight = bitmapFont.getBounds(text).height;
+        textWidth = glyphLayout.width;
+        textHeight = glyphLayout.height;
         label.setPosition(CHGame.getInstance().gameWidth / 2 - label.getWidth() / 2, CHGame.getInstance().gameHeight
                 / 2 - label.getHeight() / 2);
 

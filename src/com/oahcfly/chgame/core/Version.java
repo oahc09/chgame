@@ -68,7 +68,12 @@ public class Version {
      *           (b)CHScheduleAction,CHLabelTickerAction新增结束回调接口。
      *           (c)CHAutoParticle烟花效果新增结束回调接口。
      *           (d)代码重构
-     * 0.4.5
+     * 0.4.5  
+     *           (a)升级版本到V1.5.6
+     *           (b)封装Screen切换动画，重构CHGame.
+     *           (c)规范测试用例
+     *           (d)删除smartfont.重构字体方案，废弃FreeTypeFontGeneratorExt，重新使用官方的字体方案。
+     *           (e)CHGAME功能强化，整合所有CHScreen。可灵活的调用，切换。
      * 0.4.6
      * 0.4.7
      * 

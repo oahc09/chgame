@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.badlogic.gdx.utils.Scaling;
@@ -19,7 +18,7 @@ public abstract class CHImage extends Image implements Poolable {
         // 重写Image内部实现
         setDrawable(new TextureRegionDrawable(new TextureRegion(texture)));
         setScaling(Scaling.stretch);
-        setAlign(Align.center);
+        setAlign(com.badlogic.gdx.utils.Align.center);
         setSize(getPrefWidth(), getPrefHeight());
     }
 

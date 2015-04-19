@@ -6,6 +6,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.utils.Align;
 import com.oahcfly.chgame.core.assetmanager.CHAssets;
 import com.oahcfly.chgame.core.async.CHAsyncTask;
 import com.oahcfly.chgame.core.mvc.CHGame;
@@ -188,7 +189,7 @@ public abstract class CHLoadingScreen extends CHScreen {
 
         logoImage.setX((getStage().getWidth() - logoImage.getWidth()) / 2);
         logoImage.setY((getStage().getHeight()) / 2 + 100);
-        logoImage.setOrigin(Align.center);
+        logoImage.setOrigin(com.badlogic.gdx.utils.Align.center);
         Action repeatedAction = Actions.sequence(Actions.moveTo(logoImage.getX(), logoImage.getY() + 10, 0.5f),
                 Actions.moveTo(logoImage.getX(), logoImage.getY(), 0.5f),
                 Actions.moveTo(logoImage.getX(), logoImage.getY() - 10, 0.5f));
@@ -210,10 +211,11 @@ public abstract class CHLoadingScreen extends CHScreen {
     private void addProgressLabel() {
         progressLabel = new Label("Loading... 0%", new LabelStyle(CHGame.getInstance().getDefaultBitmapFont(),
                 Color.WHITE));
-
+        GlyphLayout layout = new GlyphLayout();
+        layout.setText(CHGame.getInstance().getDefaultBitmapFont(), "Loading... 0%");
         // progressLabel.getStyle().font.setScale(2f);
         progressLabel.setTouchable(Touchable.disabled);
-        progressLabel.setWidth(progressLabel.getTextBounds().width);
+        progressLabel.setWidth(layout.width);
         progressLabel.setPosition(getStage().getWidth() / 2, getStage().getHeight() / 2, Align.center);
         //touchTipLabel.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.1f, 0.4f), Actions.alpha(1f, 0.8f))));
         addActor(progressLabel);

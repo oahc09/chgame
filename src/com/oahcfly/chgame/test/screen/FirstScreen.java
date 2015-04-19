@@ -23,7 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.utils.Align;
 import com.oahcfly.chgame.core.event.CHEvent;
 import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
@@ -41,6 +41,7 @@ public class FirstScreen extends CHScreen {
 
         Gdx.app.log(getTAG(), "init screen : first" + Texture.getManagedStatus());
 
+        
         new MainUI(this).show();
 
         addLabelAtlas(12345, 200, 160);
@@ -171,7 +172,7 @@ public class FirstScreen extends CHScreen {
         group.addActor(starImage);
 
         Table mytable = new Table();
-        mytable.align(Align.bottom | Align.left);
+        mytable.align(com.badlogic.gdx.utils.Align.bottom | Align.left);
         mytable.add(group);
         // 第一行添加图片
         //        mytable.add(starImage).left();

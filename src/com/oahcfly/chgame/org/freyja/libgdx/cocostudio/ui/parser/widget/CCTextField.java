@@ -4,7 +4,7 @@ package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.parser.widget;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
-import com.oahcfly.chgame.core.helper.FontHelper;
+import com.oahcfly.chgame.core.helper.CHFontHelper;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCOption;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCWidget;
@@ -44,8 +44,8 @@ public class CCTextField extends WidgetParser {
             public void setText(String text) {
                 String sumText = text + getMessageText() + defaultText;
 
-                getStyle().font = FontHelper.createFont(labelStyle.getFontFileHandle(), sumText,
-                        labelStyle.getFontSize());
+                getStyle().font = CHFontHelper.getInstance().loadTtfFont(labelStyle.getFontFileHandle(),
+                        labelStyle.getFontSize(), sumText);
 
                 super.setText(text);
             };
@@ -55,8 +55,8 @@ public class CCTextField extends WidgetParser {
 
                 String sumText = messageText + getText() + defaultText;
 
-                getStyle().font = FontHelper.createFont(labelStyle.getFontFileHandle(), sumText,
-                        labelStyle.getFontSize());
+                getStyle().font = CHFontHelper.getInstance().loadTtfFont(labelStyle.getFontFileHandle(),
+                        labelStyle.getFontSize(), sumText);
                 super.setMessageText(messageText);
             };
         };

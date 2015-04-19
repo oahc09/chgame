@@ -4,13 +4,10 @@ package com.oahcfly.chgame.test.screen;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.oahcfly.chgame.core.mvc.CHScreen;
-import com.oahcfly.chgame.core.ui.ColorLabel;
 import com.oahcfly.chgame.plist.CHPListCenter;
 import com.oahcfly.chgame.util.aes.CHAESEncryptor;
 import com.oahcfly.chgame.util.astar.CHAStar;
@@ -68,10 +65,7 @@ public class AStarScreen extends CHScreen {
             }
         }
 
-        String text = "#FF0000Complete goals in\n#FFFFFF 100 \n#FF00FF moves";
-        ColorLabel label = new ColorLabel(text, new LabelStyle(new BitmapFont(), Color.BLACK));
-        label.setY(300);
-        addActor(label);
+    
 
         try {
             String enString = CHAESEncryptor.encrypt(CHAESEncryptor.MAK, "abc");

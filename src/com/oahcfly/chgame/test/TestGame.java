@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.oahcfly.chgame.core.mvc.CHGame;
+import com.oahcfly.chgame.test.screen.AStarScreen;
 import com.oahcfly.chgame.test.screen.MyLoadingScreen;
 
 public class TestGame extends CHGame {
@@ -18,6 +19,7 @@ public class TestGame extends CHGame {
         setFPS(true);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
+        addScreen(new AStarScreen());
         setScreen(new MyLoadingScreen());
 
         //new DatabaseTest();

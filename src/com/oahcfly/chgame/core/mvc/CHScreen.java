@@ -9,6 +9,7 @@ import java.util.Stack;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -352,6 +353,11 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
 
     public boolean isBackKey() {
         return doBackClick;
+    }
+
+    public InputProcessor getInputProcessor() {
+        // TODO Auto-generated method stub
+        return stage;
     }
 }
 

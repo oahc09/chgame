@@ -4,7 +4,6 @@ package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 /**
  * 数字标签控件,暂时不支持.首字符设置.也就是说数字图片必须是0-9
@@ -103,7 +102,7 @@ public class LabelAtlas extends Table {
             add(numberActor);
         }
 
-        float oldX = getX(Align.center);
+        float oldX = getX(com.badlogic.gdx.utils.Align.center);
 
         setSize(tileWidth * arr.length, tileHeight);
 

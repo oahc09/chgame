@@ -10,8 +10,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -19,24 +19,24 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.oahcfly.chgame.core.FreeTypeFontGeneratorExt;
 import com.oahcfly.chgame.core.International;
 import com.oahcfly.chgame.core.Version;
 import com.oahcfly.chgame.core.ad.CHADListener;
 import com.oahcfly.chgame.core.async.CHAsyncManager;
-import com.oahcfly.chgame.core.helper.FontHelper;
+import com.oahcfly.chgame.core.helper.CHFontHelper;
 import com.oahcfly.chgame.core.listener.CHGameInfoListener;
 import com.oahcfly.chgame.core.listener.CHSocialListener;
 import com.oahcfly.chgame.core.listener.LocaleListener;
 import com.oahcfly.chgame.core.manager.MusicManager;
 import com.oahcfly.chgame.core.manager.SoundManager;
+import com.oahcfly.chgame.core.transition.IScreenTransition;
 import com.oahcfly.chgame.core.ui.CHWaiting;
 
 /**
@@ -50,7 +50,22 @@ import com.oahcfly.chgame.core.ui.CHWaiting;
  * @author caohao
  */
 public abstract class CHGame extends Game {
-    private FreeTypeFontGeneratorExt generator;
+    // 场景切换
+    private FrameBuffer curFbo;
+
+    private FrameBuffer nextFbo;
+
+    private float transitonDeltaTime;
+
+    private IScreenTransition screenTransition;
+
+    private boolean initTransition;
+
+    private CHScreen curScreen;
+
+    private CHScreen nextScreen;
+
+    // 场景切换
 
     private HashMap<String, FileHandle> ttfMap = new HashMap<String, FileHandle>();
 
@@ -74,14 +89,14 @@ public abstract class CHGame extends Game {
 
     private boolean openFPS = false;
 
-    //private SpriteBatch spriteBatch;
-
     private Label fpsLabel;
 
     private static CHGame instance = null;
 
     // 异步任务管理者
     private CHAsyncManager chAsyncManager;
+
+    private HashMap<String, CHScreen> chscreenMap;
 
     @SuppressWarnings("unchecked")
     public static <T extends CHGame> T getInstance() {
@@ -117,17 +132,18 @@ public abstract class CHGame extends Game {
 
     private CHWaiting chLoading;
 
-    private Batch batch;
+    private SpriteBatch batch;
 
     // Gdx是否处理back键
     private boolean catchBackKey = true;
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
+        // batch = new SpriteBatch();
 
         Gdx.app.log(TAG, "version : " + Version.VERSION);
 
+        chscreenMap = new HashMap<String, CHScreen>();
         musicManager = new MusicManager();
         soundManager = new SoundManager();
 
@@ -143,6 +159,10 @@ public abstract class CHGame extends Game {
 
         init();
 
+    }
+
+    public void addScreen(CHScreen chScreen) {
+        chscreenMap.put(chScreen.getClass().getName(), chScreen);
     }
 
     /**
@@ -180,30 +200,22 @@ public abstract class CHGame extends Game {
         openFPS = showFPS;
     }
 
-    /**
-     * 
-     * <pre>
-     * 初始化字体方案
-     * 
-     * date: 2015-1-2
-     * </pre>
-     * @author caohao
-     */
-    private void loadSystemTTF() {
-        generator = new FreeTypeFontGeneratorExt(28, false);
-    }
-
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
-        super.dispose();
+        if (curScreen != null)
+            curScreen.hide();
+        if (nextScreen != null)
+            nextScreen.hide();
+        if (initTransition) {
+            curFbo.dispose();
+            curScreen = null;
+            nextFbo.dispose();
+            nextScreen = null;
+            batch.dispose();
+            initTransition = false;
+        }
 
         Gdx.app.debug(TAG, "dispose");
-        batch.dispose();
-
-        if (generator != null) {
-            generator.dispose();
-        }
 
         for (TextureRegion textureRegion : this.loadingKeyFrames) {
             textureRegion.getTexture().dispose();
@@ -217,35 +229,73 @@ public abstract class CHGame extends Game {
         }
         chAsyncManager.dispose();
 
-        FontHelper.getInstance().dispose();
+        CHFontHelper.getInstance().dispose();
     }
 
     @Override
     public CHScreen getScreen() {
         // TODO Auto-generated method stub
-        return (CHScreen)super.getScreen();
+        return curScreen;
     }
 
     @Override
     public void pause() {
         savaDataBeforeExit();
-        super.pause();
+        if (curScreen != null)
+            curScreen.pause();
     }
 
     @Override
     public void render() {
+        //   清屏
+        // Gdx.gl.glClearColor(0, 0, 0, 1);
+        // Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // 清屏
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        float deltaTime = Math.min(Gdx.graphics.getDeltaTime(), 1.0f / 60.0f);
+        if (nextScreen == null) {
+            // no ongoing transition
+            if (curScreen != null)
+                // 正常绘制
+                curScreen.render(deltaTime);
+        } else {
+            // ongoing transition
+            float duration = 0;
+            if (screenTransition != null)
+                duration = screenTransition.getDuration();
+            // update progress of ongoing transition
+            transitonDeltaTime = Math.min(transitonDeltaTime + deltaTime, duration);
+            if (screenTransition == null || transitonDeltaTime >= duration) {
+                //no transition effect set or transition has just finished
+                if (curScreen != null)
+                    curScreen.hide();
+                nextScreen.resume();
+                // enable input for next screen
+                Gdx.input.setInputProcessor(nextScreen.getInputProcessor());
+                // switch screens
+                curScreen = nextScreen;
+                nextScreen = null;
+                screenTransition = null;
+            } else {
+                // render screens to FBOs
+                curFbo.begin();
+                if (curScreen != null)
+                    curScreen.render(deltaTime);
+                curFbo.end();
 
+                nextFbo.begin();
+                nextScreen.render(deltaTime);
+                nextFbo.end();
+                // render transition effect to screen
+                float alpha = transitonDeltaTime / duration;
+                screenTransition.render(batch, curFbo.getColorBufferTexture(), nextFbo.getColorBufferTexture(), alpha);
+            }
+        }
+
+        //
         if (chAsyncManager != null) {
             // 异步任务处理
             chAsyncManager.update();
         }
-
-        // 绘制
-        super.render();
 
         if (openFPS) {
             if (fpsLabel == null) {
@@ -275,24 +325,81 @@ public abstract class CHGame extends Game {
 
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-        super.resize(width, height);
+        if (curScreen != null)
+            curScreen.resize(width, height);
+        if (nextScreen != null)
+            nextScreen.resize(width, height);
     }
 
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
-        super.resume();
+        if (curScreen != null)
+            curScreen.resume();
+    }
+
+    /**
+     * 
+     * <pre>
+     * 切换Screen
+     * 
+     * date: 2015-4-19
+     * </pre>
+     * @author caohao
+     * @param screenName 完整的类名 com.a.b.Screen
+     * @param screenTransition
+     */
+    public void setScreen(String screenName, IScreenTransition screenTransition) {
+        for (CHScreen chScreen : chscreenMap.values()) {
+            if (chScreen.getClass().getSimpleName().equals(screenName)) {
+                setScreen(chScreen, screenTransition);
+                return;
+            }
+        }
+
+        try {
+            Class<?> c = Class.forName(screenName);
+            Object yourObj = c.newInstance();
+            setScreen((CHScreen)yourObj, screenTransition);
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            Gdx.app.debug(TAG, e.getMessage());
+        } catch (InstantiationException e) {
+            // TODO Auto-generated catch block
+            Gdx.app.debug(TAG, e.getMessage());
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            Gdx.app.debug(TAG, e.getMessage());
+        }
     }
 
     @Override
     public void setScreen(Screen screen) {
-        if (getScreen() != null) {
-            // 不可点击
-            getScreen().getStage().getRoot().setTouchable(Touchable.disabled);
+        setScreen((CHScreen)screen, null);
+    }
+
+    public void setScreen(CHScreen nxtScreen, IScreenTransition screenTransition) {
+        int w = Gdx.graphics.getWidth();
+        int h = Gdx.graphics.getHeight();
+        if (!initTransition) {
+            curFbo = new FrameBuffer(Format.RGB888, w, h, false);
+            nextFbo = new FrameBuffer(Format.RGB888, w, h, false);
+            batch = new SpriteBatch();
+            initTransition = true;
         }
+        // start new transition
+        nextScreen = nxtScreen;
+        // activate next screen
+        nextScreen.show();
+        nextScreen.resize(w, h);
+        // let screen update() once [下个场景立马绘制，获取其纹理]
+        nextScreen.render(0);
+        if (curScreen != null)
+            curScreen.pause();
+        nextScreen.pause();
+        // disable input
         Gdx.input.setInputProcessor(null);
-        super.setScreen(screen);
+        this.screenTransition = screenTransition;
+        transitonDeltaTime = 0;
     }
 
     /**
@@ -532,23 +639,6 @@ public abstract class CHGame extends Game {
             loadInternationalValues();
         }
         return international;
-    }
-
-    /**
-     * 
-     * <pre>
-     * 系统默认字体生成器
-     * 
-     * date: 2014-12-26
-     * </pre>
-     * @author caohao
-     * @return
-     */
-    public FreeTypeFontGeneratorExt getInternationalGenerator() {
-        if (generator == null) {
-            loadSystemTTF();
-        }
-        return generator;
     }
 
     public LocaleListener getLocaleListener() {

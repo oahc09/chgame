@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.oahcfly.chgame.core.listener.CHClickListener;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
@@ -42,7 +41,7 @@ public class TestUI extends CHUI {
         labelAtlas.setText("" + 11);
         labelAtlas.setX(100);
         labelAtlas.setY(100);
-        labelAtlas.setOrigin(Align.center);
+        labelAtlas.setOrigin(com.badlogic.gdx.utils.Align.center);
         addActor(labelAtlas);
     }
 

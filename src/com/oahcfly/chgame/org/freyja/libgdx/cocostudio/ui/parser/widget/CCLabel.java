@@ -2,7 +2,7 @@
 package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.parser.widget;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.utils.Align;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCOption;
 import com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.model.CCWidget;
@@ -43,7 +43,7 @@ public class CCLabel extends WidgetParser {
         int v = 0;
         switch (option.getvAlignment()) {
             case 0:
-                v = Align.top;
+                v = com.badlogic.gdx.utils.Align.top;
                 break;
             case 1:
                 v = Align.center;

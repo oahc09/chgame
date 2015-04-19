@@ -5,38 +5,45 @@ import java.util.HashSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.AddAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane.SplitPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.oahcfly.chgame.core.FreeTypeFontGeneratorExt.FreeTypeFontParameter;
 import com.oahcfly.chgame.core.actions.CHActions;
 import com.oahcfly.chgame.core.actions.CHCountDownAction;
 import com.oahcfly.chgame.core.actions.CHLabelTickerAction;
 import com.oahcfly.chgame.core.actions.CHScheduleAction;
 import com.oahcfly.chgame.core.helper.CHAutoParticle;
+import com.oahcfly.chgame.core.helper.CHFontHelper;
+import com.oahcfly.chgame.core.listener.CHClickListener;
+import com.oahcfly.chgame.core.listener.CHTextInputListener;
 import com.oahcfly.chgame.core.mvc.CHActor;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.core.mvc.CHScreen;
+import com.oahcfly.chgame.core.transition.CHScreenTransitionSlide;
 import com.oahcfly.chgame.core.ui.CHAniamtionPlayer;
 import com.oahcfly.chgame.core.ui.CHGifDecoder;
 import com.oahcfly.chgame.core.ui.CHParticle;
@@ -87,42 +94,78 @@ public class PPLScreen extends CHScreen implements GestureListener {
         parameter.shadowColor = Color.BLUE;
         parameter.shadowOffsetX = -2;
         parameter.shadowOffsetY = -2;
-        final Label saveLabel = CHGame.getInstance().getInternationalGenerator()
-                .createLabel("测试\r\n文字描边ABCDabcd1234!！");
+        String text = "BCKDjksjdas测试=文本";
+        Label saveLabel = new Label(text, new LabelStyle(CHFontHelper.getInstance().loadSysFont(28, text), null));
         saveLabel.setColor(Color.WHITE);
         saveLabel.setPosition(300, 100);
+        saveLabel.setDebug(true);
         addActor(saveLabel);
 
-        //        final CHTextInputListener chTextInputListener = new CHTextInputListener(saveLabel) {
-        //
-        //            @Override
-        //            public void getInput(String input) {
-        //
-        //            }
-        //        };
-        //        saveLabel.addListener(new CHClickListener() {
-        //
-        //            @Override
-        //            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-        //                // TODO Auto-generated method stub
-        //                super.touchUp(event, x, y, pointer, button);
-        //
-        //                chTextInputListener.show("测试");
-        //            }
-        //
-        //        });
+        final CHTextInputListener chTextInputListener = new CHTextInputListener(saveLabel) {
+
+            @Override
+            public void getInput(String input) {
+
+            }
+        };
+        saveLabel.addListener(new CHClickListener() {
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                // TODO Auto-generated method stub
+                super.touchUp(event, x, y, pointer, button);
+
+                chTextInputListener.show("测试");
+            }
+
+        });
 
         //        testGif();
 
         // addActor(CHGame.getInstance().getImage("add3.png"));
 
         // 监听器
-        InputMultiplexer inputMultiplexer = new InputMultiplexer(getStage(), new GestureDetector(this));
+        inputMultiplexer = new InputMultiplexer(getStage(), new GestureDetector(this));
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-        createStars();
+        // createStars();
 
         testLabelTickerAction();
+
+        testBar();
+    }
+
+    InputMultiplexer inputMultiplexer;
+
+    private void testBar() {
+        // TODO Auto-generated method stub
+        Image btnImage = CHGame.getInstance().getImage("screen/button_menu_up.png");
+        addActor(btnImage);
+        btnImage.addListener(new CHClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+                Table barTable = new Table();
+                barTable.setDebug(true);
+                barTable.add(CHGame.getInstance().getImage("screen/button_pause_music_on.png"));
+                barTable.row();
+                barTable.add(CHGame.getInstance().getImage("screen/button_pause_sound_on.png"));
+                barTable.row();
+                barTable.add(CHGame.getInstance().getImage("screen/button_share_up.png"));
+                barTable.pack();
+                barTable.setPosition(100, -barTable.getHeight());
+                // addActor(barTable);
+                barTable.addAction(Actions.moveBy(0, barTable.getHeight(), 0.3f));
+
+                //                getGame().setScreen(new PPLScreen(),
+                //                        new CHScreenTransitionSlide(2f, CHScreenTransitionSlide.TO_LEFT, true, Interpolation.bounce));
+                //   new CHScreenTransitionFade(2f));\
+                getGame().setScreen("com.oahcfly.chgame.test.screen.AStarScreen",
+                        new CHScreenTransitionSlide(2f, CHScreenTransitionSlide.TO_LEFT, true, Interpolation.bounce));
+            }
+
+        });
     }
 
     private void testLabelTickerAction() {
@@ -134,7 +177,8 @@ public class PPLScreen extends CHScreen implements GestureListener {
                 System.out.println("显示结束");
             }
         });
-        Label label = CHGame.getInstance().getInternationalGenerator().createLabel("你好啊。欢迎进入CHGAME游戏框架！！！");
+        String text = "你好啊。欢迎进入CHGAME游戏框架！！";
+        Label label = new Label(text, new LabelStyle(CHFontHelper.getInstance().loadSysFont(28, text), null));
         label.setColor(Color.RED);
         label.setPosition(100, 100);
         label.addAction(chLabelTickerAction);
@@ -242,7 +286,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         image1.addAction(CHActions.createLeftAndRightAction(10, 0.2f, -1));//CHActions.createAutoTwinkleAction(1f, -1));
         //CHActions.createAutoScaleToCenter(1.2f, 0.5f, 4));
         //CHActions.createRotateAndMoveAction(1.8f, 2,  200, -200));
-        image1.setOrigin(Align.center);
+        image1.setOrigin(com.badlogic.gdx.utils.Align.center);
         image1.setPosition(94, 253);
 
         addActor(image1);
@@ -322,7 +366,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
     public void render(float delta) {
         // TODO Auto-generated method stub
         super.render(delta);
-        chParticle.render(getStage().getBatch());
+        // chParticle.render(getStage().getBatch());
 
     }
 
@@ -337,34 +381,36 @@ public class PPLScreen extends CHScreen implements GestureListener {
         System.out.println("touchDown : x=" + vector2.x + ",y=" + vector2.y);
         actorNameList = new HashSet<String>();
 
-        chAutoParticle.playCircleParticle(getStage(), vector2.x, vector2.y);
-        chParticle.createEffect(vector2.x, vector2.y);
-        unSyncSchedule("fun");
-
-        addSyncSchedule("fun", 2);
+        //chAutoParticle.playCircleParticle(getStage(), vector2.x, vector2.y);
+        //chParticle.createEffect(vector2.x, vector2.y);
+        //unSyncSchedule("fun");
+        //addSyncSchedule("fun", 2);
         // 创建字体
         if (testLabel == null) {
-            testLabel = CHGame.getInstance().getInternationalGenerator().createLabel("测试" + TestGame.getRandomHan());
-            testLabel.setColor(Color.WHITE);
-            testLabel.setPosition(300, 100);
-            testLabel.setFontScale(0.4f);
+            String text = "BCKDjksjdas测试=" + TestGame.getRandomHan();
+            testLabel = new Label(text, new LabelStyle(CHFontHelper.getInstance().loadSysFont(28, text), null));
+            testLabel.setColor(Color.BLACK);
+            testLabel.setPosition(100, 100);
+            // testLabel.setFontScale(0.4f);
             addActor(testLabel);
         } else {
             String newString = TestGame.getRandomHan() + TestGame.getRandomHan() + TestGame.getRandomHan();
-            CHGame.getInstance().getInternationalGenerator().appendToFont("测试" + newString);
-            testLabel.setText("测试" + newString);
+            String text = "测试A" + newString;
+            testLabel.getStyle().font.dispose();
+            testLabel.setStyle(new LabelStyle(CHFontHelper.getInstance().loadSysFont(28, text), Color.BLACK));
+            testLabel.setText(text);
         }
 
         if (mainUI == null) {
             mainUI = new MainUI(this);
         }
-
-        if (mainUI.isShowing()) {
-            mainUI.dismiss();
-        } else {
-            mainUI.show();
-            mainUI.getGroup().setTouchable(Touchable.disabled);
-        }
+        //
+        //        if (mainUI.isShowing()) {
+        //            mainUI.dismiss();
+        //        } else {
+        //            mainUI.show();
+        //            mainUI.getGroup().setTouchable(Touchable.disabled);
+        //        }
         return false;
     }
 
@@ -424,6 +470,12 @@ public class PPLScreen extends CHScreen implements GestureListener {
     public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
         System.out.println("pinch");
         return false;
+    }
+
+    @Override
+    public InputProcessor getInputProcessor() {
+        // TODO Auto-generated method stub
+        return inputMultiplexer;
     }
 
 }

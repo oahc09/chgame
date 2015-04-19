@@ -3,7 +3,7 @@ package com.oahcfly.chgame.org.freyja.libgdx.cocostudio.ui.widget;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.oahcfly.chgame.core.helper.FontHelper;
+import com.oahcfly.chgame.core.helper.CHFontHelper;
 import com.oahcfly.chgame.core.mvc.CHGame;
 
 /**
@@ -43,8 +43,8 @@ public class TTFLabel extends Label {
             style.font = createFont(style, "" + newText);
         } else {
             // 使用系统自带字体
-            style.font = useSysFont ? CHGame.getInstance().getInternationalGenerator().appendToFont(newText.toString())
-                    : CHGame.getInstance().getDefaultBitmapFont();
+            style.font = useSysFont ? CHFontHelper.getInstance().loadSysFont(28, newText.toString()) : CHGame
+                    .getInstance().getDefaultBitmapFont();
         }
         super.setStyle(style);
         super.setText(newText);
@@ -77,6 +77,6 @@ public class TTFLabel extends Label {
     //    }
 
     BitmapFont createFont(TTFLabelStyle ttfStyle, String text) {
-        return FontHelper.createFont(ttfStyle.getFontFileHandle(), text, ttfStyle.getFontSize());
+        return CHFontHelper.getInstance().loadTtfFont(ttfStyle.getFontFileHandle(), ttfStyle.getFontSize(), text);
     }
 }

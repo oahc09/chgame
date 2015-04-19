@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Pool;
 import com.oahcfly.chgame.core.actions.CHScheduleAction;
 import com.oahcfly.chgame.core.mvc.CHGame;
@@ -38,7 +38,7 @@ public class CHAutoParticle {
             protected Image newObject() {
                 Image img = CHGame.getInstance().getImage(imgPath);
                 img.setSize(50, 50);
-                img.setOrigin(Align.center);
+                img.setOrigin(com.badlogic.gdx.utils.Align.center);
                 float r = (float)((Math.random() * 0.4f) + 0.7f);
                 float g = (float)((Math.random() * 0.4f) + 0.7f);
                 float b = (float)((Math.random() * 0.4f) + 0.7f);
