@@ -141,6 +141,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         // TODO Auto-generated method stub
         Image btnImage = CHGame.getInstance().getImage("screen/button_menu_up.png");
         addActor(btnImage);
+        btnImage.addAction(CHActions.createShakeHorizontalForeverAction(0.2f));
         btnImage.addListener(new CHClickListener() {
 
             @Override

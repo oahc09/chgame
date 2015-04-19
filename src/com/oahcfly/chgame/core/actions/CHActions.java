@@ -15,6 +15,39 @@ import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
  * @author caohao
  */
 public class CHActions {
+    /**
+     * 
+     * <pre>
+     * 垂直跳动
+     * 
+     * date: 2015-4-19
+     * </pre>
+     * @author caohao
+     * @param duration
+     * @return
+     */
+    public static Action createShakeVerticalForeverAction(float duration) {
+        Action repeatedAction = Actions.sequence(Actions.moveBy(0, 6, duration), Actions.moveBy(0, -6, duration),
+                Actions.moveBy(0, 3, duration), Actions.moveBy(0, -3, duration));
+        return Actions.forever(repeatedAction);
+    }
+
+    /**
+     * 
+     * <pre>
+     * 水平晃动
+     * 
+     * date: 2015-4-19
+     * </pre>
+     * @author caohao
+     * @param duration
+     * @return
+     */
+    public static Action createShakeHorizontalForeverAction(float duration) {
+        Action repeatedAction = Actions.sequence(Actions.moveBy(6, 0, duration), Actions.moveBy(-6, 0, duration),
+                Actions.moveBy(3, 0, duration), Actions.moveBy(-3, 0, duration));
+        return Actions.forever(repeatedAction);
+    }
 
     /**
      * 
