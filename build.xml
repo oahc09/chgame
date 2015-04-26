@@ -21,7 +21,7 @@
 
 	<!-- 编译java文件 -->
 	<target name="compile" depends="init">
-		<javac srcdir="${srcDir}" destdir="${buildDir}"
+		<javac  srcdir="${srcDir}" destdir="${buildDir}"
 			includeantruntime="true" encoding="UTF-8" />
 	</target>
  

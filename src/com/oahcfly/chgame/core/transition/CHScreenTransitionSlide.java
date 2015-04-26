@@ -23,6 +23,13 @@ public class CHScreenTransitionSlide extends AbstractScreenTransition {
 
     private Interpolation easing;
 
+    public CHScreenTransitionSlide(float duration, int direction, boolean slideOut) {
+        super(duration);
+        this.direction = direction;
+        this.slideOut = slideOut;
+        this.easing = Interpolation.bounce;
+    }
+
     /**
      * 
      * @param duration

@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class CHClickListener extends ClickListener {
 
     public enum CLICKTYPE {
-        SCALE, FADE
+        SCALE, FADE, GRAY
     }
 
     private CLICKTYPE clickType = CLICKTYPE.SCALE;
@@ -48,6 +48,10 @@ public class CHClickListener extends ClickListener {
                 color.a = 0.5f;
                 event.getListenerActor().setColor(color);
                 break;
+            case GRAY:
+                // 变灰
+                event.getListenerActor().setColor(Color.GRAY);
+                break;
             default:
                 break;
         }
@@ -69,6 +73,9 @@ public class CHClickListener extends ClickListener {
                 Color color = event.getListenerActor().getColor();
                 color.a = 1f;
                 event.getListenerActor().setColor(color);
+                break;
+            case GRAY:
+                event.getListenerActor().setColor(Color.WHITE);
                 break;
             default:
                 break;

@@ -6,7 +6,6 @@ import java.util.Random;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.oahcfly.chgame.core.mvc.CHGame;
 import com.oahcfly.chgame.test.screen.AStarScreen;
 import com.oahcfly.chgame.test.screen.MyLoadingScreen;
@@ -15,7 +14,7 @@ public class TestGame extends CHGame {
 
     @Override
     public void init() {
-        setGameWidthAndHeight(800, 480);
+        setGameWidthAndHeight(480, 800);
         setFPS(true);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
@@ -24,8 +23,7 @@ public class TestGame extends CHGame {
 
         //new DatabaseTest();
 
-  
-        ShaderProgram shaderProgram ;
+   
     }
 
     private static Random ran = new Random();

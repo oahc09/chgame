@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.oahcfly.chgame.core.mvc.CHGame;
+import com.oahcfly.chgame.core.mvc.CHScreen;
 
 /**
  * 
@@ -56,8 +57,10 @@ public class CHWaiting {
         parentTable.setTouchable(Touchable.enabled);
 
         if (parentTable.getParent() == null) {
-            System.out.println("add to parent");
-            CHGame.getInstance().getScreen().addActor(parentTable);
+            CHScreen chScreen = CHGame.getInstance().getScreen();
+            if (chScreen != null) {
+                chScreen.addActor(parentTable);
+            }
         }
         parentTable.setZIndex(Integer.MAX_VALUE);
         parentTable.addAction(Actions.delay(5f, Actions.run(new Runnable() {

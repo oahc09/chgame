@@ -1,10 +1,14 @@
 
 package com.oahcfly.chgame.core.ui;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -58,6 +62,23 @@ public abstract class CHUI {
         this.parentScreen = screen;
         this.stage = parentScreen.getStage();
         editor = new CocoStudioUIEditor(Gdx.files.internal(jsonPath), null, null, null, null);
+        group = editor.createGroup();
+        initUIBeforeShow();
+    }
+
+    public CHUI(CHScreen screen, TextureAtlas textureAtlas) {
+        CHUIAnnotation chAnnotation = getAnnotation();
+        String jsonPath = null;
+        if (chAnnotation != null) {
+            jsonPath = chAnnotation.jsonPath();
+        } else {
+            throw new GdxRuntimeException("cannot find CHUIAnnotation in class!!!");
+        }
+        this.parentScreen = screen;
+        this.stage = parentScreen.getStage();
+        Collection<TextureAtlas> collection = new ArrayList<TextureAtlas>();
+        collection.add(textureAtlas);
+        editor = new CocoStudioUIEditor(Gdx.files.internal(jsonPath), null, null, null, collection);
         group = editor.createGroup();
         initUIBeforeShow();
     }
@@ -175,6 +196,10 @@ public abstract class CHUI {
         if (getParentScreen().getTopCHUI() == null)
             return false;
         return getParentScreen().getTopCHUI().getGroup().getName().equals(group.getName());
+    }
+
+    public void addAction(Action action) {
+        getGroup().addAction(action);
     }
 
     /**

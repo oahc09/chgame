@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Interpolation;
@@ -39,6 +41,7 @@ import com.oahcfly.chgame.core.actions.CHScheduleAction;
 import com.oahcfly.chgame.core.helper.CHAutoParticle;
 import com.oahcfly.chgame.core.helper.CHFontHelper;
 import com.oahcfly.chgame.core.listener.CHClickListener;
+import com.oahcfly.chgame.core.listener.CHClickListener.CLICKTYPE;
 import com.oahcfly.chgame.core.listener.CHTextInputListener;
 import com.oahcfly.chgame.core.mvc.CHActor;
 import com.oahcfly.chgame.core.mvc.CHGame;
@@ -133,6 +136,26 @@ public class PPLScreen extends CHScreen implements GestureListener {
         testLabelTickerAction();
 
         testBar();
+
+        testProgressTime();
+    }
+
+    ShapeRenderer shapeRenderer;
+
+    private void testProgressTime() {
+
+        shapeRenderer = new ShapeRenderer();
+    }
+
+    @Override
+    public void draw() {
+        // TODO Auto-generated method stub
+        super.draw();
+        shapeRenderer.begin(ShapeType.Filled);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.circle(100, 100, 50, 100);
+
+        shapeRenderer.end();
     }
 
     InputMultiplexer inputMultiplexer;
@@ -142,7 +165,7 @@ public class PPLScreen extends CHScreen implements GestureListener {
         Image btnImage = CHGame.getInstance().getImage("screen/button_menu_up.png");
         addActor(btnImage);
         btnImage.addAction(CHActions.createShakeHorizontalForeverAction(0.2f));
-        btnImage.addListener(new CHClickListener() {
+        btnImage.addListener(new CHClickListener(CLICKTYPE.GRAY) {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {

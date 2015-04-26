@@ -140,7 +140,6 @@ public abstract class CHScreen implements Screen, CHUIFocusListener {
             doBackClick = true;
             clickBackKey();
         }
-
     }
 
     public void draw() {

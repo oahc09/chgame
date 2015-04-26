@@ -12,18 +12,18 @@ import com.oahcfly.chgame.util.aes.CHAESEncryptor;
  * 存储配置信息的工具类 <br>
  * 注：可读取的数据类型有-<code>boolean、int、float、long、String.</code>
  */
-public class SharePreferenceUtil {
+public class CHSharePreferenceUtil {
 
     private final Preferences sharedpreferences;
 
     // 是否进行加密
     private boolean useAes;
 
-    public SharePreferenceUtil(String fileName) {
+    public CHSharePreferenceUtil(String fileName) {
         this(fileName, false);
     }
 
-    public SharePreferenceUtil(String fileName, boolean aes) {
+    public CHSharePreferenceUtil(String fileName, boolean aes) {
         useAes = aes;
         if (useAes) {
             fileName = CHAESEncryptor.encodeData(fileName);

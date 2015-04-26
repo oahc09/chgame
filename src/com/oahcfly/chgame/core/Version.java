@@ -75,8 +75,12 @@ public class Version {
      *           (d)删除smartfont.重构字体方案，废弃FreeTypeFontGeneratorExt，重新使用官方的字体方案。
      *           (e)CHGAME功能强化，整合所有CHScreen。可灵活的调用，切换。
      *           (f)CHActions增加了跳动缓冲Action.
-     * 0.4.6
+     * 0.4.6  修复screen切换大小有问题。
+     *           (a)点击按钮效果->变灰
+     *           (b)其他优化
+     *           (c)CHUI切换动画
      * 0.4.7
+     *           (b)技能冷却效果 
      * 
      *  */
     public static final String VERSION = "0.4.5";

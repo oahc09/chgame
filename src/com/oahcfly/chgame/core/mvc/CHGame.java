@@ -10,6 +10,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -248,20 +249,22 @@ public abstract class CHGame extends Game {
     @Override
     public void render() {
         //   清屏
-        // Gdx.gl.glClearColor(0, 0, 0, 1);
-        // Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         float deltaTime = Math.min(Gdx.graphics.getDeltaTime(), 1.0f / 60.0f);
         if (nextScreen == null) {
             // no ongoing transition
-            if (curScreen != null)
+            if (curScreen != null) {
                 // 正常绘制
                 curScreen.render(deltaTime);
+            }
         } else {
             // ongoing transition
             float duration = 0;
-            if (screenTransition != null)
+            if (screenTransition != null) {
                 duration = screenTransition.getDuration();
+            }
             // update progress of ongoing transition
             transitonDeltaTime = Math.min(transitonDeltaTime + deltaTime, duration);
             if (screenTransition == null || transitonDeltaTime >= duration) {
@@ -378,8 +381,8 @@ public abstract class CHGame extends Game {
     }
 
     public void setScreen(CHScreen nxtScreen, IScreenTransition screenTransition) {
-        int w = Gdx.graphics.getWidth();
-        int h = Gdx.graphics.getHeight();
+        int w = CHGame.getInstance().gameWidth;
+        int h = CHGame.getInstance().gameHeight;
         if (!initTransition) {
             curFbo = new FrameBuffer(Format.RGB888, w, h, false);
             nextFbo = new FrameBuffer(Format.RGB888, w, h, false);
